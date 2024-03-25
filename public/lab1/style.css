@@ -2,3 +2,9 @@
     background-image: url("background.jpg");
     background-repeat: repeat;
 }
+
+h1,h2{
+    color: chocolate;
+    background-color: blanchedalmond;
+    font-family: 'Times New Roman', Times, serif;
+}

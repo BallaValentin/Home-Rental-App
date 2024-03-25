@@ -4,7 +4,15 @@
 }
 
 h1,h2{
-    color: chocolate;
-    background-color: blanchedalmond;
+    color:chocolate;
+    background-color:blanchedalmond;
     font-family: 'Times New Roman', Times, serif;
+}
+
+tr:nth-child(odd) td:nth-child(even), tr:nth-child(even) td:nth-child(odd), th:nth-child(odd){
+    background-color:blanchedalmond;
+}
+
+tr:nth-child(odd) td:nth-child(odd), tr:nth-child(even) td:nth-child(even), th:nth-child(even){
+    background-color:aquamarine;
 }

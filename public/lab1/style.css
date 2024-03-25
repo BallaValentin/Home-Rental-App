@@ -39,9 +39,9 @@ különböző HTML elemek stílusa (szín, betűméret, szöveg-igazítása, sz�
 Alkalmazzuk ugyanazt a stílusosztályt az em és p elemekre.
 */
 .altalanos_stilus{
-    color: crimson;
-    font-size: large;
-    font-style: oblique;
+    color: royalblue;
+    font-size: 14px;
+    font-variant: unset;
     text-align: justify;
 }
 
@@ -171,4 +171,28 @@ folyamán.
 .bronze:hover{
     height: 90px;
     transition: 2s;
+}
+
+.epulet_tortenelem_cim{
+    size: 22px;
+    font-style: oblique;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: coral;
+    text-decoration-line: underline;
+}
+
+.epulet_tortenelem{
+    size: 14px;
+}
+
+.termeszet_leiras_cim{
+    size: 21px;
+    font-style: oblique;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: green;
+    text-decoration-line: underline;
+}
+
+.termeszet_leiras{
+    size: 13px;
 }

@@ -23,7 +23,6 @@ olyan szelektort, ami az elemtípus és az osztályra is megkötést tesz.
 */
 ul.lista1{
     color: darkred;
-    font-display: bold;
     font-size: 20px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
@@ -174,7 +173,7 @@ folyamán.
 }
 
 .epulet_tortenelem_cim{
-    size: 22px;
+    font-size: 22px;
     font-style: oblique;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: coral;
@@ -182,11 +181,11 @@ folyamán.
 }
 
 .epulet_tortenelem{
-    size: 14px;
+    font-size: 14px;
 }
 
 .termeszet_leiras_cim{
-    size: 21px;
+    font-size: 21px;
     font-style: oblique;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: green;
@@ -194,5 +193,5 @@ folyamán.
 }
 
 .termeszet_leiras{
-    size: 13px;
+    font-size: 13px;
 }

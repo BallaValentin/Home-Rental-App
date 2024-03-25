@@ -21,6 +21,17 @@ h1,h2{
 Definiáljunk (és használjunk a HTML oldalon) két különböző stílusú (sorszám nélküli) listát. Használjunk
 olyan szelektort, ami az elemtípus és az osztályra is megkötést tesz.
 */
+ul.lista1{
+    color: darkred;
+    font-display: bold;
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+ul.lista2{
+    color: darkgreen;
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
 /*
 Általános stílusosztály (osztály, mely nincs ráhúzva egy elemtípusra) segítségével oldjuk meg, hogy
@@ -38,6 +49,13 @@ Alkalmazzuk ugyanazt a stílusosztályt az em és p elemekre.
 Adjuk meg (kontextussal megadott szelektort használva) egy nav elemben elhelyezkedő div elem stílusát
 (kerekített szegély, szövegméret).
 */
+#nav-id{
+    border-radius: 15px;
+    border-style: solid;
+    font-size: 18px;
+    border-color: gold;
+    height: 100px;
+}
 
 /*
 Definiáljunk két különböző hivatkozás (link) típust, melyeknek más és más a színe, szövegdíszítése
@@ -49,6 +67,7 @@ a.link1{
 
 a.link1:hover{
     color: blueviolet;
+    font-size: 20px;
 }
 
 a.link1:active{
@@ -56,7 +75,8 @@ a.link1:active{
 }
 
 a.link1:visited{
-    color: gray;
+    color: darkmagenta;
+    text-decoration: line-through;
 }
 
 a.link2{
@@ -66,6 +86,7 @@ a.link2{
 a.link2:hover{
     color: orange;
     background-color: aliceblue;
+    font-size: 20px;
 }
 
 a.link2:active{
@@ -74,6 +95,7 @@ a.link2:active{
 
 a.link2:visited{
     color: cornflowerblue;
+    text-decoration: underline;
 }
 
 /*
@@ -103,9 +125,50 @@ tr:nth-child(odd) td:nth-child(odd), tr:nth-child(even) td:nth-child(even), th:n
 Rajzoljunk különböző színű téglalapokból díjkiosztó pódiumot (1., 2., 3 helyezés vagy arany-, ezüst-,
 bronzérem felirattal)
 */
+.podium{
+    display: flex;
+    padding-left: 1.5%;
+    margin-top: 50px;
+    align-items: flex-end;
+}
+
+.gold{
+    height: 70px;
+    width:50px;
+    background-color: gold;
+    text-align: center;
+}
+
+.silver{
+    height: 60px;
+    width:50px;
+    background-color: silver;
+    text-align: center;
+}
+
+.bronze{
+    height: 50px;
+    width:50px;
+    background-color: burlywood;
+    text-align: center;
+}
 
 /*
 CSS3 átmenetek (transition) segítségével oldjuk meg, hogy a téglalapok mérete változzon amennyiben
 fölé visszük a kurzort. Ne egyből változzon ez a tulajdonság, hanem graduálisan 2 másodperc
 folyamán.
 */
+.gold:hover{
+    height: 150px;
+    transition: 2s;
+}
+
+.silver:hover{
+    height: 120px;
+    transition: 2s;
+}
+
+.bronze:hover{
+    height: 90px;
+    transition: 2s;
+}

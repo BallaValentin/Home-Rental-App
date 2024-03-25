@@ -1,14 +1,96 @@
+/*
+A HTML törzsében legyen (a szöveggel együtt gördülő) háttérkép (lehetőleg ne legyen túl sötét kép),
+mely az x és y tengely mentén egyaránt ismétlődik.
+*/
 .background{
     background-image: url("background.jpg");
     background-repeat: repeat;
 }
 
+/*
+Elemtípusra vonatkozó szelektorok (osztály/ID nélkül) segítségével oldjuk meg, hogy a főcím (h1) és
+alcím (h2) színe, háttérszíne, betű-típus családja legyen egyforma.
+*/
 h1,h2{
     color:chocolate;
     background-color:blanchedalmond;
     font-family: 'Times New Roman', Times, serif;
 }
 
+/*
+Definiáljunk (és használjunk a HTML oldalon) két különböző stílusú (sorszám nélküli) listát. Használjunk
+olyan szelektort, ami az elemtípus és az osztályra is megkötést tesz.
+*/
+
+/*
+Általános stílusosztály (osztály, mely nincs ráhúzva egy elemtípusra) segítségével oldjuk meg, hogy
+különböző HTML elemek stílusa (szín, betűméret, szöveg-igazítása, szöveg-díszítése) ugyanaz legyen.
+Alkalmazzuk ugyanazt a stílusosztályt az em és p elemekre.
+*/
+.altalanos_stilus{
+    color: crimson;
+    font-size: large;
+    font-style: oblique;
+    text-align: justify;
+}
+
+/*
+Adjuk meg (kontextussal megadott szelektort használva) egy nav elemben elhelyezkedő div elem stílusát
+(kerekített szegély, szövegméret).
+*/
+
+/*
+Definiáljunk két különböző hivatkozás (link) típust, melyeknek más és más a színe, szövegdíszítése
+ha rámegyünk az egérrel, ha aktív, ha már meglátogattuk.
+*/
+a.link1{
+    color: chartreuse;
+}
+
+a.link1:hover{
+    color: blueviolet;
+}
+
+a.link1:active{
+    color: brown;
+}
+
+a.link1:visited{
+    color: gray;
+}
+
+a.link2{
+    color: orange;
+}
+
+a.link2:hover{
+    color: orange;
+    background-color: aliceblue;
+}
+
+a.link2:active{
+    color: rebeccapurple;
+}
+
+a.link2:visited{
+    color: cornflowerblue;
+}
+
+/*
+Definiáljunk egy olyan div stílust, mely be van keretezve szaggatott vonallal. A szöveg legyen balra
+tolódva a kereten belül (a jobboldali behúzás–padding–legyen nagyobb). A keret elemei (alsó, felső,
+stb. rész) legyenek más-más színűek.
+*/
+.keretezett{
+    border-color: red green blue orange;
+    border-style: dashed;
+    padding-right: 75%;
+}
+
+/*
+Definiáljuk a táblázat esetén két különböző cella-stílust (a két stílus pepita -lásd sakktábla- minta
+szerint váltakozzon). Ne használjunk osztályokat, a HTML-be ne kelljen kézzel jelölőket írni a cellákhoz.
+*/
 tr:nth-child(odd) td:nth-child(even), tr:nth-child(even) td:nth-child(odd), th:nth-child(odd){
     background-color:blanchedalmond;
 }
@@ -16,3 +98,14 @@ tr:nth-child(odd) td:nth-child(even), tr:nth-child(even) td:nth-child(odd), th:n
 tr:nth-child(odd) td:nth-child(odd), tr:nth-child(even) td:nth-child(even), th:nth-child(even){
     background-color:aquamarine;
 }
+
+/*
+Rajzoljunk különböző színű téglalapokból díjkiosztó pódiumot (1., 2., 3 helyezés vagy arany-, ezüst-,
+bronzérem felirattal)
+*/
+
+/*
+CSS3 átmenetek (transition) segítségével oldjuk meg, hogy a téglalapok mérete változzon amennyiben
+fölé visszük a kurzort. Ne egyből változzon ez a tulajdonság, hanem graduálisan 2 másodperc
+folyamán.
+*/

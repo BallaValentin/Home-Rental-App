@@ -136,6 +136,7 @@ bronzérem felirattal)
     width:50px;
     background-color: gold;
     text-align: center;
+    transition: height 2s;
 }
 
 .silver{
@@ -143,6 +144,7 @@ bronzérem felirattal)
     width:50px;
     background-color: silver;
     text-align: center;
+    transition: height 2s;
 }
 
 .bronze{
@@ -150,6 +152,7 @@ bronzérem felirattal)
     width:50px;
     background-color: burlywood;
     text-align: center;
+    transition: height 2s;
 }
 
 /*
@@ -159,17 +162,14 @@ folyamán.
 */
 .gold:hover{
     height: 150px;
-    transition: 2s;
 }
 
 .silver:hover{
     height: 120px;
-    transition: 2s;
 }
 
 .bronze:hover{
     height: 90px;
-    transition: 2s;
 }
 
 .epulet_tortenelem_cim{

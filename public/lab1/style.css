@@ -48,7 +48,7 @@ Alkalmazzuk ugyanazt a stílusosztályt az em és p elemekre.
 Adjuk meg (kontextussal megadott szelektort használva) egy nav elemben elhelyezkedő div elem stílusát
 (kerekített szegély, szövegméret).
 */
-#nav-id{
+div nav{
     border-radius: 15px;
     border-style: solid;
     font-size: 18px;

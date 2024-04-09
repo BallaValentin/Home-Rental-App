@@ -3,5 +3,21 @@ form{
     border-radius: 10px;
     border: 2px solid red;
     padding: 2.5%;
+    margin-left: 1%;
     width: 35%;
+}
+
+body{
+    margin: 0;
+    background-color:antiquewhite;
+}
+
+header{
+    background-color: aquamarine;
+    font-size: large;
+    font-weight: bold;
+    color:blueviolet;
+    text-align: center;
+    margin: 2% 0% 2% 0%;
+    padding: 2%;
 }

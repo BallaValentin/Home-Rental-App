@@ -44,8 +44,30 @@ function validateForm(form) {
 }
 
 function resetForm(form) {
-  form.reset();
   enableForm(form);
+}
+
+function generateExercises(operatorsList, numberOfExercises) {
+  const exercises = [];
+  for (let i = 1; i <= numberOfExercises; i++) {
+    const x = Math.floor(Math.random() * 101);
+    const y = Math.floor(Math.random() * 101);
+    const randomOperator = operatorsList[Math.floor(Math.random() * operatorsList.length)];
+    let solution = 0;
+    if (randomOperator === '+') {
+      solution = x + y;
+    } else if (randomOperator === '-') {
+      solution = x - y;
+    } else if (randomOperator === '*') {
+      solution = x * y;
+    } else {
+      solution = Math.floor(x / y);
+    }
+
+    const exercise = { operand1: x, operand2: y, operator: randomOperator, opSolution: solution };
+    exercises.push(exercise);
+  }
+  return exercises;
 }
 
 function submitForm(event) {
@@ -57,8 +79,23 @@ function submitForm(event) {
     if (validateForm(form) === false) {
       return;
     }
+
     disableForm(form);
     submitButton.innerText = 'Újrakezdés!';
+    const select = document.getElementById('number-of-exercises');
+    const numberOfExercises = select.options[select.selectedIndex].value;
+    console.log(numberOfExercises);
+
+    const operatorsList = [];
+    const checkboxes = document.forms['my-form'].querySelectorAll('input[type="checkbox"]');
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        operatorsList.push(checkboxes[i].value);
+      }
+    }
+    console.log(operatorsList);
+    const exercises = generateExercises(operatorsList, numberOfExercises);
+    exercises.forEach((exercise) => console.log(exercise));
   } else {
     const form = document.forms['my-form'];
     resetForm(form);

@@ -11,9 +11,10 @@
     <header>
         Aritmetikai kérdés - válasz
     </header>
-    <form name="my_form" onsubmit="return formValidator()" method="post">
-        <label for="full_name">Név:</label><br>
-        <input type="text" id="full_name" name="full_name"><br>
+    <form name="my-form">
+        <label for="fullname">Név:&ensp;</label>
+        <input type="text" id="fullname" name="fullname"><br><br>
+        <label for="operation-selector">Válassz ki legalább egyet az alábbi műveletek közül:</label><br>
         <input type="checkbox" id="addition" name="addition" value="+">
         <label for="addition">+</label><br>
         <input type="checkbox" id="subtraction" name="subtraction" value="-">
@@ -22,8 +23,8 @@
         <label for="multiplication">*</label><br>
         <input type="checkbox" id="division" name="division" value="/">
         <label for="division">/</label><br>
-        <p>Feladatok száma:
-            <select name="number_of_exercises">
+        <p>Feladatok száma:&ensp;
+            <select name="number-of-exercises">
             <option value="5">5</option>
             <option value="6">6</option>
             <option value="7">7</option>
@@ -32,7 +33,7 @@
             <option value="10">10</option>
             </select>
         </p>
-        <button type="submit">Submit</button>
+        <button type="submit" id="submit-button">Vágjunk bele!</button>
     </form>
 </body>
 </html>

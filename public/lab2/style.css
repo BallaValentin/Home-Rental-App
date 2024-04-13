@@ -21,3 +21,37 @@ header{
     margin: 2% 0% 2% 0%;
     padding: 2%;
 }
+
+.box-container{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20%;
+}
+
+.box-exercise{
+    flex-basis: calc(20%);
+    height: 60px;
+    width: 10%;
+    background-color: lightgray;
+    border: solid black;
+    text-align: center;
+    align-content: center;
+    font-weight: bold;
+    margin: 20px;
+    margin-left: 15%;
+    display: inline-block;
+}
+
+.box-solution{
+    flex-basis: calc(20%);
+    height: 60px;
+    width: 10%;
+    background-color: lightgray;
+    border: solid black;
+    text-align: center;
+    align-content: center;
+    font-weight: bold;
+    margin: 20px 0px 20px 20px;
+    margin-right: 15%;
+    display: inline-block;
+}

@@ -70,6 +70,58 @@ function generateExercises(operatorsList, numberOfExercises) {
   return exercises;
 }
 
+function shuffleArray(array) {
+  for (let i = 0; i < array.length; i++) {
+    const j = Math.floor(Math.random() * array.length);
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function addGameComponents(exercises) {
+  const boxContainer = document.createElement('div');
+  boxContainer.classList.add('box-container');
+
+  const exerciseIndexes = [];
+  const solutionIndexes = [];
+  for (let i = 0; i < exercises.length; i++) {
+    exerciseIndexes.push(i);
+    solutionIndexes.push(i);
+  }
+
+  shuffleArray(exerciseIndexes);
+  shuffleArray(solutionIndexes);
+
+  for (let i = 0; i < exercises.length; i++) {
+    const boxLeft = document.createElement('div');
+    boxLeft.classList.add('box-exercise');
+    const exerciseText =
+      exercises[exerciseIndexes[i]].operand1 +
+      exercises[exerciseIndexes[i]].operator +
+      exercises[exerciseIndexes[i]].operand2;
+    boxLeft.innerText = exerciseText;
+    const boxRight = document.createElement('div');
+    boxRight.classList.add('box-solution');
+    const solutionText = exercises[solutionIndexes[i]].opSolution;
+    boxRight.innerText = solutionText;
+    if (i === 0) {
+      boxLeft.style.marginTop = '70px';
+      boxRight.style.marginTop = '70px';
+    }
+    boxContainer.append(boxLeft);
+    boxContainer.append(boxRight);
+  }
+  document.body.append(boxContainer);
+}
+
+function removeGameComponents() {
+  const boxContainer = document.querySelector('.box-container');
+  const boxesExercise = document.querySelectorAll('.box-exercise');
+  const boxesSolution = document.querySelectorAll('.box-solution');
+  boxesExercise.forEach((box) => box.parentNode.removeChild(box));
+  boxesSolution.forEach((box) => box.parentNode.removeChild(box));
+  boxContainer.parentNode.removeChild(boxContainer);
+}
+
 function submitForm(event) {
   event.preventDefault();
   const submitButton = document.querySelector('#submit-button');
@@ -85,7 +137,6 @@ function submitForm(event) {
     const select = document.getElementById('number-of-exercises');
     const numberOfExercises = select.options[select.selectedIndex].value;
     console.log(numberOfExercises);
-
     const operatorsList = [];
     const checkboxes = document.forms['my-form'].querySelectorAll('input[type="checkbox"]');
     for (let i = 0; i < checkboxes.length; i++) {
@@ -96,10 +147,12 @@ function submitForm(event) {
     console.log(operatorsList);
     const exercises = generateExercises(operatorsList, numberOfExercises);
     exercises.forEach((exercise) => console.log(exercise));
+    addGameComponents(exercises);
   } else {
     const form = document.forms['my-form'];
     resetForm(form);
     submitButton.innerText = 'Vágjunk bele!';
+    removeGameComponents();
   }
 }
 

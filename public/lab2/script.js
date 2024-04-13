@@ -88,6 +88,8 @@ function addGameComponents(exercises) {
     solutionIndexes.push(i);
   }
 
+  const boxes = [];
+
   shuffleArray(exerciseIndexes);
   shuffleArray(solutionIndexes);
 
@@ -109,7 +111,50 @@ function addGameComponents(exercises) {
     }
     boxContainer.append(boxLeft);
     boxContainer.append(boxRight);
+
+    boxes.push({ item: boxLeft, isSelected: false });
+    boxes.push({ item: boxRight, isSelected: false });
   }
+
+  const relation = { source: -1, numberOfRelations: 0 };
+
+  for (let i = 0; i < boxes.length / 2; i++) {
+    boxes[2 * i].item.addEventListener('click', () => {
+      if (relation.source === -1 && boxes[2 * i].isSelected === false) {
+        boxes[2 * i].item.style.border = 'solid blue';
+        relation.source = 2 * i;
+      }
+    });
+    boxes[2 * i + 1].item.addEventListener('click', () => {
+      if (relation.source !== -1 && boxes[2 * i + 1].isSelected === false) {
+        boxes[2 * i + 1].item.style.border = 'solid blue';
+        boxes[relation.source].isSelected = true;
+        boxes[2 * i + 1].isSelected = true;
+
+        const line = document.createElement('div');
+        line.classList.add('connect-line');
+        const x1 = boxes[relation.source].item.offsetLeft + boxes[relation.source].item.offsetWidth;
+        const y1 = boxes[relation.source].item.offsetTop + boxes[relation.source].item.offsetHeight / 2;
+
+        const x2 = boxes[2 * i + 1].item.offsetLeft;
+        const y2 = boxes[2 * i + 1].item.offsetTop + boxes[2 * i + 1].item.offsetHeight / 2;
+
+        const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        const lineAngle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+
+        // console.log(x1, y1, x2, y2, lineLength, lineAngle);
+        line.style.width = `${lineLength}px`;
+        line.style.transform = `rotate(${lineAngle}deg)`;
+        line.style.left = `${x1}px`;
+        line.style.top = `${y1}px`;
+        line.style.transformOrigin = '0 0';
+        boxContainer.append(line);
+        relation.source = -1;
+        relation.numberOfRelations += 1;
+      }
+    });
+  }
+
   document.body.append(boxContainer);
 }
 
@@ -136,7 +181,7 @@ function submitForm(event) {
     submitButton.innerText = 'Újrakezdés!';
     const select = document.getElementById('number-of-exercises');
     const numberOfExercises = select.options[select.selectedIndex].value;
-    console.log(numberOfExercises);
+    // console.log(numberOfExercises);
     const operatorsList = [];
     const checkboxes = document.forms['my-form'].querySelectorAll('input[type="checkbox"]');
     for (let i = 0; i < checkboxes.length; i++) {
@@ -144,9 +189,9 @@ function submitForm(event) {
         operatorsList.push(checkboxes[i].value);
       }
     }
-    console.log(operatorsList);
+    // console.log(operatorsList);
     const exercises = generateExercises(operatorsList, numberOfExercises);
-    exercises.forEach((exercise) => console.log(exercise));
+    // exercises.forEach((exercise) => console.log(exercise));
     addGameComponents(exercises);
   } else {
     const form = document.forms['my-form'];

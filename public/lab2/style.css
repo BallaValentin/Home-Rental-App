@@ -55,3 +55,9 @@ header{
     margin-right: 15%;
     display: inline-block;
 }
+
+.connect-line{
+    position: absolute;
+    background-color: blue;
+    height: 2px;
+}

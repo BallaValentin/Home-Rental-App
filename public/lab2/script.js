@@ -8,6 +8,16 @@ function disableForm(form) {
   }
 }
 
+function enableForm(form) {
+  const formElements = form.elements;
+
+  for (let i = 0; i < formElements.length; i++) {
+    if (formElements[i].type !== 'submit') {
+      formElements[i].disabled = false;
+    }
+  }
+}
+
 function validateForm(form) {
   const fullname = form.fullname.value;
   if (fullname === '') {
@@ -33,20 +43,30 @@ function validateForm(form) {
   return true;
 }
 
+function resetForm(form) {
+  form.reset();
+  enableForm(form);
+}
+
 function submitForm(event) {
   event.preventDefault();
-  const form = document.forms['my-form'];
-  if (validateForm(form) === false) {
-    return;
-  }
-
-  disableForm(form);
-
   const submitButton = document.querySelector('#submit-button');
-  submitButton.innerText = 'Újrakezdés!';
+
+  if (submitButton.innerText === 'Vágjunk bele!') {
+    const form = document.forms['my-form'];
+    if (validateForm(form) === false) {
+      return;
+    }
+    disableForm(form);
+    submitButton.innerText = 'Újrakezdés!';
+  } else {
+    const form = document.forms['my-form'];
+    resetForm(form);
+    submitButton.innerText = 'Vágjunk bele!';
+  }
 }
 
 window.onload = () => {
-  const form = document.forms['my-form'];
+  const form = document.forms[0];
   form.addEventListener('submit', submitForm);
 };

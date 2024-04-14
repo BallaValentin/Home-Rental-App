@@ -14,7 +14,7 @@ body{
 
 header{
     background-color: aquamarine;
-    font-size: large;
+    font-size:xx-large;
     font-weight: bold;
     color:blueviolet;
     text-align: center;
@@ -33,9 +33,10 @@ header{
     height: 60px;
     width: 10%;
     background-color: lightgray;
-    border: solid black;
+    border: solid black 4px;
     text-align: center;
     align-content: center;
+    font-size: large;
     font-weight: bold;
     margin: 1%;
     margin-left: 15%;
@@ -47,9 +48,10 @@ header{
     height: 60px;
     width: 10%;
     background-color: lightgray;
-    border: solid black;
+    border: solid black 4px;
     text-align: center;
     align-content: center;
+    font-size: large;
     font-weight: bold;
     margin: 1% 0% 1% 1%;
     margin-right: 15%;
@@ -58,6 +60,6 @@ header{
 
 .connect-line{
     position: absolute;
-    background-color: blue;
-    height: 2px;
+    background-color: black;
+    height: 4px;
 }

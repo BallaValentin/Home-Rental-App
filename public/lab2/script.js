@@ -82,15 +82,42 @@ function evaluateResponses(boxes, lines, exercises) {
     const exerciseIndex = boxes[2 * i].exIndex;
     const solutionIndex = boxes[boxes[2 * i].targetIndex].solIndex;
     if (exercises[exerciseIndex].opSolution === exercises[solutionIndex].opSolution) {
-      boxes[2 * i].item.style.border = 'solid green';
-      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid green';
+      boxes[2 * i].item.style.border = 'solid green 4px';
+      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid green 4px';
+      boxes[2 * i].item.style.backgroundColor = 'lightgreen';
+      boxes[boxes[2 * i].targetIndex].item.style.backgroundColor = 'lightgreen';
       lines[boxes[2 * i].lineIndex].style.backgroundColor = 'green';
     } else {
-      boxes[2 * i].item.style.border = 'solid red';
-      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid red';
+      boxes[2 * i].item.style.border = 'solid red 4px';
+      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid red 4px';
+      boxes[2 * i].item.style.backgroundColor = 'lightcoral';
+      boxes[boxes[2 * i].targetIndex].item.style.backgroundColor = 'lightcoral';
       lines[boxes[2 * i].lineIndex].style.backgroundColor = 'red';
     }
   }
+}
+
+function addLine(sourceBox, targetBox, color) {
+  const line = document.createElement('div');
+  line.classList.add('connect-line');
+  const x1 = sourceBox.item.offsetLeft + sourceBox.item.offsetWidth;
+  const y1 = sourceBox.item.offsetTop + sourceBox.item.offsetHeight / 2;
+
+  const x2 = targetBox.item.offsetLeft;
+  const y2 = targetBox.item.offsetTop + targetBox.item.offsetHeight / 2;
+
+  const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  const lineAngle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+
+  // console.log(x1, y1, x2, y2, lineLength, lineAngle);
+  line.style.width = `${lineLength}px`;
+  line.style.transform = `rotate(${lineAngle}deg)`;
+  line.style.left = `${x1}px`;
+  line.style.top = `${y1}px`;
+  line.style.transformOrigin = '0 0';
+  line.style.backgroundColor = `${color}`;
+
+  return line;
 }
 
 function addGameComponents(exercises) {
@@ -99,6 +126,7 @@ function addGameComponents(exercises) {
 
   const exerciseIndexes = [];
   const solutionIndexes = [];
+  const colors = ['pink', 'magenta', 'purple', 'chocolate', 'orange', 'navy', 'slateblue', 'gold', 'sienna', 'plum'];
   for (let i = 0; i < exercises.length; i++) {
     exerciseIndexes.push(i);
     solutionIndexes.push(i);
@@ -108,14 +136,14 @@ function addGameComponents(exercises) {
 
   shuffleArray(exerciseIndexes);
   shuffleArray(solutionIndexes);
+  shuffleArray(colors);
 
   for (let i = 0; i < exercises.length; i++) {
     const boxLeft = document.createElement('div');
     boxLeft.classList.add('box-exercise');
-    const exerciseText =
-      exercises[exerciseIndexes[i]].operand1 +
-      exercises[exerciseIndexes[i]].operator +
-      exercises[exerciseIndexes[i]].operand2;
+    const exerciseText = `${exercises[exerciseIndexes[i]].operand1} ${exercises[exerciseIndexes[i]].operator} ${
+      exercises[exerciseIndexes[i]].operand2
+    }`;
     boxLeft.innerText = exerciseText;
     const boxRight = document.createElement('div');
     boxRight.classList.add('box-solution');
@@ -137,36 +165,29 @@ function addGameComponents(exercises) {
 
   for (let i = 0; i < boxes.length / 2; i++) {
     boxes[2 * i].item.addEventListener('click', () => {
-      if (relation.source === -1 && boxes[2 * i].isSelected === false) {
-        boxes[2 * i].item.style.border = 'solid blue';
-        relation.source = 2 * i;
+      if (boxes[2 * i].isSelected === false) {
+        if (relation.source === -1) {
+          boxes[2 * i].item.style.border = 'solid blue 4px';
+          relation.source = 2 * i;
+          boxes[relation.source].isSelected = true;
+        } else {
+          boxes[relation.source].isSelected = false;
+          boxes[relation.source].item.style.border = 'solid black 4px';
+          boxes[2 * i].item.style.border = 'solid blue 4px';
+          relation.source = 2 * i;
+          boxes[relation.source].isSelected = true;
+        }
       }
     });
     boxes[2 * i + 1].item.addEventListener('click', () => {
       if (relation.source !== -1 && boxes[2 * i + 1].isSelected === false) {
-        boxes[2 * i + 1].item.style.border = 'solid blue';
-        boxes[relation.source].isSelected = true;
+        boxes[relation.source].item.style.border = 'none';
+        boxes[2 * i + 1].item.style.border = 'none';
         boxes[2 * i + 1].isSelected = true;
         boxes[relation.source].targetIndex = 2 * i + 1;
         boxes[relation.source].lineIndex = relation.numberOfRelations;
 
-        const line = document.createElement('div');
-        line.classList.add('connect-line');
-        const x1 = boxes[relation.source].item.offsetLeft + boxes[relation.source].item.offsetWidth;
-        const y1 = boxes[relation.source].item.offsetTop + boxes[relation.source].item.offsetHeight / 2;
-
-        const x2 = boxes[2 * i + 1].item.offsetLeft;
-        const y2 = boxes[2 * i + 1].item.offsetTop + boxes[2 * i + 1].item.offsetHeight / 2;
-
-        const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-        const lineAngle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
-
-        // console.log(x1, y1, x2, y2, lineLength, lineAngle);
-        line.style.width = `${lineLength}px`;
-        line.style.transform = `rotate(${lineAngle}deg)`;
-        line.style.left = `${x1}px`;
-        line.style.top = `${y1}px`;
-        line.style.transformOrigin = '0 0';
+        const line = addLine(boxes[relation.source], boxes[2 * i + 1], colors[i]);
         lines.push(line);
         boxContainer.append(line);
         relation.source = -1;

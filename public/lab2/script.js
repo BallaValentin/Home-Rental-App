@@ -77,6 +77,22 @@ function shuffleArray(array) {
   }
 }
 
+function evaluateResponses(boxes, lines, exercises) {
+  for (let i = 0; i < boxes.length / 2; i++) {
+    const exerciseIndex = boxes[2 * i].exIndex;
+    const solutionIndex = boxes[boxes[2 * i].targetIndex].solIndex;
+    if (exercises[exerciseIndex].opSolution === exercises[solutionIndex].opSolution) {
+      boxes[2 * i].item.style.border = 'solid green';
+      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid green';
+      lines[boxes[2 * i].lineIndex].style.backgroundColor = 'green';
+    } else {
+      boxes[2 * i].item.style.border = 'solid red';
+      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid red';
+      lines[boxes[2 * i].lineIndex].style.backgroundColor = 'red';
+    }
+  }
+}
+
 function addGameComponents(exercises) {
   const boxContainer = document.createElement('div');
   boxContainer.classList.add('box-container');
@@ -112,11 +128,12 @@ function addGameComponents(exercises) {
     boxContainer.append(boxLeft);
     boxContainer.append(boxRight);
 
-    boxes.push({ item: boxLeft, isSelected: false });
-    boxes.push({ item: boxRight, isSelected: false });
+    boxes.push({ item: boxLeft, isSelected: false, exIndex: exerciseIndexes[i], targetIndex: -1, lineIndex: -1 });
+    boxes.push({ item: boxRight, isSelected: false, solIndex: solutionIndexes[i] });
   }
 
   const relation = { source: -1, numberOfRelations: 0 };
+  const lines = [];
 
   for (let i = 0; i < boxes.length / 2; i++) {
     boxes[2 * i].item.addEventListener('click', () => {
@@ -130,6 +147,8 @@ function addGameComponents(exercises) {
         boxes[2 * i + 1].item.style.border = 'solid blue';
         boxes[relation.source].isSelected = true;
         boxes[2 * i + 1].isSelected = true;
+        boxes[relation.source].targetIndex = 2 * i + 1;
+        boxes[relation.source].lineIndex = relation.numberOfRelations;
 
         const line = document.createElement('div');
         line.classList.add('connect-line');
@@ -148,9 +167,13 @@ function addGameComponents(exercises) {
         line.style.left = `${x1}px`;
         line.style.top = `${y1}px`;
         line.style.transformOrigin = '0 0';
+        lines.push(line);
         boxContainer.append(line);
         relation.source = -1;
         relation.numberOfRelations += 1;
+        if (relation.numberOfRelations === exercises.length) {
+          evaluateResponses(boxes, lines, exercises);
+        }
       }
     });
   }

@@ -77,26 +77,6 @@ function shuffleArray(array) {
   }
 }
 
-function evaluateResponses(boxes, lines, exercises) {
-  for (let i = 0; i < boxes.length / 2; i++) {
-    const exerciseIndex = boxes[2 * i].exIndex;
-    const solutionIndex = boxes[boxes[2 * i].targetIndex].solIndex;
-    if (exercises[exerciseIndex].opSolution === exercises[solutionIndex].opSolution) {
-      boxes[2 * i].item.style.border = 'solid green 4px';
-      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid green 4px';
-      boxes[2 * i].item.style.backgroundColor = 'lightgreen';
-      boxes[boxes[2 * i].targetIndex].item.style.backgroundColor = 'lightgreen';
-      lines[boxes[2 * i].lineIndex].style.backgroundColor = 'green';
-    } else {
-      boxes[2 * i].item.style.border = 'solid red 4px';
-      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid red 4px';
-      boxes[2 * i].item.style.backgroundColor = 'lightcoral';
-      boxes[boxes[2 * i].targetIndex].item.style.backgroundColor = 'lightcoral';
-      lines[boxes[2 * i].lineIndex].style.backgroundColor = 'red';
-    }
-  }
-}
-
 function addLine(sourceBox, targetBox, color) {
   const line = document.createElement('div');
   line.classList.add('connect-line');
@@ -118,6 +98,59 @@ function addLine(sourceBox, targetBox, color) {
   line.style.backgroundColor = `${color}`;
 
   return line;
+}
+
+function updateLine(line, sourceBox, targetBox, color) {
+  const x1 = sourceBox.item.offsetLeft + sourceBox.item.offsetWidth;
+  const y1 = sourceBox.item.offsetTop + sourceBox.item.offsetHeight / 2;
+
+  const x2 = targetBox.item.offsetLeft;
+  const y2 = targetBox.item.offsetTop + targetBox.item.offsetHeight / 2;
+
+  const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  const lineAngle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+
+  // console.log(x1, y1, x2, y2, lineLength, lineAngle);
+  line.style.width = `${lineLength}px`;
+  line.style.transform = `rotate(${lineAngle}deg)`;
+  line.style.left = `${x1}px`;
+  line.style.top = `${y1}px`;
+  line.style.transformOrigin = '0 0';
+  line.style.backgroundColor = `${color}`;
+}
+
+function evaluateResponses(boxes, lines, exercises, colors) {
+  for (let i = 0; i < boxes.length / 2; i++) {
+    const exerciseIndex = boxes[2 * i].exIndex;
+    const solutionIndex = boxes[boxes[2 * i].targetIndex].solIndex;
+    if (exercises[exerciseIndex].opSolution === exercises[solutionIndex].opSolution) {
+      boxes[2 * i].item.style.border = 'solid green 4px';
+      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid green 4px';
+      boxes[2 * i].item.style.backgroundColor = 'lightgreen';
+      boxes[boxes[2 * i].targetIndex].item.style.backgroundColor = 'lightgreen';
+      lines[boxes[2 * i].lineIndex].item.style.backgroundColor = 'green';
+      colors[boxes[2 * i].lineIndex] = 'green';
+      updateLine(
+        lines[boxes[2 * i].lineIndex].item,
+        boxes[2 * i],
+        boxes[boxes[2 * i].targetIndex],
+        colors[boxes[2 * i].lineIndex],
+      );
+    } else {
+      boxes[2 * i].item.style.border = 'solid red 4px';
+      boxes[boxes[2 * i].targetIndex].item.style.border = 'solid red 4px';
+      boxes[2 * i].item.style.backgroundColor = 'lightcoral';
+      boxes[boxes[2 * i].targetIndex].item.style.backgroundColor = 'lightcoral';
+      lines[boxes[2 * i].lineIndex].item.style.backgroundColor = 'red';
+      colors[boxes[2 * i].lineIndex] = 'red';
+      updateLine(
+        lines[boxes[2 * i].lineIndex].item,
+        boxes[2 * i],
+        boxes[boxes[2 * i].targetIndex],
+        colors[boxes[2 * i].lineIndex],
+      );
+    }
+  }
 }
 
 function addGameComponents(exercises) {
@@ -182,23 +215,30 @@ function addGameComponents(exercises) {
     boxes[2 * i + 1].item.addEventListener('click', () => {
       if (relation.source !== -1 && boxes[2 * i + 1].isSelected === false) {
         boxes[relation.source].item.style.border = 'none';
+        boxes[relation.source].item.style.marginLeft = `${10 + (4 / boxContainer.offsetWidth) * 100}%`;
         boxes[2 * i + 1].item.style.border = 'none';
         boxes[2 * i + 1].isSelected = true;
         boxes[relation.source].targetIndex = 2 * i + 1;
         boxes[relation.source].lineIndex = relation.numberOfRelations;
 
-        const line = addLine(boxes[relation.source], boxes[2 * i + 1], colors[i]);
-        lines.push(line);
+        const line = addLine(boxes[relation.source], boxes[2 * i + 1], colors[relation.numberOfRelations]);
+        lines.push({ item: line, boxLIndex: relation.source, boxRIndex: 2 * i + 1 });
         boxContainer.append(line);
         relation.source = -1;
         relation.numberOfRelations += 1;
         if (relation.numberOfRelations === exercises.length) {
-          evaluateResponses(boxes, lines, exercises);
+          evaluateResponses(boxes, lines, exercises, colors);
         }
       }
     });
   }
 
+  window.addEventListener('resize', () => {
+    // lines.forEach((line) => line.parentNode.removeChild(line));
+    for (let i = 0; i < boxes.length / 2; i++) {
+      updateLine(lines[i].item, boxes[lines[i].boxLIndex], boxes[lines[i].boxRIndex], colors[i]);
+    }
+  });
   document.body.append(boxContainer);
 }
 

@@ -38,8 +38,7 @@ header{
     align-content: center;
     font-size: large;
     font-weight: bold;
-    margin: 1%;
-    margin-left: 15%;
+    margin: 1% 1% 1% 10%;
     display: inline-block;
 }
 
@@ -53,8 +52,7 @@ header{
     align-content: center;
     font-size: large;
     font-weight: bold;
-    margin: 1% 0% 1% 1%;
-    margin-right: 15%;
+    margin: 1% 1% 1% 10%;
     display: inline-block;
 }
 

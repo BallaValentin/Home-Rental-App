@@ -10,6 +10,44 @@ header{
     border: solid gray;
 }
 
+#options-container{
+    margin-top: 50px;
+    flex-wrap: wrap;
+}
+
+#image-uploader-button{
+    float: right;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    background-color: antiquewhite;
+    border-radius: 7px;
+    padding: 10px;
+    border: solid black;
+}
+
+#image-uploader-button:hover{
+    text-decoration: underline;
+    color: gray;
+}
+
+#advertisement-uploader-button{
+    float: right;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    background-color: antiquewhite;
+    border-radius: 7px;
+    padding: 10px;
+    margin-right: 10px;
+    border: solid black;
+}
+
+#advertisement-uploader-button:hover{
+    text-decoration: underline;
+    color: gray;
+}
+
 #panel-container{
     display: flex;
     align-self: center;

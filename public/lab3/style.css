@@ -1,0 +1,44 @@
+
+header{
+    background-color: lightblue;
+    font-weight: bolder;
+    font-size: xx-large;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    border: solid gray;
+}
+
+#panel-container{
+    display: flex;
+    align-self: center;
+    margin: 0% 2.5% 0% 2.5%;
+}
+
+#menu-panel{
+    width: 350px;
+    background-color: lightblue;
+    border-radius: 15px;
+    height: 800px;
+    padding: 20px;
+    border: solid gray;
+}
+
+#advertisement-panel{
+    width: 1000px;
+    display: flex;
+    padding: 20px;
+    margin-left: 15px;
+    flex-wrap: wrap;
+    border: solid gray;
+    border-radius: 10px;
+}
+
+.apartment-card{
+    width: 28%;
+    height: 500px;
+    border: solid black 5px;
+    padding: 10px;
+    margin: 10px;
+}

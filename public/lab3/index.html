@@ -20,7 +20,7 @@
             </div>
         </div>
     </header>
-    <form id="advertisement-search-form">
+    <form id="advertisement-search-form" method="get">
         <div id="search-attribute-container">
             <div class="advertisement-search-attribute">
             <label class="label-form" for="city-name">Város neve: </label>
@@ -43,19 +43,19 @@
     </form>
     <div id="panel-container">
         <div id="menu-panel">
-            <form id="advertisement-uploader-form">
+            <form action="/submit_advertisement_upload" id="advertisement-uploader-form" method="post">
                 <p class="p-form">Város:</p>
-                <input class="my-input" type="text" name="city"><br>
+                <input class="my-input" type="text" name="city" value="Kolozsvar"><br>
                 <p class="p-form">Városnegyed:</p>
-                <input class="my-input" type="text" name="city-quarter"><br>
+                <input class="my-input" type="text" name="city_quarter" value="Pataret"><br>
                 <p class="p-form">Felszinterület:</p>
-                <input class="my-input" type="text" name="surface-area"><br>
+                <input class="my-input" type="text" name="surface_area" value="1"><br>
                 <p class="p-form">Ár:</p>
-                <input class="my-input" type="text" name="price"><br>
+                <input class="my-input" type="text" name="price" value="2"><br>
                 <p class="p-form">Szobák száma:</p>
-                <input class="my-input" type="text" name="number-of-rooms"><br><br>
-                <label class="label-form" for="upload-date">Feltöltés dátuma:</label>
-                <input class="my-input" type="date" name="upload-date"><br><br>
+                <input class="my-input" type="text" name="number_of_rooms" value="3"><br><br>
+                <label class="label-form" for="upload_date">Feltöltés dátuma:</label>
+                <input class="my-input" type="date" name="upload_date"><br><br>
                 <button class="my-submit" type="submit">Lakáshirdetés feltöltése</button>
             </form>
         </div>

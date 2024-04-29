@@ -63,12 +63,12 @@ function validateSearchForm(event) {
 window.onload = () => {
   const advertisementForm = document.getElementById('advertisement-uploader-form');
   if (advertisementForm !== null) {
-    advertisementForm.addEventListener('submit', validateAdvertisementForm);
+    advertisementForm.addEventListener('clicked', validateAdvertisementForm);
   }
   const imageForm = document.getElementById('image-uploader-form');
   if (imageForm !== null) {
-    imageForm.addEventListener('submit', validateImageForm);
+    imageForm.addEventListener('clicked', validateImageForm);
   }
   const searchForm = document.getElementById('advertisement-search-form');
-  searchForm.addEventListener('submit', validateSearchForm);
+  searchForm.addEventListener('clicked', validateSearchForm);
 };

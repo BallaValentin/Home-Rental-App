@@ -99,8 +99,34 @@ input.my-input{
     border-radius: 5px;
 }
 
-button.my-submit{
+button.my-submit, button#search-button{
     border-radius: 5px;
     font-weight: bold;
     padding: 3px;
+}
+
+button.my-submit:hover, button#search-button:hover{
+    text-decoration: underline;
+    color: gray;
+}
+
+button#search-button{
+    margin-left: 50px;
+    margin-right: 20px;
+}
+
+#advertisement-search-form{
+    border-radius: 10px;
+    border: solid black;
+    padding: 30px 10px 30px 10px;
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#search-attribute-container{
+    display: flex;
+}
+
+.advertisement-search-attribute{
+    margin: 0px 15px 0px 15px;
 }

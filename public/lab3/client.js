@@ -33,7 +33,25 @@ function validateAdvertisementForm(event) {
 function validateImageForm(event) {
   event.preventDefault();
   const form = document.getElementById('image-uploader-form');
-  console.log(form);
+  const field = form.querySelectorAll('input');
+  let isCompleted = true;
+  for (let i = 0; i < field.length; i++) {
+    if (field[i].value === '') {
+      isCompleted = false;
+      break;
+    }
+  }
+  if (!isCompleted) {
+    alert('Nincs minden mező kitöltve!');
+    return;
+  }
+  if (!Number.isInteger(Number(field[0].value))) {
+    alert('Helytelen mező!');
+    return;
+  }
+  if (parseInt(field[0].value, 10) <= 0 || parseInt(field[0].value, 10) > 1000000000) {
+    alert('Helytelen mező!');
+  }
 }
 
 function validateSearchForm(event) {
@@ -49,7 +67,7 @@ window.onload = () => {
   }
   const imageForm = document.getElementById('image-uploader-form');
   if (imageForm !== null) {
-    advertisementForm.addEventListener('submit', validateImageForm);
+    imageForm.addEventListener('submit', validateImageForm);
   }
   const searchForm = document.getElementById('advertisement-search-form');
   searchForm.addEventListener('submit', validateSearchForm);

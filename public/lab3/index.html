@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="client.js"></script>
+    <script src="server.js"></script>
     <title>Lakáshirdetések</title>
 </head>
 <body>
@@ -11,16 +13,30 @@
         Lakáshirdetések
         <div id="options-container">
             <div id="image-uploader-button">
-                Kép feltöltése
+                <a href="./index-pictures.html">Kép feltöltése</a>
             </div>
             <div id="advertisement-uploader-button">
-                Lakáshirdetés feltöltése
+                <a href="./index.html">Lakáshirdetés feltöltése</a>
             </div>
         </div>
     </header>
     <div id="panel-container">
         <div id="menu-panel">
-            Itt lesznek majd a formok
+            <form id="advertisement-uploader-form">
+                <p class="p-form">Város:</p>
+                <input class="my-input" type="text" name="city"><br>
+                <p class="p-form">Városnegyed:</p>
+                <input class="my-input" type="text" name="city-quarter"><br>
+                <p class="p-form">Felszinterület:</p>
+                <input class="my-input" type="text" name="surface-area"><br>
+                <p class="p-form">Ár:</p>
+                <input class="my-input" type="text" name="price"><br>
+                <p class="p-form">Szobák száma:</p>
+                <input class="my-input" type="text" name="number-of-rooms"><br><br>
+                <label class="label-form" for="upload-date">Feltöltés dátuma:</label>
+                <input class="my-input" type="date" name="upload-date"><br><br>
+                <button class="my-submit" type="submit">Lakáshirdetés feltöltése</button>
+            </form>
         </div>
         <div id="advertisement-panel">
             Itt lesznek a lakáshirdetések

@@ -19,23 +19,23 @@
             </div>
         </div>
     </header>
-    <form id="advertisement-search-form" method="get">
+    <form action="/advertisement_search" id="advertisement_search_form" method="get">
         <div id="search-attribute-container">
             <div class="advertisement-search-attribute">
-            <label class="label-form" for="city-name">Város neve: </label>
-            <input class="my-input" type="text" name="city-name">
+            <label class="label-form" for="city_name">Város neve: </label>
+            <input class="my-input" type="text" name="city_name">
             </div>
             <div class="advertisement-search-attribute">
-            <label class="label-form" for="city-quarter-name">Negyede: </label>
-            <input class="my-input" type="text" name="city-quarter-name">
+            <label class="label-form" for="city_quarter_name">Negyede: </label>
+            <input class="my-input" type="text" name="city_quarter_name">
             </div>
             <div class="advertisement-search-attribute">
-            <label class="label-form" for="min-price">Minimum ár: </label>
-            <input class="my-input" type="text" name="min-price">
+            <label class="label-form" for="min_price">Minimum ár: </label>
+            <input class="my-input" type="text" name="min_price">
             </div>
             <div class="advertisement-search-attribute">
-            <label class="label-form" for="max-price">Maximum ár: </label>
-            <input class="my-input" type="text" name="max-price">
+            <label class="label-form" for="max_price">Maximum ár: </label>
+            <input class="my-input" type="text" name="max_price">
             </div>
             <button id="search-button" type="submit">Keresés</button>
         </div>
@@ -44,15 +44,15 @@
         <div id="menu-panel">
             <form action="/submit_advertisement_upload" id="advertisement-uploader-form" method="post">
                 <p class="p-form">Város:</p>
-                <input class="my-input" type="text" name="city" value="Kolozsvar"><br>
+                <input class="my-input" type="text" name="city"><br>
                 <p class="p-form">Városnegyed:</p>
-                <input class="my-input" type="text" name="city_quarter" value="Pataret"><br>
+                <input class="my-input" type="text" name="city_quarter"><br>
                 <p class="p-form">Felszinterület:</p>
-                <input class="my-input" type="text" name="surface_area" value="1"><br>
+                <input class="my-input" type="text" name="surface_area"><br>
                 <p class="p-form">Ár:</p>
-                <input class="my-input" type="text" name="price" value="2"><br>
+                <input class="my-input" type="text" name="price"><br>
                 <p class="p-form">Szobák száma:</p>
-                <input class="my-input" type="text" name="number_of_rooms" value="3"><br><br>
+                <input class="my-input" type="text" name="number_of_rooms"><br><br>
                 <label class="label-form" for="upload_date">Feltöltés dátuma:</label>
                 <input class="my-input" type="date" name="upload_date"><br><br>
                 <button class="my-submit" type="submit">Lakáshirdetés feltöltése</button>

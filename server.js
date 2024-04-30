@@ -76,8 +76,14 @@ function formValidation(formFields) {
   return 1;
 }
 
-// eslint-disable-next-line complexity
 app.post('/submit_advertisement_upload', express.urlencoded({ extended: true }), (request, response) => {
+  console.log(`A szerver sikeresen megkapta a következő információkat:
+              city: ${request.body.city},
+              city_quarter: ${request.body.city_quarter},
+              surface_area: ${request.body.surface_area},
+              price: ${request.body.price},
+              number_of_rooms: ${request.body.number_of_rooms},
+              upload_date: ${new Date(request.body.upload_date).toLocaleDateString()},`);
   const formFields = [
     request.body.city,
     request.body.city_quarter,
@@ -118,13 +124,16 @@ app.post('/submit_advertisement_upload', express.urlencoded({ extended: true }),
                       price: ${newAdvertisement.price}
                       number_of_rooms: ${newAdvertisement.number_of_rooms}
                       upload_date: ${newAdvertisement.upload_date}`;
+  console.log(message);
   response.set('Content-Type', 'text/plain;charset=utf-8');
   response.end(message);
 });
 
 app.post('/submit_image_upload', multerUpload.single('image_uploader_input'), (request, response) => {
   const imageFile = request.file;
-  console.log(request.file);
+  console.log(`A szerver sikeresen megkapta a következő információt:
+    advertisement_id_input: ${request.body.advertisement_id_input}
+    picture: ${request.file.originalname}`);
   if (!request.body.advertisement_id_input || !request.file) {
     response.status(400).send('Hiba(400): Nincs minden mező kitöltve.');
     return;
@@ -159,6 +168,37 @@ app.post('/submit_image_upload', multerUpload.single('image_uploader_input'), (r
                     nev a szerveren: ${imageFile.path}
                     meret: ${imageFile.size}
                     mime-tipus: ${imageFile.mimetype}`;
+  console.log(message);
+  response.set('Content-Type', 'text/plain;charset=utf-8');
+  response.end(message);
+});
+
+app.get('/advertisement_search', express.urlencoded({ extended: true }), (request, response) => {
+  console.log(`A szerver sikeresen megkapta a következő információt:
+    city_name: ${request.query.city_name}
+    city_quarter_name: ${request.query.city_quarter_name}
+    min_price: ${request.query.min_price}
+    max_price: ${request.query.max_price}`);
+  const data = readDataFromFile('advertisements.json');
+  let message = 'A következő hirdetéseket sikerült találni a megadott paraméterekkel: \n';
+  for (let i = 0; i < data.length; i++) {
+    if (
+      (!request.query.city_name || data[i].city === request.query.city_name) &&
+      (!request.query.city_quarter_name || data[i].city_quarter === request.query.city_quarter_name) &&
+      (!request.query.min_price || data[i].price >= parseInt(request.query.min_price, 10)) &&
+      (!request.query.max_price || data[i].price <= parseInt(request.query.max_price, 10))
+    ) {
+      message += `
+                  city: ${data[i].city}
+                  city_quarter: ${data[i].city_quarter}
+                  surface_area: ${data[i].surface_area}
+                  price: ${data[i].price}
+                  number_of_rooms: ${data[i].number_of_rooms}
+                  upload date: ${data[i].upload_date}`;
+      message += '\n';
+    }
+  }
+  console.log(message);
   response.set('Content-Type', 'text/plain;charset=utf-8');
   response.end(message);
 });

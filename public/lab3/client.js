@@ -56,8 +56,6 @@ function validateImageForm(event) {
 
 function validateSearchForm(event) {
   event.preventDefault();
-  const form = document.getElementById('advertisement-search-form');
-  console.log(form);
 }
 
 window.onload = () => {

@@ -76,14 +76,14 @@ app.post('/submit_advertisement_upload', express.urlencoded({ extended: true }),
               price: ${request.body.price},
               number_of_rooms: ${request.body.number_of_rooms},
               upload_date: ${new Date(request.body.upload_date).toLocaleDateString()},`);
-  const formFields = [
-    request.body.city,
-    request.body.city_quarter,
-    request.body.surface_area,
-    request.body.price,
-    request.body.number_of_rooms,
-    request.body.upload_date,
-  ];
+  const formFields = {
+    city: request.body.city,
+    city_quarter: request.body.city_quarter,
+    surface_area: request.body.surface_area,
+    price: request.body.price,
+    number_of_rooms: request.body.number_of_rooms,
+    upload_date: request.body.upload_date,
+  };
 
   const returnValue = formValidation(formFields);
   if (returnValue === -1) {
@@ -124,9 +124,16 @@ app.post('/submit_advertisement_upload', express.urlencoded({ extended: true }),
 app.post('/submit_image_upload', multerUpload.single('image_uploader_input'), (request, response) => {
   const imageFile = request.file;
   console.log(`A szerver sikeresen megkapta a következő információt:
-    advertisement_id_input: ${request.body.advertisement_id_input}
-    picture: ${request.file.originalname}`);
-  if (!request.body.advertisement_id_input || !request.file) {
+    advertisement_id_input: ${request.body.advertisement_id_input}`);
+  if (request.file) {
+    console.log(`picture: ${request.file.originalname}`);
+  }
+  if (!request.file || !request.body.advertisement_id_input) {
+    if (request.file) {
+      fs.unlink(request.file.path, (err) => {
+        if (err) console.log(err);
+      });
+    }
     response.status(400).send('Hiba(400): Nincs minden mező kitöltve.');
     return;
   }
@@ -135,6 +142,9 @@ app.post('/submit_image_upload', multerUpload.single('image_uploader_input'), (r
     parseInt(request.body.advertisement_id_input, 10) <= 0 ||
     parseInt(request.body.advertisement_id_input, 10) > 1000000000
   ) {
+    fs.unlink(request.file.path, (err) => {
+      if (err) console.log(err);
+    });
     response.status(400).send('Hiba(400): Helytelen mezők.');
     return;
   }
@@ -149,6 +159,9 @@ app.post('/submit_image_upload', multerUpload.single('image_uploader_input'), (r
     }
   }
   if (foundID === -1) {
+    fs.unlink(request.file.path, (err) => {
+      if (err) console.log(err);
+    });
     response.status(400).send('Hiba(400): Nincs ilyen ID-jú lakáshirdetés.');
     return;
   }

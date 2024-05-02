@@ -51,15 +51,10 @@ function generateNewId(data) {
 }
 
 function formValidation(formFields) {
-  let ok = true;
   for (let i = 0; i < formFields.length; i++) {
     if (!formFields[i]) {
-      ok = false;
-      break;
+      return -1;
     }
-  }
-  if (!ok) {
-    return -1;
   }
   for (let i = 2; i < 5; i++) {
     if (
@@ -67,11 +62,8 @@ function formValidation(formFields) {
       parseInt(formFields[i], 10) <= 0 ||
       parseInt(formFields[i], 10) > 1000000000
     ) {
-      ok = false;
+      return -2;
     }
-  }
-  if (!ok) {
-    return -2;
   }
   return 1;
 }

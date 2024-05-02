@@ -51,19 +51,15 @@ function generateNewId(data) {
 }
 
 function formValidation(formFields) {
-  for (let i = 0; i < formFields.length; i++) {
-    if (!formFields[i]) {
-      return -1;
-    }
+  if (Object.values(formFields).some((value) => !value)) {
+    return -1;
   }
-  for (let i = 2; i < 5; i++) {
-    if (
-      !Number.isInteger(Number(formFields[i])) ||
-      parseInt(formFields[i], 10) <= 0 ||
-      parseInt(formFields[i], 10) > 1000000000
-    ) {
-      return -2;
-    }
+  if (
+    Object.values(formFields)
+      .slice(2, 5)
+      .some((value) => !Number.isInteger(Number(value)) || parseInt(value, 10) <= 0 || parseInt(value, 10) > 1000000000)
+  ) {
+    return -2;
   }
   return 1;
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="client.js"></script>
+    <title>Lakáshirdetések</title>
+</head>
+<body>
+    <header>
+        Lakáshirdetések
+        <div id="options-container">
+            <div id="image-uploader-button">
+                <a href="./index-pictures.html">Kép feltöltése</a>
+            </div>
+            <div id="advertisement-uploader-button">
+                <a href="./index.html">Lakáshirdetés feltöltése</a>
+            </div>
+        </div>
+    </header>
+    <form action="/advertisement_search" id="advertisement_search_form" method="get">
+        <div id="search-attribute-container">
+            <div class="advertisement-search-attribute">
+            <label class="label-form" for="city_name">Város neve: </label>
+            <input class="my-input" type="text" name="city_name">
+            </div>
+            <div class="advertisement-search-attribute">
+            <label class="label-form" for="city_quarter_name">Negyede: </label>
+            <input class="my-input" type="text" name="city_quarter_name">
+            </div>
+            <div class="advertisement-search-attribute">
+            <label class="label-form" for="min_price">Minimum ár: </label>
+            <input class="my-input" type="text" name="min_price">
+            </div>
+            <div class="advertisement-search-attribute">
+            <label class="label-form" for="max_price">Maximum ár: </label>
+            <input class="my-input" type="text" name="max_price">
+            </div>
+            <button id="search-button" type="submit">Keresés</button>
+        </div>
+    </form>
+    <div id="panel-container">
+        <div id="menu-panel">
+            <form action="/submit_image_upload" id="image-uploader-form" method="post" enctype="multipart/form-data">
+                <p class="p-form">LakáshirdetésID:</p>
+                <input class="my-input" type="text" name="advertisement_id_input"><br><br>
+                <label class="label-form" for="image_uploader_input">Kép megadása:</label>
+                <input class="my-input" type="file" name="image_uploader_input" accept="image/png, image/jpeg"><br><br>
+                <button class="my-submit" type="submit">Kép feltöltése</button>
+            </form>
+        </div>
+        <div id="advertisement-panel">
+            Itt lesznek a lakáshirdetések
+        </div>
+    </div>
+</body>
+</html>

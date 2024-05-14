@@ -1,6 +1,5 @@
 import sql from 'mssql';
 
-console.log('Potato');
 const pool = await sql.connect({
   server: 'DESKTOP-7289R3V',
   user: 'webprog',
@@ -63,3 +62,9 @@ await pool.query(
     `,
 );
 console.log('Table exists successfully');
+
+export const findAllUsers = async () => {
+  const query = 'SELECT nev FROM felhasznalok';
+  const data = await pool.query(query);
+  return 'recordset' in data ? data.recordset : [];
+};

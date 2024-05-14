@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <script src="client.js"></script>
+    <title>Lakáshirdetések</title>
+</head>
+<body>
+    <header>
+        Lakáshirdetések
+        <div id="options-container">
+            <div id="image-uploader-button">
+                <a href="./index-pictures.html">Kép feltöltése</a>
+            </div>
+        </div>
+    </header>
+    <div id="panel-container">
+        <div id="menu-panel">
+            <form action="/submit_advertisement_upload" id="advertisement-uploader-form" method="post">
+                <p class="p-user">Válasszon felhasználót:</p>
+                <select name="felhasznalok" id="felhasznalok">
+                    {{#each felhasznalok}}
+                        <option value="{{this.nev}}">{{this.nev}}</option>
+                    {{/each}}
+                </select>
+                <p class="p-form">Város:</p>
+                <input class="my-input" type="text" name="city"><br>
+                <p class="p-form">Városnegyed:</p>
+                <input class="my-input" type="text" name="city_quarter"><br>
+                <p class="p-form">Felszinterület:</p>
+                <input class="my-input" type="text" name="surface_area"><br>
+                <p class="p-form">Ár:</p>
+                <input class="my-input" type="text" name="price"><br>
+                <p class="p-form">Szobák száma:</p>
+                <input class="my-input" type="text" name="number_of_rooms"><br><br>
+                <label class="label-form" for="upload_date">Feltöltés dátuma:</label>
+                <input class="my-input" type="date" name="upload_date"><br><br>
+                <button class="my-submit" type="submit">Lakáshirdetés feltöltése</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

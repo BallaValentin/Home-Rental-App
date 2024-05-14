@@ -17,7 +17,7 @@ import requestRoutes from './routes/requests.js';
 const app = express();
 
 // statikus állományok (pl. CSS/kliensoldali JS)
-app.use(express.static(path.join(process.cwd(), 'public/lab3')));
+app.use(express.static(path.join(process.cwd(), 'static')));
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');
@@ -42,7 +42,6 @@ app.use('/requests', requestRoutes);
 // utolsóként kössük be a hibaoldalkezelőt globálisan
 // app.use(errorMiddleware);
 app.get('/index', (req, res) => {
-  console.log('Im here');
   res.render('index');
 });
 

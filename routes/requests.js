@@ -14,6 +14,15 @@ router.get(['/hirdetes'], async (req, res) => {
   }
 });
 
+router.get(['/index'], async (req, res) => {
+  try {
+    const hirdetes = await db.getAllAdvertisements();
+    res.render('index', { advertisements: hirdetes });
+  } catch (err) {
+    res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+  }
+});
+
 function formValidation(formFields) {
   if (Object.values(formFields).some((value) => !value)) {
     return -1;
@@ -58,7 +67,8 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
     return response.status(400).render('hirdetes', { users: felhasznalo, message: 'Helytelen mezők.' });
   }
   await db.insertAdvertisement(formFields);
-  return response.status(200).render('index', { message: 'Minden mezo sikeresen kitoltve.' });
+  const advertisements = await db.getAllAdvertisements();
+  return response.status(200).render('index', { advertisements, message: 'Minden mezo sikeresen kitoltve.' });
 });
 
 export default router;

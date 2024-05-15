@@ -90,3 +90,9 @@ export const insertAdvertisement = async (advertisement) => {
   const result = await pool.query(query);
   return result;
 };
+
+export const getAllAdvertisements = async () => {
+  const query = 'SELECT * FROM hirdetesek';
+  const data = await pool.query(query);
+  return 'recordset' in data ? data.recordset : [];
+};

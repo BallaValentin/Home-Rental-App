@@ -39,7 +39,16 @@
     </form>
     <p>{{message}}</p>
     <div id="advertisement-panel">
-        Itt lesznek a lakáshirdetések
+        {{#each advertisements}}
+        <div class="advertisement">
+            <div class="advertisement-detail">Város: {{varosnev}}</div>
+            <div class="advertisement-detail">Negyed: {{negyednev}}</div>
+            <div class="advertisement-detail">Ár: {{ar}}</div>
+            <div class="advertisement-detail">Szobák száma: {{szobakSzama}}</div>
+            <div class="advertisement-detail">Felszín terület: {{felszTerulet}}</div>
+            <div class="advertisement-detail">Feltöltés dátuma: {{feltDatum}}</div>
+        </div>
+        {{/each}}
     </div>
 </body>
 </html>

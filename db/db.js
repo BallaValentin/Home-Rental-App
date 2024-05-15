@@ -78,21 +78,51 @@ export const findUserIdByName = async (name) => {
 };
 
 export const insertAdvertisement = async (advertisement) => {
-  const query = `INSERT INTO hirdetesek(felhID, varosnev, negyednev, ar, szobakSzama, felszTerulet, feltDatum)
-                VALUES (${advertisement.UID},
-                        '${advertisement.city}',
-                        '${advertisement.city_quarter}',
-                         ${advertisement.price},
-                         ${advertisement.number_of_rooms},
-                         ${advertisement.surface_area},
-                        '${advertisement.upload_date}'
-                )`;
-  const result = await pool.query(query);
+  const query = `INSERT INTO hirdetesek (felhID, varosnev, negyednev, ar, szobakSzama, felszTerulet, feltDatum)
+                VALUES (@felhID, @varosnev, @negyednev, @ar, @szobakSzama, @felszTerulet, @feltDatum)`;
+  const request = pool
+    .request()
+    .input('felhID', sql.Int, advertisement.UID)
+    .input('varosnev', sql.VarChar, advertisement.city)
+    .input('negyednev', sql.VarChar, advertisement.city_quarter)
+    .input('ar', sql.Int, advertisement.price)
+    .input('szobakSzama', sql.Int, advertisement.number_of_rooms)
+    .input('felszTerulet', sql.Int, advertisement.surface_area)
+    .input('feltDatum', sql.Date, advertisement.upload_date);
+  const result = await request.query(query);
   return result;
 };
 
 export const getAllAdvertisements = async () => {
   const query = 'SELECT * FROM hirdetesek';
   const data = await pool.query(query);
+  return 'recordset' in data ? data.recordset : [];
+};
+
+export const searchAdvertisements = async (searchParameters) => {
+  let query = 'SELECT * FROM hirdetesek WHERE 1=1';
+  const request = pool.request();
+
+  if (searchParameters.city_name) {
+    query += ' AND varosnev = @city_name';
+    request.input('city_name', sql.VarChar, searchParameters.city_name);
+  }
+
+  if (searchParameters.city_quarter_name) {
+    query += ' AND negyednev = @city_quarter_name';
+    request.input('city_quarter_name', sql.VarChar, searchParameters.city_quarter_name);
+  }
+
+  if (searchParameters.min_price) {
+    query += ' AND ar >= @min_price';
+    request.input('min_price', sql.Int, searchParameters.min_price);
+  }
+
+  if (searchParameters.max_price) {
+    query += ' AND ar <= @max_price';
+    request.input('max_price', sql.Int, searchParameters.max_price);
+  }
+
+  const data = await request.query(query);
   return 'recordset' in data ? data.recordset : [];
 };

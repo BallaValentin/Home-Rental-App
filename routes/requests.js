@@ -71,4 +71,20 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
   return response.status(200).render('index', { advertisements, message: 'Minden mezo sikeresen kitoltve.' });
 });
 
+router.get('/advertisement_search', express.urlencoded({ extended: true }), async (request, response) => {
+  console.log(`A szerver sikeresen megkapta a következő információt:
+    city_name: ${request.query.city_name}
+    city_quarter_name: ${request.query.city_quarter_name}
+    min_price: ${request.query.min_price}
+    max_price: ${request.query.max_price}`);
+  const searchParameters = {
+    city_name: request.query.city_name,
+    city_quarter_name: request.query.city_quarter_name,
+    min_price: request.query.min_price,
+    max_price: request.query.max_price,
+  };
+  const advertisements = await db.searchAdvertisements(searchParameters);
+  return response.status(200).render('index', { advertisements });
+});
+
 export default router;

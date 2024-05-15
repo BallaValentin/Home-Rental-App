@@ -14,4 +14,48 @@ router.get(['/hirdetes'], async (req, res) => {
   }
 });
 
+function formValidation(formFields) {
+  if (Object.values(formFields).some((value) => !value)) {
+    return -1;
+  }
+  if (
+    Object.values(formFields)
+      .slice(2, 5)
+      .some((value) => !Number.isInteger(Number(value)) || parseInt(value, 10) <= 0 || parseInt(value, 10) > 1000000000)
+  ) {
+    return -2;
+  }
+  return 1;
+}
+
+router.post('/submit_advertisement_upload', express.urlencoded({ extended: true }), async (request, response) => {
+  console.log(`A szerver sikeresen megkapta a következő információkat:
+              city: ${request.body.city},
+              city_quarter: ${request.body.city_quarter},
+              surface_area: ${request.body.surface_area},
+              price: ${request.body.price},
+              number_of_rooms: ${request.body.number_of_rooms},
+              upload_date: ${new Date(request.body.upload_date).toLocaleDateString()},`);
+  const formFields = {
+    city: request.body.city,
+    city_quarter: request.body.city_quarter,
+    surface_area: request.body.surface_area,
+    price: request.body.price,
+    number_of_rooms: request.body.number_of_rooms,
+    upload_date: request.body.upload_date,
+  };
+
+  const felhasznalo = await db.findAllUsers();
+  const returnValue = formValidation(formFields);
+  if (returnValue === -1) {
+    return response
+      .status(400)
+      .render('hirdetes', { felhasznalok: felhasznalo, message: 'Nincs minden mező kitöltve.' });
+  }
+  if (returnValue === -2) {
+    return response.status(400).render('hirdetes', { felhasznalok: felhasznalo, message: 'Helytelen mezők.' });
+  }
+  return response.status(200).render('index', { message: 'Minden mezo sikeresen kitoltve.' });
+});
+
 export default router;

@@ -37,7 +37,7 @@ app.engine(
 // kössük be a middleware-t, amely minden hívást DB-be szúr
 // app.use(requestLoggerMiddleware);
 // kössük be a külső modulban megírt route-okat
-app.use('/requests', requestRoutes);
+app.use('/', requestRoutes);
 
 // utolsóként kössük be a hibaoldalkezelőt globálisan
 // app.use(errorMiddleware);

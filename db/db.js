@@ -68,3 +68,25 @@ export const findAllUsers = async () => {
   const data = await pool.query(query);
   return 'recordset' in data ? data.recordset : [];
 };
+
+export const findUserIdByName = async (name) => {
+  const query = `
+  SELECT felhID FROM felhasznalok WHERE nev = '${name}'
+`;
+  const result = await pool.query(query);
+  return result.recordset.length > 0 ? result.recordset[0].felhID : null;
+};
+
+export const insertAdvertisement = async (advertisement) => {
+  const query = `INSERT INTO hirdetesek(felhID, varosnev, negyednev, ar, szobakSzama, felszTerulet, feltDatum)
+                VALUES (${advertisement.UID},
+                        '${advertisement.city}',
+                        '${advertisement.city_quarter}',
+                         ${advertisement.price},
+                         ${advertisement.number_of_rooms},
+                         ${advertisement.surface_area},
+                        '${advertisement.upload_date}'
+                )`;
+  const result = await pool.query(query);
+  return result;
+};

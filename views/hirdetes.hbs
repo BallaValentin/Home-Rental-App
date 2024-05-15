@@ -15,8 +15,8 @@
         <div id="menu-panel">
             <form action="/submit_advertisement_upload" id="advertisement-uploader-form" method="post">
                 <p class="p-user">Válassz felhasználót:</p>
-                <select name="felhasznalok" id="felhasznalok">
-                    {{#each felhasznalok}}
+                <select name="users" id="users">
+                    {{#each users}}
                         <option value="{{this.nev}}">{{this.nev}}</option>
                     {{/each}}
                 </select>

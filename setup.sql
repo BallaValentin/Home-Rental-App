@@ -16,4 +16,4 @@ CREATE DATABASE [webprog]
 GO
 
 USE webprog
-SELECT * FROM felhasznalok
+SELECT * FROM hirdetesek

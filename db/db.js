@@ -126,3 +126,27 @@ export const searchAdvertisements = async (searchParameters) => {
   const data = await request.query(query);
   return 'recordset' in data ? data.recordset : [];
 };
+
+export const findAdvertisementById = async (advertisementId) => {
+  const query = 'SELECT * FROM hirdetesek WHERE hirdetesID = @advertisementId';
+  const result = await pool.request().input('advertisementId', sql.Int, advertisementId).query(query);
+  return result.recordset.length > 0 ? result.recordset[0] : null;
+};
+
+export const findPhotosByAdvertisementId = async (advertisementId) => {
+  const query = 'SELECT * FROM kepek WHERE hirdetesID = @advertisementID';
+  const request = pool.request().input('advertisementId', sql.Int, advertisementId);
+  const data = await request.query(query);
+  return 'recordset' in data ? data.recordset : [];
+};
+
+export const insertPhoto = async (advertisementId, filePath) => {
+  const query = 'INSERT INTO Kepek (hirdetesID, elUtvonal) VALUES (@hirdetesID, @elUtvonal)';
+  const request = pool
+    .request()
+    .input('hirdetesID', sql.Int, advertisementId)
+    .input('elUtvonal', sql.VarChar, filePath);
+
+  const result = await request.query(query);
+  return result;
+};

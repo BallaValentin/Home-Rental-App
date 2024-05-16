@@ -1,9 +1,25 @@
 import express from 'express';
+import multer from 'multer';
+import { join } from 'path';
+import { existsSync, mkdirSync } from 'fs';
 import * as db from '../db/db.js';
 
 const app = express();
 app.use(express.json());
 const router = express.Router();
+
+const uploadDir = join(process.cwd(), 'pictures');
+if (!existsSync(uploadDir)) {
+  mkdirSync(uploadDir);
+}
+app.use('/uploads', express.static(uploadDir));
+
+const multerUpload = multer({
+  dest: uploadDir,
+  limits: {
+    fileSize: 20 * 1024 * 1024,
+  },
+});
 
 router.get(['/hirdetes'], async (req, res) => {
   try {
@@ -85,6 +101,29 @@ router.get('/advertisement_search', express.urlencoded({ extended: true }), asyn
   };
   const advertisements = await db.searchAdvertisements(searchParameters);
   return response.status(200).render('index', { advertisements });
+});
+
+router.get('/advertisement/:id', async (request, response) => {
+  const advertisementId = request.params.id;
+  const advertisement = await db.findAdvertisementById(advertisementId);
+  const pictures = await db.findPhotosByAdvertisementId(advertisementId);
+  return response.status(200).render('reszletek', { advertisement, pictures });
+});
+
+router.post('/upload_picture', multerUpload.single('picture'), async (request, response) => {
+  console.log('A szerver sikeresen megkapta a következő információt:');
+  if (request.file) {
+    console.log(`picture: ${request.file.originalname}`);
+  }
+  if (!request.file) {
+    return response.status(400).render('reszletek', { message: 'Nincs kép megadva.' });
+  }
+
+  const filePath = `/uploads/${request.file.filename}`;
+  const advertisementId = request.body.advertisementID;
+
+  await db.insertPhoto(advertisementId, filePath);
+  return response.redirect(`/advertisement/${advertisementId}`);
 });
 
 export default router;

@@ -16,4 +16,3 @@ CREATE DATABASE [webprog]
 GO
 
 USE webprog
-SELECT * FROM hirdetesek

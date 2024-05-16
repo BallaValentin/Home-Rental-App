@@ -1,0 +1,20 @@
+<h1>{{advertisement.varosnev}} - {{advertisement.negyednev}}</h1>
+<p>Ár: {{advertisement.ar}}</p>
+<p>Szobák száma: {{advertisement.szobakSzama}}</p>
+<p>Felszín terület: {{advertisement.felszTerulet}}</p>
+<p>Feltöltés dátuma: {{advertisement.feltDatum}}</p>
+
+<h2>Fényképek</h2>
+{{#if pictures.length}}
+    {{#each pictures}}
+      <img src="{{elUtvonal}}" alt="Fénykép">
+    {{/each}}
+{{else}}
+  <p>Nincsenek fényképek.</p>
+{{/if}}
+<h2>Fényképek feltöltése</h2>
+<form action="/upload_picture" id="picture_uploader_form", method="post" enctype="multipart/form-data">
+  <input type="file" name="picture">
+  <input type="hidden" name="advertisementID" value={{advertisement.hirdetesID}}>
+  <input type="submit" value="Feltöltés">
+</form>

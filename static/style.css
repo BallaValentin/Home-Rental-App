@@ -133,10 +133,10 @@ button#search-button{
 
 .image-container {
     display: flex;
-    /*justify-content: space-around;*/
 }
 
-.image-container {
+.image-container img{
     height: 400px;
     width: 400px;
+    margin: 10px;
 }

@@ -6,9 +6,11 @@
 
 <h2>Fényképek</h2>
 {{#if pictures.length}}
+    <div class="image-container">
     {{#each pictures}}
       <img src="{{elUtvonal}}" alt="Fénykép">
     {{/each}}
+    </div>
 {{else}}
   <p>Nincsenek fényképek.</p>
 {{/if}}
@@ -18,3 +20,4 @@
   <input type="hidden" name="advertisementID" value={{advertisement.hirdetesID}}>
   <input type="submit" value="Feltöltés">
 </form>
+<p>{{message}}</p>

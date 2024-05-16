@@ -111,16 +111,20 @@ router.get('/advertisement/:id', async (request, response) => {
 });
 
 router.post('/upload_picture', multerUpload.single('picture'), async (request, response) => {
-  console.log('A szerver sikeresen megkapta a következő információt:');
+  console.log(`A szerver sikeresen megkapta a következő információt:
+                  file: ${request.file},
+                  advertisementID: ${request.body.advertisementID}`);
+  const advertisementId = request.body.advertisementID;
   if (request.file) {
     console.log(`picture: ${request.file.originalname}`);
   }
   if (!request.file) {
-    return response.status(400).render('reszletek', { message: 'Nincs kép megadva.' });
+    const advertisement = await db.findAdvertisementById(advertisementId);
+    const pictures = await db.findPhotosByAdvertisementId(advertisementId);
+    return response.status(400).render('reszletek', { advertisement, pictures, message: 'Nincs kép megadva.' });
   }
 
   const filePath = `/uploads/${request.file.filename}`;
-  const advertisementId = request.body.advertisementID;
 
   await db.insertPhoto(advertisementId, filePath);
   return response.redirect(`/advertisement/${advertisementId}`);

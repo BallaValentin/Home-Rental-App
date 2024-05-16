@@ -1,17 +1,6 @@
-/*
-Példa egy full stack alkalmazásra, mely:
-- elmenti a bárhova érkezett HTTP kérések információit adatbázisba
-- Handlebars segítségével viewt generál korábbi kérésekkel
-- hibaoldalra irányít hibás működés esetén
-- morgan segítségével naplózik
-*/
-
 import express from 'express';
 import path from 'path';
-// import morgan from 'morgan';
 import { engine } from 'express-handlebars';
-// import requestLoggerMiddleware from './middleware/requestlogger.js';
-// import errorMiddleware from './middleware/error.js';
 import requestRoutes from './routes/requests.js';
 
 const app = express();
@@ -33,15 +22,9 @@ app.engine(
   }),
 );
 
-// naplózás (globális)
-// app.use(morgan('tiny'));
-// kössük be a middleware-t, amely minden hívást DB-be szúr
-// app.use(requestLoggerMiddleware);
 // kössük be a külső modulban megírt route-okat
 app.use('/', requestRoutes);
 
-// utolsóként kössük be a hibaoldalkezelőt globálisan
-// app.use(errorMiddleware);
 app.get('/index', (req, res) => {
   res.render('index');
 });

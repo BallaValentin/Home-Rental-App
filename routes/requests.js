@@ -84,7 +84,7 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
   }
   await db.insertAdvertisement(formFields);
   const advertisements = await db.getAllAdvertisements();
-  return response.status(200).render('index', { advertisements, message: 'Minden mezo sikeresen kitoltve.' });
+  return response.status(200).render('index', { advertisements, message: 'Új lakáshirdetés sikeresen feltöltve.' });
 });
 
 router.get('/advertisement_search', express.urlencoded({ extended: true }), async (request, response) => {

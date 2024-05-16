@@ -39,17 +39,17 @@ header{
     border: solid black;
 }
 
-a{
+#advertisement-uploader-button > a{
     text-decoration: none;
     color: black;
 }
 
-a:hover{
+#advertisement-uploader-button > a:hover{
     text-decoration: underline;
     color: gray;
 }
 
-a:visited{
+#advertisement-uploader-button > a:visited{
     color: darkred;
 }
 
@@ -69,13 +69,18 @@ a:visited{
 }
 
 #advertisement-panel{
-    width: 1000px;
-    display: flex;
     padding: 20px;
     margin-left: 15px;
     flex-wrap: wrap;
+    align-items: center;
+}
+
+#advertisement-panel > .advertisement{
     border: solid gray;
     border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    align-self: center;
 }
 
 .apartment-card{
@@ -123,6 +128,7 @@ button#search-button{
     background: rgba(0, 0, 0, 0.5);
 }
 
+
 #search-attribute-container{
     display: flex;
 }
@@ -139,4 +145,20 @@ button#search-button{
     height: 400px;
     width: 400px;
     margin: 10px;
+}
+
+p.error-message{
+    color: lightcoral;
+    font-weight: bold;
+    text-align: center;
+}
+
+p.ok-message{
+    color: darkgreen;
+    font-weight: bold;
+    text-align: center;
+}
+
+.advertisement-detail{
+    font-weight: 600;
 }

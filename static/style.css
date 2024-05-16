@@ -130,3 +130,13 @@ button#search-button{
 .advertisement-search-attribute{
     margin: 0px 15px 0px 15px;
 }
+
+.image-container {
+    display: flex;
+    /*justify-content: space-around;*/
+}
+
+.image-container {
+    height: 400px;
+    width: 400px;
+}

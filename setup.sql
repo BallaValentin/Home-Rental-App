@@ -14,5 +14,4 @@ GO
 -- készít egy adatbázist
 CREATE DATABASE [webprog]
 GO
-
 USE webprog

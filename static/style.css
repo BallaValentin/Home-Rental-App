@@ -1,0 +1,164 @@
+
+header{
+    background-color: lightblue;
+    font-weight: bolder;
+    font-size: xx-large;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    border: solid gray;
+}
+
+#options-container{
+    margin-top: 50px;
+    flex-wrap: wrap;
+}
+
+#image-uploader-button{
+    float: right;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    background-color: antiquewhite;
+    border-radius: 7px;
+    padding: 10px;
+    border: solid black;
+}
+
+
+#advertisement-uploader-button{
+    float: right;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    background-color: antiquewhite;
+    border-radius: 7px;
+    padding: 10px;
+    margin-right: 10px;
+    border: solid black;
+}
+
+#advertisement-uploader-button > a{
+    text-decoration: none;
+    color: black;
+}
+
+#advertisement-uploader-button > a:hover{
+    text-decoration: underline;
+    color: gray;
+}
+
+#advertisement-uploader-button > a:visited{
+    color: darkred;
+}
+
+#panel-container{
+    display: flex;
+    align-self: center;
+    margin: 0% 2.5% 0% 2.5%;
+}
+
+#menu-panel{
+    width: 350px;
+    background-color: lightblue;
+    border-radius: 15px;
+    height: 800px;
+    padding: 20px;
+    border: solid gray;
+}
+
+#advertisement-panel{
+    padding: 20px;
+    margin-left: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#advertisement-panel > .advertisement{
+    border: solid gray;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    align-self: center;
+}
+
+.apartment-card{
+    width: 28%;
+    height: 500px;
+    border: solid black 5px;
+    padding: 10px;
+    margin: 10px;
+}
+
+p.p-form, label.label-form{
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+label.label-form{
+    padding-right: 10px;
+}
+
+input.my-input{
+    border-radius: 5px;
+}
+
+button.my-submit, button#search-button{
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 3px;
+}
+
+button.my-submit:hover, button#search-button:hover{
+    text-decoration: underline;
+    color: gray;
+}
+
+button#search-button{
+    margin-left: 50px;
+    margin-right: 20px;
+}
+
+#advertisement_search_form{
+    border-radius: 10px;
+    border: solid black;
+    padding: 30px 10px 30px 10px;
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+#search-attribute-container{
+    display: flex;
+}
+
+.advertisement-search-attribute{
+    margin: 0px 15px 0px 15px;
+}
+
+.image-container {
+    display: flex;
+}
+
+.image-container img{
+    height: 400px;
+    width: 400px;
+    margin: 10px;
+}
+
+p.error-message{
+    color: lightcoral;
+    font-weight: bold;
+    text-align: center;
+}
+
+p.ok-message{
+    color: darkgreen;
+    font-weight: bold;
+    text-align: center;
+}
+
+.advertisement-detail{
+    font-weight: 600;
+}

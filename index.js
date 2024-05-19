@@ -7,7 +7,7 @@ const app = express();
 
 // statikus állományok (pl. CSS/kliensoldali JS)
 app.use(express.static(path.join(process.cwd(), 'static')));
-app.use('/uploads', express.static(path.join(process.cwd(), 'pictures')));
+app.use('/pictures', express.static(path.join(process.cwd(), 'pictures')));
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');

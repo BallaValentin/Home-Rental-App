@@ -12,7 +12,7 @@ const uploadDir = join(process.cwd(), 'pictures');
 if (!existsSync(uploadDir)) {
   mkdirSync(uploadDir);
 }
-app.use('/uploads', express.static(uploadDir));
+app.use('/pictures', express.static(uploadDir));
 
 const multerUpload = multer({
   dest: uploadDir,
@@ -130,19 +130,24 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
     return response.status(400).render('reszletek', { advertisement, pictures, message: 'Nincs kép megadva.' });
   }
 
-  const filePath = `/uploads/${request.file.filename}`;
+  const filePath = `/pictures/${request.file.filename}`;
 
   await db.insertPhoto(advertisementId, filePath);
   return response.redirect(`/advertisement/${advertisementId}`);
 });
 
 router.delete('/delete_picture', async (request, response) => {
-  console.log(request.query);
   const pictureId = request.query.pictureID;
-  // const picture = await db.findPhotoById(pictureId);
+  const picture = await db.findPhotoById(pictureId);
   await db.deletePhoto(pictureId);
-  // const filePath = picture.elUtvonal;
-  // fs.unlink(filePath);
+  const relUtvonal = picture[0].elUtvonal.replace('/pictures/', '');
+  const filePath = join(uploadDir, relUtvonal);
+  try {
+    fs.unlinkSync(filePath);
+    console.log(`A ${relUtvonal} kep sikeresen torolve lett`);
+  } catch (err) {
+    console.log(`A ${relUtvonal} kep torlese nem sikerult`);
+  }
 
   return response.json('success');
 });

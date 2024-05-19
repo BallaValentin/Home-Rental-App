@@ -104,10 +104,17 @@ router.get('/advertisement_search', express.urlencoded({ extended: true }), asyn
 });
 
 router.get('/advertisement/:id', async (request, response) => {
+  console.log(request.params);
   const advertisementId = request.params.id;
   const advertisement = await db.findAdvertisementById(advertisementId);
   const pictures = await db.findPhotosByAdvertisementId(advertisementId);
   return response.status(200).render('reszletek', { advertisement, pictures });
+});
+
+router.get('/advertisement_detailed', async (request, response) => {
+  const advertisementId = request.query.advertisementID;
+  const advertisement = await db.findAdvertisementById(advertisementId);
+  return response.json({ advertisement });
 });
 
 router.post('/upload_picture', multerUpload.single('picture'), async (request, response) => {

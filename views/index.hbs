@@ -40,12 +40,13 @@
     <p class="ok-message">{{message}}</p>
     <div id="advertisement-panel">
         {{#each advertisements}}
-        <div class="advertisement">
+        <div class="advertisement" id="advertisement-{{hirdetesID}}" onclick="loadAdvertisementDetails('{{hirdetesID}}')">
             <div class="advertisement-detail">Város: {{varosnev}}</div>
             <div class="advertisement-detail">Negyed: {{negyednev}}</div>
             <div class="advertisement-detail">Ár: {{ar}}</div>
             <div class="advertisement-detail">Felszín terület: {{felszTerulet}}</div>
-            <a href="/advertisement/{{this.hirdetesID}}">Részletek</a>
+            <div class="extra-details"></div>
+            <a href="/advertisement/{{hirdetesID}}">Részletek</a>
         </div>
         {{/each}}
     </div>

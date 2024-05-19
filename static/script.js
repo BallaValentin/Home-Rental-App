@@ -59,6 +59,25 @@ function validateSearchForm(event) {
   event.preventDefault();
 }
 
+function loadAdvertisementDetails(hirdetesID) {
+  const advertisementDiv = document.getElementById(`advertisement-${hirdetesID}`);
+  const extraDetailsDiv = advertisementDiv.querySelector('.extra-details');
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `/advertisement_detailed?advertisementID=${hirdetesID}`, true);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+
+      const szobSzama = response.advertisement.szobakSzama;
+      const feltoltesDatuma = response.advertisement.feltDatum;
+
+      extraDetailsDiv.innerHTML = `Szobák száma: ${szobSzama} <br>Feltöltés dátuma: ${feltoltesDatuma}`;
+      extraDetailsDiv.style.display = 'block';
+    }
+  };
+  xhr.send();
+}
+
 window.onload = () => {
   const advertisementForm = document.getElementById('advertisement-uploader-form');
   if (advertisementForm !== null) {

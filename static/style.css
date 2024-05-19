@@ -159,6 +159,10 @@ p.ok-message{
     text-align: center;
 }
 
-.advertisement-detail{
+.extra-details{
+    display: none;
+}
+
+.advertisement-detail, .extra-details{
     font-weight: 600;
 }

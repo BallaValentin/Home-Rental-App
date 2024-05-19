@@ -89,4 +89,11 @@ window.onload = () => {
   }
   const searchForm = document.getElementById('advertisement-search-form');
   searchForm.addEventListener('clicked', validateSearchForm);
+  const advertisements = document.getElementsByClassName('advertisement');
+  for (let i = 0; i < advertisements.length; i++) {
+    advertisements[i].addEventListener('click', () => {
+      const hirdetesID = advertisements[i].id.replace('advertisement-', '');
+      loadAdvertisementDetails(hirdetesID);
+    });
+  }
 };

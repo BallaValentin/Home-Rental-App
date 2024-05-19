@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { join } from 'path';
-import { existsSync, mkdirSync } from 'fs';
+import fs, { existsSync, mkdirSync } from 'fs';
 import * as db from '../db/db.js';
 
 const app = express();
@@ -104,7 +104,6 @@ router.get('/advertisement_search', express.urlencoded({ extended: true }), asyn
 });
 
 router.get('/advertisement/:id', async (request, response) => {
-  console.log(request.params);
   const advertisementId = request.params.id;
   const advertisement = await db.findAdvertisementById(advertisementId);
   const pictures = await db.findPhotosByAdvertisementId(advertisementId);
@@ -135,6 +134,17 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
 
   await db.insertPhoto(advertisementId, filePath);
   return response.redirect(`/advertisement/${advertisementId}`);
+});
+
+router.delete('/delete_picture', async (request, response) => {
+  console.log(request.query);
+  const pictureId = request.query.pictureID;
+  // const picture = await db.findPhotoById(pictureId);
+  await db.deletePhoto(pictureId);
+  // const filePath = picture.elUtvonal;
+  // fs.unlink(filePath);
+
+  return response.json('success');
 });
 
 export default router;

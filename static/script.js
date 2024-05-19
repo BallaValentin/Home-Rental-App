@@ -78,6 +78,18 @@ function loadAdvertisementDetails(hirdetesID) {
   xhr.send();
 }
 
+function deletePicture(kepID) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('delete', `/delete_picture?pictureID=${kepID}`, true);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const imageContainerDiv = document.getElementById(`image-container-${kepID}`);
+      imageContainerDiv.parentNode.removeChild(imageContainerDiv);
+    }
+  };
+  xhr.send();
+}
+
 window.onload = () => {
   const advertisementForm = document.getElementById('advertisement-uploader-form');
   if (advertisementForm !== null) {
@@ -94,6 +106,14 @@ window.onload = () => {
     advertisements[i].addEventListener('click', () => {
       const hirdetesID = advertisements[i].id.replace('advertisement-', '');
       loadAdvertisementDetails(hirdetesID);
+    });
+  }
+  const imageContainers = document.getElementsByClassName('image-container');
+  for (let i = 0; i < imageContainers.length; i++) {
+    const deleteButton = imageContainers[i].getElementByTagName('button');
+    deleteButton.addEventListener('click', () => {
+      const kepID = imageContainers[i].id.replace('image-container-', '');
+      deletePicture(kepID);
     });
   }
 };

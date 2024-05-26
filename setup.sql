@@ -15,4 +15,3 @@ GO
 CREATE DATABASE [webprog]
 GO
 USE webprog
-DELETE FROM dbo.kepek

@@ -112,8 +112,12 @@ router.get('/advertisement/:id', async (request, response) => {
 
 router.get('/advertisement_detailed', async (request, response) => {
   const advertisementId = request.query.advertisementID;
-  const advertisement = await db.findAdvertisementById(advertisementId);
-  return response.json({ advertisement });
+  try {
+    const advertisement = await db.findAdvertisementById(advertisementId);
+    return response.json({ advertisement });
+  } catch (err) {
+    return response.json({ err });
+  }
 });
 
 router.post('/upload_picture', multerUpload.single('picture'), async (request, response) => {
@@ -138,18 +142,26 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
 
 router.delete('/delete_picture', async (request, response) => {
   const pictureId = request.query.pictureID;
-  const picture = await db.findPhotoById(pictureId);
-  await db.deletePhoto(pictureId);
-  const relUtvonal = picture[0].elUtvonal.replace('/pictures/', '');
-  const filePath = join(uploadDir, relUtvonal);
   try {
-    fs.unlinkSync(filePath);
-    console.log(`A ${relUtvonal} kep sikeresen torolve lett`);
-  } catch (err) {
-    console.log(`A ${relUtvonal} kep torlese nem sikerult`);
-  }
+    const picture = await db.findPhotoById(pictureId);
+    try {
+      await db.deletePhoto(pictureId);
+    } catch (err) {
+      return response.json({ err });
+    }
+    const relUtvonal = picture[0].elUtvonal.replace('/pictures/', '');
+    const filePath = join(uploadDir, relUtvonal);
+    try {
+      fs.unlinkSync(filePath);
+      console.log(`A ${relUtvonal} kep sikeresen torolve lett`);
+    } catch (err) {
+      console.log(`A ${relUtvonal} kep torlese nem sikerult`);
+    }
 
-  return response.json('success');
+    return response.json('success');
+  } catch (err) {
+    return response.json({ err });
+  }
 });
 
 export default router;

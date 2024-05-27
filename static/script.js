@@ -62,29 +62,52 @@ function validateSearchForm(event) {
 function loadAdvertisementDetails(hirdetesID) {
   const advertisementDiv = document.getElementById(`advertisement-${hirdetesID}`);
   const extraDetailsDiv = advertisementDiv.querySelector('.extra-details');
+  let errorDiv = advertisementDiv.querySelector('p.error-message');
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `/advertisement_detailed?advertisementID=${hirdetesID}`, true);
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4 && xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
 
-      const szobSzama = response.advertisement.szobakSzama;
-      const feltoltesDatuma = response.advertisement.feltDatum;
-
-      extraDetailsDiv.innerHTML = `Szobák száma: ${szobSzama} <br>Feltöltés dátuma: ${feltoltesDatuma}`;
-      extraDetailsDiv.style.display = 'block';
+      if (response.messageType === 'ok') {
+        if (errorDiv) {
+          advertisementDiv.removeChild(errorDiv);
+        }
+        const szobSzama = response.advertisement.szobakSzama;
+        const feltoltesDatuma = response.advertisement.feltDatum;
+        extraDetailsDiv.innerHTML = `Szobák száma: ${szobSzama} <br>Feltöltés dátuma: ${feltoltesDatuma}`;
+        extraDetailsDiv.style.display = 'block';
+      } else if (!errorDiv) {
+        errorDiv = document.createElement('p');
+        errorDiv.className = 'error-message';
+        errorDiv.innerText = 'Hiba a lakáshirdetés részleteinek betöltésekor.';
+        document.getElementById(`advertisement-${hirdetesID}`).appendChild(errorDiv);
+      }
     }
   };
   xhr.send();
 }
 
 function deletePicture(kepID) {
+  let errorDiv = document.querySelector('p.error-message2');
+  console.log(errorDiv);
   const xhr = new XMLHttpRequest();
   xhr.open('delete', `/delete_picture?pictureID=${kepID}`, true);
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4 && xhr.status === 200) {
-      const imageContainerDiv = document.getElementById(`image-container-${kepID}`);
-      imageContainerDiv.parentNode.removeChild(imageContainerDiv);
+      const response = JSON.parse(xhr.responseText);
+      if (response.messageType === 'ok') {
+        if (errorDiv) {
+          document.body.removeChild(errorDiv);
+        }
+        const imageContainerDiv = document.getElementById(`image-container-${kepID}`);
+        imageContainerDiv.parentNode.removeChild(imageContainerDiv);
+      } else if (!errorDiv) {
+        errorDiv = document.createElement('p');
+        errorDiv.className = 'error-message2';
+        errorDiv.innerText = 'Hiba a kép törlésekor.';
+        document.body.appendChild(errorDiv);
+      }
     }
   };
   xhr.send();

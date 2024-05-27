@@ -114,9 +114,9 @@ router.get('/advertisement_detailed', async (request, response) => {
   const advertisementId = request.query.advertisementID;
   try {
     const advertisement = await db.findAdvertisementById(advertisementId);
-    return response.json({ advertisement });
+    return response.json({ messageType: 'ok', advertisement });
   } catch (err) {
-    return response.json({ err });
+    return response.json({ messageType: 'error', err });
   }
 });
 
@@ -147,7 +147,7 @@ router.delete('/delete_picture', async (request, response) => {
     try {
       await db.deletePhoto(pictureId);
     } catch (err) {
-      return response.json({ err });
+      return response.json({ messageType: 'error', err });
     }
     const relUtvonal = picture[0].elUtvonal.replace('/pictures/', '');
     const filePath = join(uploadDir, relUtvonal);
@@ -158,9 +158,9 @@ router.delete('/delete_picture', async (request, response) => {
       console.log(`A ${relUtvonal} kep torlese nem sikerult`);
     }
 
-    return response.json('success');
+    return response.json({ messageType: 'ok', message: 'success' });
   } catch (err) {
-    return response.json({ err });
+    return response.json({ messageType: 'error', err });
   }
 });
 

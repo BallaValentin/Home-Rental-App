@@ -159,6 +159,12 @@ p.error-message{
     text-align: center;
 }
 
+p.error-message2{
+    color: lightcoral;
+    font-weight: bold;
+    text-align: center;
+}
+
 p.ok-message{
     color: darkgreen;
     font-weight: bold;

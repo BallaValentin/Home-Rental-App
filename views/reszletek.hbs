@@ -6,9 +6,12 @@
 
 <h2>Fényképek</h2>
 {{#if pictures.length}}
-    <div class="image-container">
+    <div class="images-container">
     {{#each pictures}}
+      <div id="image-container-{{kepID}}" class="image-container">
       <img src="{{elUtvonal}}" alt="Fénykép">
+      <button onclick="deletePicture('{{kepID}}')">Törlés</button>
+    </div>
     {{/each}}
     </div>
 {{else}}

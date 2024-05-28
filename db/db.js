@@ -140,6 +140,20 @@ export const findPhotosByAdvertisementId = async (advertisementId) => {
   return 'recordset' in data ? data.recordset : [];
 };
 
+export const findPhotoById = async (pictureId) => {
+  const query = 'SELECT * FROM kepek WHERE kepID = @pictureId';
+  const request = pool.request().input('pictureId', sql.Int, pictureId);
+  const data = await request.query(query);
+  return 'recordset' in data ? data.recordset : [];
+};
+
+export const deletePhoto = async (pictureId) => {
+  const query = 'DELETE FROM kepek WHERE kepID = @pictureId';
+  const request = pool.request().input('pictureId', sql.Int, pictureId);
+  const result = await request.query(query);
+  return result;
+};
+
 export const insertPhoto = async (advertisementId, filePath) => {
   const query = 'INSERT INTO Kepek (hirdetesID, elUtvonal) VALUES (@hirdetesID, @elUtvonal)';
   const request = pool

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css" type="text/css">
-    <script src="client.js"></script>
+    <script src="script.js"></script>
     <title>Lakáshirdetések</title>
 </head>
 <body>
@@ -40,14 +40,13 @@
     <p class="ok-message">{{message}}</p>
     <div id="advertisement-panel">
         {{#each advertisements}}
-        <div class="advertisement">
+        <div class="advertisement" id="advertisement-{{hirdetesID}}" onclick="loadAdvertisementDetails('{{hirdetesID}}')">
             <div class="advertisement-detail">Város: {{varosnev}}</div>
             <div class="advertisement-detail">Negyed: {{negyednev}}</div>
             <div class="advertisement-detail">Ár: {{ar}}</div>
-            <div class="advertisement-detail">Szobák száma: {{szobakSzama}}</div>
             <div class="advertisement-detail">Felszín terület: {{felszTerulet}}</div>
-            <div class="advertisement-detail">Feltöltés dátuma: {{feltDatum}}</div>
-            <a href="/advertisement/{{this.hirdetesID}}">Részletek</a>
+            <div class="extra-details"></div>
+            <a href="/advertisement/{{hirdetesID}}">Részletek</a>
         </div>
         {{/each}}
     </div>

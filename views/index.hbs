@@ -1,54 +1,45 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css" type="text/css">
-    <script src="script.js"></script>
-    <title>Lakáshirdetések</title>
-</head>
-<body>
-    <header>
-        Lakáshirdetések
-        <div id="options-container">
-            <div id="advertisement-uploader-button">
-                <a href="/hirdetes">Lakáshirdetés feltöltése</a>
-            </div>
+<header>
+    Lakáshirdetések
+    <div id="options-container">
+        <div id="advertisement-uploader-button">
+            <a href="/hirdetes">Lakáshirdetés feltöltése</a>
         </div>
-    </header>
-    <form action="/advertisement_search" id="advertisement_search_form" method="get">
-        <div id="search-attribute-container">
-            <div class="advertisement-search-attribute">
-            <label class="label-form" for="city_name">Város neve: </label>
-            <input class="my-input" type="text" name="city_name">
-            </div>
-            <div class="advertisement-search-attribute">
-            <label class="label-form" for="city_quarter_name">Negyede: </label>
-            <input class="my-input" type="text" name="city_quarter_name">
-            </div>
-            <div class="advertisement-search-attribute">
-            <label class="label-form" for="min_price">Minimum ár: </label>
-            <input class="my-input" type="text" name="min_price">
-            </div>
-            <div class="advertisement-search-attribute">
-            <label class="label-form" for="max_price">Maximum ár: </label>
-            <input class="my-input" type="text" name="max_price">
-            </div>
-            <button id="search-button" type="submit">Keresés</button>
+        <div id="login-button">
+            <a href="/login">Bejelentkezés</a>
         </div>
-    </form>
-    <p class="ok-message">{{message}}</p>
-    <div id="advertisement-panel">
-        {{#each advertisements}}
-        <div class="advertisement" id="advertisement-{{hirdetesID}}" onclick="loadAdvertisementDetails('{{hirdetesID}}')">
-            <div class="advertisement-detail">Város: {{varosnev}}</div>
-            <div class="advertisement-detail">Negyed: {{negyednev}}</div>
-            <div class="advertisement-detail">Ár: {{ar}}</div>
-            <div class="advertisement-detail">Felszín terület: {{felszTerulet}}</div>
-            <div class="extra-details"></div>
-            <a href="/advertisement/{{hirdetesID}}">Részletek</a>
-        </div>
-        {{/each}}
     </div>
-</body>
-</html>
+</header>
+<form action="/advertisement_search" id="advertisement_search_form" method="get">
+    <div id="search-attribute-container">
+        <div class="advertisement-search-attribute">
+        <label class="label-form" for="city_name">Város neve: </label>
+        <input class="my-input" type="text" name="city_name">
+        </div>
+        <div class="advertisement-search-attribute">
+        <label class="label-form" for="city_quarter_name">Negyede: </label>
+        <input class="my-input" type="text" name="city_quarter_name">
+        </div>
+        <div class="advertisement-search-attribute">
+        <label class="label-form" for="min_price">Minimum ár: </label>
+        <input class="my-input" type="text" name="min_price">
+        </div>
+        <div class="advertisement-search-attribute">
+        <label class="label-form" for="max_price">Maximum ár: </label>
+        <input class="my-input" type="text" name="max_price">
+        </div>
+        <button id="search-button" type="submit">Keresés</button>
+    </div>
+</form>
+<p class="ok-message">{{message}}</p>
+<div id="advertisement-panel">
+    {{#each advertisements}}
+    <div class="advertisement" id="advertisement-{{hirdetesID}}" onclick="loadAdvertisementDetails('{{hirdetesID}}')">
+        <div class="advertisement-detail">Város: {{varosnev}}</div>
+        <div class="advertisement-detail">Negyed: {{negyednev}}</div>
+        <div class="advertisement-detail">Ár: {{ar}}</div>
+        <div class="advertisement-detail">Felszín terület: {{felszTerulet}}</div>
+        <div class="extra-details"></div>
+        <a href="/advertisement/{{hirdetesID}}">Részletek</a>
+    </div>
+    {{/each}}
+</div>

@@ -27,8 +27,7 @@ header{
 }
 
 
-#advertisement-uploader-button{
-    float: right;
+#advertisement-uploader-button, #login-button{
     text-align: center;
     font-size: medium;
     font-weight: bold;
@@ -37,6 +36,14 @@ header{
     padding: 10px;
     margin-right: 10px;
     border: solid black;
+}
+
+#advertisement-uploader-button{
+    float: right;
+}
+
+#login-button{
+    float: left;
 }
 
 #advertisement-uploader-button > a{

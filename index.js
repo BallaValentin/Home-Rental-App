@@ -1,7 +1,9 @@
 import express from 'express';
 import path from 'path';
 import { engine } from 'express-handlebars';
-import requestRoutes from './routes/requests.js';
+import advertisementRoutes from './routes/advertisements.js';
+import pictureRouter from './routes/pictures.js';
+import userRouter from './routes/users.js';
 
 const app = express();
 
@@ -23,7 +25,9 @@ app.engine(
 );
 
 // kössük be a külső modulban megírt route-okat
-app.use('/', requestRoutes);
+app.use('/', advertisementRoutes);
+app.use('/', pictureRouter);
+app.use('/', userRouter);
 
 app.get('/index', (req, res) => {
   res.render('index');

@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 const router = express.Router();
 
-router.get(['/index'], async (req, res) => {
+router.get(['/', '/index'], async (req, res) => {
   try {
     const hirdetes = await db.getAllAdvertisements();
     res.render('index', { advertisements: hirdetes });

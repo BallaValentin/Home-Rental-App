@@ -185,3 +185,56 @@ p.ok-message{
 .advertisement-detail, .extra-details{
     font-weight: 600;
 }
+
+#login-user-background{
+    background-color: rgb(135, 172, 184);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-user-form{
+    background-color: white;
+    width: 400px;
+    border: solid rgb(206, 116, 116) 3px;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.login-form-field{
+    margin: 10px;
+}
+
+#login-user-form label{
+    padding: 20px;
+    font-weight: bold;
+}
+
+#login-user-form button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border: solid rgb(91, 88, 88) 2px;
+    border-radius: 10px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    width: 40%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#login-user-form button:hover{
+    color: white;
+    background-color: darkblue;
+    border: solid rgb(40, 87, 102) 2px;
+}
+
+#user{
+    float: right;
+}

@@ -27,7 +27,7 @@ header{
 }
 
 
-#advertisement-uploader-button, #login-button{
+#advertisement-uploader-button, #login-button, #logout-button{
     text-align: center;
     font-size: medium;
     font-weight: bold;
@@ -42,7 +42,7 @@ header{
     float: right;
 }
 
-#login-button{
+#login-button, #logout-button{
     float: left;
 }
 
@@ -186,7 +186,7 @@ p.ok-message{
     font-weight: 600;
 }
 
-#login-user-background{
+#login-user-background, #registration-user-background{
     background-color: rgb(135, 172, 184);
     height: 100%;
     width: 100%;
@@ -198,7 +198,7 @@ p.ok-message{
     align-items: center;
 }
 
-#login-user-form{
+#login-user-form, #registration-user-form{
     background-color: white;
     width: 400px;
     border: solid rgb(206, 116, 116) 3px;
@@ -206,16 +206,16 @@ p.ok-message{
     padding: 15px;
 }
 
-.login-form-field{
+.login-form-field, .registration-form-field{
     margin: 10px;
 }
 
-#login-user-form label{
+#login-user-form label, #registration-user-form label{
     padding: 20px;
     font-weight: bold;
 }
 
-#login-user-form button {
+#login-user-form button, #registration-user-form button {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -229,10 +229,19 @@ p.ok-message{
     font-weight: bold;
 }
 
-#login-user-form button:hover{
+#login-user-form button:hover, #registration-user-form button:hover{
     color: white;
     background-color: darkblue;
     border: solid rgb(40, 87, 102) 2px;
+}
+
+.registration-text, a.registration-link{
+    width: 40%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-weight: bold;
 }
 
 #user{

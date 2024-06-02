@@ -13,12 +13,34 @@ router.get(['/login'], (req, res) => {
   }
 });
 
+router.get(['/logout'], (req, res) => {
+  try {
+    res.render('index');
+  } catch (err) {
+    res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+  }
+});
+
+router.get(['/registration'], (req, res) => {
+  try {
+    res.render('regisztracio');
+  } catch (err) {
+    res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+  }
+});
+
 router.post(['/login-user'], express.urlencoded({ extended: true }), (req, res) => {
-  console.log(req.body);
   const user = { nev: req.body.username };
-  console.log(user);
   try {
     res.render('index', { user });
+  } catch (err) {
+    res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+  }
+});
+
+router.post(['/registration-user'], express.urlencoded({ extended: true }), (req, res) => {
+  try {
+    res.render('bejelentkezes', { ok_message: 'Új felhasználó sikeresen regisztrálva!' });
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }

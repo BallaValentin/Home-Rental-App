@@ -2,12 +2,18 @@
     Lakáshirdetések
     <div id="user">{{user.nev}}</div>
     <div id="options-container">
-        <div id="advertisement-uploader-button">
-            <a href="/hirdetes">Lakáshirdetés feltöltése</a>
-        </div>
-        <div id="login-button">
-            <a href="/login">Bejelentkezés</a>
-        </div>
+    {{#if user.nev}}
+    <div id="advertisement-uploader-button">
+        <a href="/hirdetes">Lakáshirdetés feltöltése</a>
+    </div>
+    <div id="logout-button">
+        <a href="/logout">Kijelentkezés</a>
+    </div> 
+    {{else}}
+    <div id="login-button">
+        <a href="/login">Bejelentkezés</a>
+    </div>
+    {{/if}}
     </div>
 </header>
 <form action="/advertisement_search" id="advertisement_search_form" method="get">

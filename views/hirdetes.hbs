@@ -4,12 +4,6 @@
 <div id="panel-container">
     <div id="menu-panel">
         <form action="/submit_advertisement_upload" id="advertisement-uploader-form" method="post">
-            <p class="p-user">Válassz felhasználót:</p>
-            <select name="users" id="users">
-                {{#each users}}
-                    <option value="{{this.nev}}">{{this.nev}}</option>
-                {{/each}}
-            </select>
             <p class="p-form">Város:</p>
             <input class="my-input" type="text" name="city"><br>
             <p class="p-form">Városnegyed:</p>

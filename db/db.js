@@ -17,24 +17,12 @@ await pool.query(
     CREATE TABLE felhasznalok (
       felhID INT PRIMARY KEY IDENTITY(5, 5),
       nev varchar(20) unique,
+      hash varchar(255),
+      salt varchar(255),
     )
     `,
 );
 console.log('Table exists successfully');
-
-await pool.query(
-  `IF NOT EXISTS (SELECT * FROM felhasznalok)
-  BEGIN
-    INSERT INTO felhasznalok(nev) VALUES ('Peter');
-    INSERT INTO felhasznalok(nev) VALUES ('Gaspar');
-    INSERT INTO felhasznalok(nev) VALUES ('Andrea');
-    INSERT INTO felhasznalok(nev) VALUES ('Lorinc');
-    INSERT INTO felhasznalok(nev) VALUES ('Csaba');
-    INSERT INTO felhasznalok(nev) VALUES ('Zoltan');
-  END;
-    `,
-);
-console.log('Values inserted successfully');
 
 await pool.query(
   `IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='hirdetesek' and xtype='U')
@@ -75,6 +63,27 @@ export const findUserIdByName = async (name) => {
 `;
   const result = await pool.query(query);
   return result.recordset.length > 0 ? result.recordset[0].felhID : null;
+};
+
+export const insertUser = async (user) => {
+  const query = `INSERT INTO felhasznalok (nev, hash, salt)
+                VALUES (@nev, @hash, @salt)`;
+  const request = pool
+    .request()
+    .input('nev', sql.VarChar, user.username)
+    .input('hash', sql.VarChar, user.hash)
+    .input('salt', sql.VarChar, user.salt);
+  const result = await request.query(query);
+  return result;
+};
+
+export const findUserByName = async (username) => {
+  const query = `
+  SELECT * FROM felhasznalok WHERE nev = @nev
+`;
+  const request = pool.request().input('nev', sql.VarChar, username);
+  const result = await request.query(query);
+  return result.recordset.length > 0 ? result.recordset[0] : null;
 };
 
 export const insertAdvertisement = async (advertisement) => {

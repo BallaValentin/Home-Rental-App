@@ -173,3 +173,10 @@ export const insertPhoto = async (advertisementId, filePath) => {
   const result = await request.query(query);
   return result;
 };
+
+export const findOwnerByAdvertisementId = async (advertisementId) => {
+  const query = 'SELECT felhID FROM hirdetesek WHERE hirdetesID = @advertisementID';
+  const request = pool.request().input('advertisementId', sql.Int, advertisementId);
+  const result = await request.query(query);
+  return result.recordset.length > 0 ? result.recordset[0] : null;
+};

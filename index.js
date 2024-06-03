@@ -24,7 +24,6 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  console.log(req.path);
   if (
     !req.session.user &&
     req.path !== '/login' &&

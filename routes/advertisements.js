@@ -72,14 +72,20 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
   const felhasznalo = await db.findAllUsers();
   const returnValue = formValidation(formFields);
   if (returnValue === -1) {
-    return response.status(400).render('hirdetes', { users: felhasznalo, message: 'Nincs minden mező kitöltve.' });
+    return response
+      .status(400)
+      .render('hirdetes', { users: felhasznalo, message: 'Nincs minden mező kitöltve.', user: request.session.user });
   }
   if (returnValue === -2) {
-    return response.status(400).render('hirdetes', { users: felhasznalo, message: 'Helytelen mezők.' });
+    return response
+      .status(400)
+      .render('hirdetes', { users: felhasznalo, message: 'Helytelen mezők.', user: request.session.user });
   }
   await db.insertAdvertisement(formFields);
   const advertisements = await db.getAllAdvertisements();
-  return response.status(200).render('index', { advertisements, message: 'Új lakáshirdetés sikeresen feltöltve.' });
+  return response
+    .status(200)
+    .render('index', { advertisements, message: 'Új lakáshirdetés sikeresen feltöltve.', user: request.session.user });
 });
 
 router.get('/advertisement_search', express.urlencoded({ extended: true }), async (request, response) => {
@@ -95,13 +101,17 @@ router.get('/advertisement_search', express.urlencoded({ extended: true }), asyn
     max_price: request.query.max_price,
   };
   const advertisements = await db.searchAdvertisements(searchParameters);
-  return response.status(200).render('index', { advertisements });
+  return response.status(200).render('index', { advertisements, user: request.session.user });
 });
 
 router.get('/advertisement/:id', async (request, response) => {
   const advertisementId = request.params.id;
   const advertisement = await db.findAdvertisementById(advertisementId);
   const pictures = await db.findPhotosByAdvertisementId(advertisementId);
+  const owner = await db.findOwnerByAdvertisementId(advertisementId);
+  if (owner.felhID === request.session.user.id) {
+    return response.status(200).render('reszletek', { advertisement, pictures, owner: owner.felhID });
+  }
   return response.status(200).render('reszletek', { advertisement, pictures });
 });
 

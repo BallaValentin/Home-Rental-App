@@ -1,5 +1,5 @@
 
-header{
+header, h1, h2{
     background-color: lightblue;
     font-weight: bolder;
     font-size: xx-large;
@@ -8,6 +8,10 @@ header{
     margin-top: 20px;
     margin-bottom: 40px;
     border: solid gray;
+}
+
+h2 {
+    padding: 15px 10px 15px 10px; 
 }
 
 #options-container{
@@ -160,6 +164,22 @@ button#search-button{
     margin: 10px;
 }
 
+.image-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    height: 400px;
+    width: 400px;
+    margin: 10px;
+    text-align: center;
+    justify-content: center;
+    font-size: large;
+
+}
+
 p.error-message{
     color: lightcoral;
     font-weight: bold;
@@ -251,6 +271,16 @@ p.session-message1, p.session-message2{
     font-weight: bold;
 }
 
+p.advertisement-info {
+    font-weight: bold;
+    padding-left: 2.5%;
+}
+
 #user{
     float: right;
+}
+
+#picture_uploader_form{
+    margin-left: 2.5%;
+    padding: 15px;
 }

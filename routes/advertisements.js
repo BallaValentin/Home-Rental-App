@@ -8,7 +8,18 @@ const router = express.Router();
 router.get(['/', '/index'], async (req, res) => {
   try {
     const hirdetes = await db.getAllAdvertisements();
-    res.render('index', { advertisements: hirdetes });
+    if (req.query.message === 'expired') {
+      const sessionMessage1 = 'Lejárt a munkameneted.';
+      const sessionMessage2 = 'Jelentkezz be újra, hogy tudj hirdetéseket feltölteni.';
+      res.render('index', {
+        advertisements: hirdetes,
+        user: req.session.user,
+        session1: sessionMessage1,
+        session2: sessionMessage2,
+      });
+    } else {
+      res.render('index', { advertisements: hirdetes, user: req.session.user });
+    }
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }
@@ -39,7 +50,6 @@ function formValidation(formFields) {
 
 router.post('/submit_advertisement_upload', express.urlencoded({ extended: true }), async (request, response) => {
   console.log(`A szerver sikeresen megkapta a következő információkat:
-                users: ${request.body.users},
                 city: ${request.body.city},
                 city_quarter: ${request.body.city_quarter},
                 surface_area: ${request.body.surface_area},
@@ -47,7 +57,8 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
                 number_of_rooms: ${request.body.number_of_rooms},
                 upload_date: ${new Date(request.body.upload_date).toLocaleDateString()},`);
 
-  const userID = await db.findUserIdByName(request.body.users);
+  const userID = request.session.user.id;
+  console.log(userID);
   const formFields = {
     UID: userID,
     city: request.body.city,

@@ -178,6 +178,13 @@ p.ok-message{
     text-align: center;
 }
 
+p.session-message1, p.session-message2{
+    color: rgb(225, 178, 90);
+    font-weight: bold;
+    text-align: center;
+}
+
+
 .extra-details{
     display: none;
 }

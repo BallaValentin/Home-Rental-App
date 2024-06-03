@@ -17,11 +17,12 @@ router.get(['/login'], (req, res) => {
 });
 
 router.get(['/logout'], (req, res) => {
-  try {
-    res.render('index');
-  } catch (err) {
-    res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
-  }
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Nem sikerült kijelentkezni' });
+    }
+    return res.redirect('/index');
+  });
 });
 
 router.get(['/registration'], (req, res) => {
@@ -44,7 +45,11 @@ router.post(['/login-user'], express.urlencoded({ extended: true }), async (req,
     if (hash !== user.hash) {
       return res.status(400).render('bejelentkezes', { err_message: 'Hibás felhasználónév vagy jelszó' });
     }
-    return res.render('index', { user });
+    req.session.user = {
+      id: user.felhID,
+      nev: user.nev,
+    };
+    return res.redirect('index');
   } catch (err) {
     return res.status(500).json({ message: `Failed to login: ${err.message}` });
   }

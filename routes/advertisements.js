@@ -109,7 +109,7 @@ router.get('/advertisement/:id', async (request, response) => {
   const advertisement = await db.findAdvertisementById(advertisementId);
   const pictures = await db.findPhotosByAdvertisementId(advertisementId);
   const owner = await db.findOwnerByAdvertisementId(advertisementId);
-  if (owner.felhID === request.session.user.id) {
+  if (request.session.user && owner.felhID === request.session.user.id) {
     return response.status(200).render('reszletek', { advertisement, pictures, owner: owner.felhID });
   }
   return response.status(200).render('reszletek', { advertisement, pictures });

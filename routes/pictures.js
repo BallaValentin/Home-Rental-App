@@ -31,7 +31,10 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
   if (!request.file) {
     const advertisement = await db.findAdvertisementById(advertisementId);
     const pictures = await db.findPhotosByAdvertisementId(advertisementId);
-    return response.status(400).render('reszletek', { advertisement, pictures, message: 'Nincs kép megadva.' });
+    const owner = await db.findOwnerByAdvertisementId(advertisementId);
+    return response
+      .status(400)
+      .render('reszletek', { advertisement, pictures, message: 'Nincs kép megadva.', owner: owner.felhID });
   }
 
   const filePath = `/pictures/${request.file.filename}`;

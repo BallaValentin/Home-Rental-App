@@ -5,6 +5,7 @@ import session from 'express-session';
 import advertisementRoutes from './routes/advertisements.js';
 import pictureRouter from './routes/pictures.js';
 import userRouter from './routes/users.js';
+import checkAuth from './middleware/checkauth.js';
 
 const app = express();
 
@@ -23,20 +24,10 @@ app.use(
   }),
 );
 
-app.use((req, res, next) => {
-  if (
-    !req.session.user &&
-    req.path !== '/login' &&
-    req.path !== '/registration' &&
-    req.path !== '/login-user' &&
-    req.path !== '/registration-user' &&
-    !req.query.message
-  ) {
-    res.redirect('index/?message=expired');
-  } else {
-    next();
-  }
-});
+app.use('/submit_advertisement_upload', checkAuth);
+app.use('/hirdetes', checkAuth);
+app.use('/upload_picture', checkAuth);
+app.use('/delete_picture', checkAuth);
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');

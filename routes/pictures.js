@@ -20,6 +20,7 @@ const multerUpload = multer({
     fileSize: 20 * 1024 * 1024,
   },
 });
+
 router.post('/upload_picture', multerUpload.single('picture'), async (request, response) => {
   console.log(`A szerver sikeresen megkapta a következő információt:
                     file: ${request.file},
@@ -36,6 +37,11 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
       .status(400)
       .render('reszletek', { advertisement, pictures, message: 'Nincs kép megadva.', owner: owner.felhID });
   }
+  const owner = await db.findOwnerByAdvertisementId(advertisementId);
+  const userID = request.session.user.id;
+  if (userID !== owner.felhID) {
+    return response.status(401).json({ message: 'Nincs jogosultságod ehhez' });
+  }
 
   const filePath = `/pictures/${request.file.filename}`;
 
@@ -45,6 +51,19 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
 
 router.delete('/delete_picture', async (request, response) => {
   const pictureId = request.query.pictureID;
+  console.log(`query ${request.query.pictureID}`);
+
+  try {
+    const owner = await db.findOwnerByPictureId(pictureId);
+    const userID = request.session.user.id;
+    console.log(`owner ${owner} userID ${userID}`);
+    if (userID !== owner.felhID) {
+      return response.status(401).json({ message: 'Nincs jogosultságod ehhez' });
+    }
+  } catch (err) {
+    return response.status(500).json({ err_message: 'Szerveroldali hiba' });
+  }
+
   try {
     const picture = await db.findPhotoById(pictureId);
     try {
@@ -60,7 +79,6 @@ router.delete('/delete_picture', async (request, response) => {
     } catch (err) {
       console.log(`A ${relUtvonal} kep torlese nem sikerult`);
     }
-
     return response.json({ messageType: 'ok', message: 'success' });
   } catch (err) {
     return response.json({ messageType: 'error', err });

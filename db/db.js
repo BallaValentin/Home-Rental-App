@@ -180,3 +180,11 @@ export const findOwnerByAdvertisementId = async (advertisementId) => {
   const result = await request.query(query);
   return result.recordset.length > 0 ? result.recordset[0] : null;
 };
+
+export const findOwnerByPictureId = async (pictureId) => {
+  const query = 'SELECT hirdetesID FROM kepek WHERE kepID = @kepID';
+  const request = pool.request().input('kepID', sql.Int, pictureId);
+  const result = await request.query(query);
+  const advertisementId = result.recordset.length > 0 ? result.recordset[0].hirdetesID : null;
+  return findOwnerByAdvertisementId(advertisementId);
+};

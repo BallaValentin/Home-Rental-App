@@ -1,0 +1,17 @@
+<div id="login-user-background">
+    <form action="/login-user" id="login-user-form" method="post">
+        <div class="login-form-field">
+            <label for="username">Felhasználónév:</label>
+            <input class="my-input" type="text" name="username"><br>
+        </div>
+        <div class="login-form-field">
+            <label for="password">Jelszó:</label></label>
+            <input class="my-input" type="password" name="password"><br>
+        </div>
+        <button type="submit">Bejelentkezés</button>
+        <div class="registration-text">Még nincs fiókod?</div>
+        <a class="registration-link" href="/registration">Regisztrálj itt!</a>
+        <p class="ok-message">{{ok_message}}</p>
+        <p class="error-message">{{err_message}}</p>
+    </form>
+</div>

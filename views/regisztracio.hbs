@@ -1,0 +1,18 @@
+<div id="registration-user-background">
+    <form action="/registration-user" id="registration-user-form" method="post">
+        <div class="registration-form-field">
+            <label for="username">Felhasználónév:</label>
+            <input class="my-input" type="text" name="username"><br>
+        </div>
+        <div class="registration-form-field">
+            <label for="password1">Jelszó:</label></label>
+            <input class="my-input" type="password" name="password1"><br>
+        </div>
+        <div class="registration-form-field">
+            <label for="password2">Jelszó ismét:</label></label>
+            <input class="my-input" type="password" name="password2"><br>
+        </div>
+        <button type="submit">Regisztráció</button>
+        <p class="error-message">{{message}}</p>
+    </form>
+</div>

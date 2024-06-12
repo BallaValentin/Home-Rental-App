@@ -1,8 +1,17 @@
 <h1>{{advertisement.varosnev}} - {{advertisement.negyednev}}</h1>
-<p>Ár: {{advertisement.ar}}</p>
-<p>Szobák száma: {{advertisement.szobakSzama}}</p>
-<p>Felszín terület: {{advertisement.felszTerulet}}</p>
-<p>Feltöltés dátuma: {{advertisement.feltDatum}}</p>
+<p class="advertisement-info">Ár: {{advertisement.ar}}</p>
+<p class="advertisement-info">Szobák száma: {{advertisement.szobakSzama}}</p>
+<p class="advertisement-info">Felszín terület: {{advertisement.felszTerulet}}</p>
+<p class="advertisement-info">Feltöltés dátuma: {{advertisement.feltDatum}}</p>
+
+{{#if owner}}
+  <h2>Fényképek feltöltése</h2>
+  <form action="/upload_picture" id="picture_uploader_form", method="post" enctype="multipart/form-data">
+    <input type="file" name="picture">
+    <input type="hidden" name="advertisementID" value={{advertisement.hirdetesID}}>
+    <button class="my-submit" type="submit">Feltöltés</button>
+  </form>
+{{/if}}
 
 <h2>Fényképek</h2>
 {{#if pictures.length}}
@@ -10,17 +19,13 @@
     {{#each pictures}}
       <div id="image-container-{{kepID}}" class="image-container">
       <img src="{{elUtvonal}}" alt="Fénykép">
-      <button onclick="deletePicture('{{kepID}}')">Törlés</button>
+      {{#if ../owner}}
+        <button onclick="deletePicture('{{kepID}}')">Törlés</button>
+      {{/if}}
     </div>
     {{/each}}
     </div>
 {{else}}
-  <p>Nincsenek fényképek.</p>
+  <div class="image-placeholder">Nincsenek fényképek.</div>
 {{/if}}
-<h2>Fényképek feltöltése</h2>
-<form action="/upload_picture" id="picture_uploader_form", method="post" enctype="multipart/form-data">
-  <input type="file" name="picture">
-  <input type="hidden" name="advertisementID" value={{advertisement.hirdetesID}}>
-  <input type="submit" value="Feltöltés">
-</form>
 <p class="error-message">{{message}}</p>

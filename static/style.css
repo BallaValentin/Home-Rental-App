@@ -284,3 +284,42 @@ p.advertisement-info {
     margin-left: 2.5%;
     padding: 15px;
 }
+
+.message-log {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .your-message-box, .his-message-box, .user-discussion-message {
+    border: solid black 2px;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0px 15px 0px;
+    max-width: 45%;
+  }
+  
+  .your-message-box {
+    background-color: lightgray;
+    margin-left: auto;
+  }
+  
+  .his-message-box {
+    background-color: white;
+  }
+
+  .message-box-name, .message-box-date {
+    font-style: italic;
+    font-weight: bold;
+    font-size: small;
+  }
+
+  .message-box-date {
+    float: right;
+  }
+  

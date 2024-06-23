@@ -1,4 +1,5 @@
 import express from 'express';
+import { format } from 'date-fns';
 import * as db from '../db/db.js';
 
 const app = express();
@@ -12,6 +13,18 @@ router.get(['/show_discussions'], async (req, res) => {
     const latestMessages = await Promise.all(
       userDiscussions.map(async (discussion) => {
         const latestMessage = await db.selectLatestMessageByDiscussionId(discussion.csevegesID);
+        let you = null;
+        let them = null;
+        if (userID === discussion.felh1ID) {
+          you = await db.findUserById(discussion.felh1ID);
+          them = await db.findUserById(discussion.felh2ID);
+        } else {
+          you = await db.findUserById(discussion.felh2ID);
+          them = await db.findUserById(discussion.felh1ID);
+        }
+        latestMessage.you = you;
+        latestMessage.them = them;
+        latestMessage.kuldesiIdo = format(latestMessage.kuldesiIdo, 'yyyy/MM/dd HH:mm:ss');
         return latestMessage;
       }),
     );
@@ -46,8 +59,11 @@ router.post(['/send_message'], express.urlencoded({ extended: true }), async (re
       discussion = await db.checkIfDiscussionExists(userID, recipientUserID);
       await db.addNewMessageToDiscussion(discussion.csevegesID, newMessage);
     }
-    const messages = await db.findAllMessagesOfDiscussion(discussion.csevegesID);
-    console.log(messages);
+    let messages = await db.findAllMessagesOfDiscussion(discussion.csevegesID);
+    messages = messages.map((msg) => ({
+      ...msg,
+      kuldesiIdo: format(msg.kuldesiIdo, 'yyyy/MM/dd HH:mm:ss'),
+    }));
     return res.status(200).json({ type: 'ok', messages, you: userID, them: recipientUserID });
   } catch (err) {
     return res.status(500).json({ type: 'error', message: `Selection unsuccessful: ${err.message}` });
@@ -59,7 +75,7 @@ router.get(['/show_discussion'], async (req, res) => {
     const { user1ID, user2ID } = req.query;
     const you = await db.findUserById(user1ID);
     const them = await db.findUserById(user2ID);
-    if (you === null || them === null) {
+    if (you === null || them === null || you.felhID !== req.session.user.id) {
       return res.status(400).json({ message: 'Nem letezo felhasznalok' });
     }
     const discussion = await db.checkIfDiscussionExists(user1ID, user2ID);
@@ -67,7 +83,11 @@ router.get(['/show_discussion'], async (req, res) => {
       await db.addNewDiscussion(user1ID, user2ID);
       return res.status(200).render('cseveges', { messages: [], you, them });
     }
-    const messages = await db.findAllMessagesOfDiscussion(discussion.csevegesID);
+    let messages = await db.findAllMessagesOfDiscussion(discussion.csevegesID);
+    messages = messages.map((message) => ({
+      ...message,
+      kuldesiIdo: format(message.kuldesiIdo, 'yyyy/MM/dd HH:mm:ss'),
+    }));
     return res.status(200).render('cseveges', { messages, you, them });
   } catch (err) {
     return res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });

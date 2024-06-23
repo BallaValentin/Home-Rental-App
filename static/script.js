@@ -128,9 +128,23 @@ function sendMessage(userID) {
         const lastMessage = messages[messages.length - 1];
         if (lastMessage.kuldoID === you) {
           textArea.innerText = '';
+          const messageBoxNameDiv = document.createElement('div');
+          messageBoxNameDiv.innerText = 'Te:';
+          messageBoxNameDiv.className = 'message-box-name';
+
+          const messageTextDiv = document.createElement('div');
+          messageTextDiv.innerText = lastMessage.szoveg;
+
+          const messageBoxDateDiv = document.createElement('div');
+          messageBoxDateDiv.innerText = lastMessage.kuldesiIdo;
+          messageBoxDateDiv.className = 'message-box-date';
+
           const newMessageDiv = document.createElement('div');
           newMessageDiv.className = 'your-message-box';
-          newMessageDiv.innerText = lastMessage.szoveg;
+          newMessageDiv.appendChild(messageBoxNameDiv);
+          newMessageDiv.appendChild(messageTextDiv);
+          newMessageDiv.appendChild(messageBoxDateDiv);
+
           messageLog.appendChild(newMessageDiv);
         }
       }

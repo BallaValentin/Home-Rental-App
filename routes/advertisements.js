@@ -141,4 +141,25 @@ router.get('/advertisement_detailed', async (request, response) => {
   }
 });
 
+router.delete('/delete_advertisement', async (request, response) => {
+  const advertisementId = request.query.advertisementID;
+  console.log(request.query);
+  try {
+    const userID = request.session.user.id;
+    const user = await db.findUserById(userID);
+    if (user.szerep !== 'admin') {
+      return response.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
+    }
+    const advertisement = db.findAdvertisementById(advertisementId);
+    if (advertisement === null) {
+      return response.status(400).json({ message: 'Nincs ilyen hirdetes' });
+    }
+    await db.deletePicturesByAdvertisementID(advertisementId);
+    await db.deleteAdvertisementByID(advertisementId);
+    return response.status(200).json({ messageType: 'ok', message: 'Sikerult a hirdetest torolni' });
+  } catch (err) {
+    return response.json({ messageType: 'error', err });
+  }
+});
+
 export default router;

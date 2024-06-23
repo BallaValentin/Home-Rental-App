@@ -63,6 +63,10 @@
         <div class="advertisement-detail">Felszín terület: {{felszTerulet}}</div>
         <div class="extra-details"></div>
         <a href="/advertisement/{{hirdetesID}}">Részletek</a>
+        {{#if (eq ../user.szerep "admin")}}
+            <br>
+            <button onclick="deleteAdvertisement({{hirdetesID}})">Törlés</button>
+        {{/if}}
     </div>
     {{/each}}
 </div>

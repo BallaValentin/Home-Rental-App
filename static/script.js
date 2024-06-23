@@ -177,6 +177,22 @@ function searchUsers(userID) {
   xhr.send();
 }
 
+function deleteAdvertisement(hirdetesID) {
+  console.log(`LELE: ${hirdetesID}`);
+  const advertisement = document.getElementById(`advertisement-${hirdetesID}`);
+  const xhr = new XMLHttpRequest();
+  xhr.open('delete', `/delete_advertisement?advertisementID=${hirdetesID}`, true);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.messageType === 'ok') {
+        advertisement.parentNode.removeChild(advertisement);
+      }
+    }
+  };
+  xhr.send();
+}
+
 window.onload = () => {
   const advertisements = document.getElementsByClassName('advertisement');
   for (let i = 0; i < advertisements.length; i++) {
@@ -211,5 +227,12 @@ window.onload = () => {
   const userSearchDiv = document.getElementById('user-search');
   userSearchDiv.addEventListener('input', () => {
     searchUsers();
+  });
+
+  advertisements.forEach((advertisement) => {
+    const deleteButton = advertisement.getElementsByClassName('button')[0];
+    deleteButton.addEventListener('click', () => {
+      deleteAdvertisement();
+    });
   });
 };

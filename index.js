@@ -36,6 +36,8 @@ app.use('/show_discussions', checkAuth);
 app.use('/send_message', checkAuth);
 app.use('/show_discussion', checkAuth);
 app.use('/show_users', checkAuth);
+app.use('/search_users', checkAuth);
+app.use('/delete_advertisement', checkAuth);
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');

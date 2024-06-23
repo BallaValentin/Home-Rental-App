@@ -297,3 +297,17 @@ export const findUsersByPattern = async (pattern) => {
   const result = await request.query(query);
   return 'recordset' in result ? result.recordset : [];
 };
+
+export const deletePicturesByAdvertisementID = async (advertisementId) => {
+  const query = 'DELETE FROM kepek WHERE hirdetesID = @hirdetesID';
+  const request = pool.request().input('hirdetesID', sql.Int, advertisementId);
+  const result = await request.query(query);
+  return result;
+};
+
+export const deleteAdvertisementByID = async (advertisementId) => {
+  const query = 'DELETE FROM hirdetesek WHERE hirdetesID = @hirdetesID';
+  const request = pool.request().input('hirdetesID', sql.Int, advertisementId);
+  const result = await request.query(query);
+  return result;
+};

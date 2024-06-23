@@ -31,7 +31,7 @@ h2 {
 }
 
 
-#advertisement-uploader-button, #login-button, #logout-button, #user-messages-button{
+#advertisement-uploader-button, #login-button, #logout-button, #user-messages-button, #user-list-button{
     text-align: center;
     font-size: medium;
     font-weight: bold;
@@ -46,7 +46,7 @@ h2 {
     float: right;
 }
 
-#login-button, #logout-button, #user-messages-button{
+#login-button, #logout-button, #user-messages-button, #user-list-button{
     float: left;
 }
 
@@ -321,5 +321,22 @@ p.advertisement-info {
 
   .message-box-date {
     float: right;
+    text-align: center;
+  }
+
+  #users-table th, #users-table tr, #users-table td {
+    border: 1px solid;
+    padding: 8px;
+    text-align: center;
+  }
+
+  #users-table thead tr, #users-table thead td {
+    background-color: #9ec2cb;
+  }
+  
+  #users-table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 0 auto;
   }
   

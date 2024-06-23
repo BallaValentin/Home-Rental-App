@@ -77,7 +77,7 @@ await pool.query(
 console.log('Table exists successfully');
 
 export const findAllUsers = async () => {
-  const query = 'SELECT nev FROM felhasznalok';
+  const query = 'SELECT felhID, nev, szerep FROM felhasznalok';
   const data = await pool.query(query);
   return 'recordset' in data ? data.recordset : [];
 };
@@ -282,4 +282,11 @@ export const findAllMessagesOfDiscussion = async (discussionId) => {
   const request = pool.request().input('csevegesID', sql.Int, discussionId);
   const result = await request.query(query);
   return 'recordset' in result ? result.recordset : [];
+};
+
+export const updateUserRole = async (userId, newRole) => {
+  const query = 'UPDATE felhasznalok SET szerep = @szerep WHERE felhID = @felhID';
+  const request = pool.request().input('szerep', sql.VarChar, newRole).input('felhID', sql.Int, userId);
+  const result = await request.query(query);
+  return result;
 };

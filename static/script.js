@@ -1,64 +1,3 @@
-function validateAdvertisementForm(event) {
-  event.preventDefault();
-  const form = document.getElementById('advertisement-uploader-form');
-  const field = form.querySelectorAll('input');
-  let isCompleted = true;
-  for (let i = 0; i < field.length; i++) {
-    if (field[i].value === '') {
-      isCompleted = false;
-      break;
-    }
-  }
-
-  if (!isCompleted) {
-    alert('Nincs minden mező kitöltve!');
-    return;
-  }
-
-  let hasValidNumbers = true;
-  for (let i = 2; i < 5; ++i) {
-    if (!Number.isInteger(Number(field[i].value))) {
-      hasValidNumbers = false;
-      break;
-    } else if (parseInt(field[i].value, 10) <= 0 || parseInt(field[i].value, 10) > 1000000000) {
-      hasValidNumbers = false;
-      break;
-    }
-  }
-
-  if (!hasValidNumbers) {
-    alert('Helytelen mező!');
-  }
-}
-
-function validateImageForm(event) {
-  event.preventDefault();
-  const form = document.getElementById('image-uploader-form');
-  const field = form.querySelectorAll('input');
-  let isCompleted = true;
-  for (let i = 0; i < field.length; i++) {
-    if (field[i].value === '') {
-      isCompleted = false;
-      break;
-    }
-  }
-  if (!isCompleted) {
-    alert('Nincs minden mező kitöltve!');
-    return;
-  }
-  if (!Number.isInteger(Number(field[0].value))) {
-    alert('Helytelen mező!');
-    return;
-  }
-  if (parseInt(field[0].value, 10) <= 0 || parseInt(field[0].value, 10) > 1000000000) {
-    alert('Helytelen mező!');
-  }
-}
-
-function validateSearchForm(event) {
-  event.preventDefault();
-}
-
 function loadAdvertisementDetails(hirdetesID) {
   const advertisementDiv = document.getElementById(`advertisement-${hirdetesID}`);
   const extraDetailsDiv = advertisementDiv.querySelector('.extra-details');
@@ -154,17 +93,25 @@ function sendMessage(userID) {
   xhr.send(data);
 }
 
+function updateUserRole(userID) {
+  const selectDiv = document.getElementById(`select_${userID}`);
+  const newRole = selectDiv.value;
+  const xhr = new XMLHttpRequest();
+  xhr.open('post', '/update_role', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.type === 'ok') {
+        console.log('Sikerult frissiteni a felhasznalo szerepet');
+      }
+    }
+  };
+  const data = `userID=${encodeURIComponent(userID)}&newRole=${encodeURIComponent(newRole)}`;
+  xhr.send(data);
+}
+
 window.onload = () => {
-  const advertisementForm = document.getElementById('advertisement-uploader-form');
-  if (advertisementForm !== null) {
-    advertisementForm.addEventListener('clicked', validateAdvertisementForm);
-  }
-  const imageForm = document.getElementById('image-uploader-form');
-  if (imageForm !== null) {
-    imageForm.addEventListener('clicked', validateImageForm);
-  }
-  const searchForm = document.getElementById('advertisement-search-form');
-  searchForm.addEventListener('clicked', validateSearchForm);
   const advertisements = document.getElementsByClassName('advertisement');
   for (let i = 0; i < advertisements.length; i++) {
     advertisements[i].addEventListener('click', () => {
@@ -174,7 +121,7 @@ window.onload = () => {
   }
   const imageContainers = document.getElementsByClassName('image-container');
   for (let i = 0; i < imageContainers.length; i++) {
-    const deleteButton = imageContainers[i].getElementByTagName('button');
+    const deleteButton = imageContainers[i].getElementsByTagName('button')[0];
     deleteButton.addEventListener('click', () => {
       const kepID = imageContainers[i].id.replace('image-container-', '');
       deletePicture(kepID);
@@ -183,8 +130,16 @@ window.onload = () => {
 
   const sendMessageDiv = document.getElementById('send-message');
   console.log(sendMessageDiv);
-  const submitMessageButton = sendMessageDiv.getElementByTagName('button');
+  const submitMessageButton = sendMessageDiv.getElementsByTagName('button')[0];
   submitMessageButton.addEventListener('click', () => {
     sendMessage();
+  });
+
+  const usersTable = document.getElementById('users-table');
+  const roleSelects = usersTable.querySelectorAll('.role-select');
+  roleSelects.forEach((roleSelect) => {
+    roleSelect.addEventListener('change', () => {
+      updateUserRole();
+    });
   });
 };

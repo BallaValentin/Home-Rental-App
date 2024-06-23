@@ -84,4 +84,40 @@ router.post(['/registration-user'], express.urlencoded({ extended: true }), asyn
   }
 });
 
+router.get(['/show_users'], async (req, res) => {
+  try {
+    const userID = req.session.user.id;
+    const user = await db.findUserById(userID);
+    if (user.szerep !== 'admin') {
+      return res.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
+    }
+    const users = await db.findAllUsers();
+    return res.status(200).render('felhasznalok', { userID, users });
+  } catch (err) {
+    return res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+  }
+});
+
+router.post(['/update_role'], express.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    const userID = req.session.user.id;
+    const user = await db.findUserById(userID);
+    if (user.szerep !== 'admin') {
+      return res.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
+    }
+    const userToPromote = req.body.userID;
+    const { newRole } = req.body;
+    if ((await db.findUserById(userToPromote)) == null) {
+      return res.status(400).json({ type: 'error', message: 'Nem letezo felhasznalo' });
+    }
+    if (newRole !== 'user' && newRole !== 'admin') {
+      return res.status(400).json({ type: 'error', message: 'Helytelen szerep' });
+    }
+    await db.updateUserRole(userToPromote, newRole);
+    return res.status(200).json({ type: 'ok', message: 'Sikerult a felhasznalo jogait frissiteni' });
+  } catch (err) {
+    return res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+  }
+});
+
 export default router;

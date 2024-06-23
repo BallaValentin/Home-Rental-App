@@ -1,0 +1,29 @@
+<h1>Felhasználók listája</h1>
+
+<table id="users-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Név</th>
+      <th>Szerep</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+      <tr>
+        <td>{{felhID}}</td>
+        <td>{{nev}}</td>
+        <td>
+          {{#if (eq felhID ../userID)}}
+            {{szerep}}
+          {{else}}
+            <select id="select_{{felhID}}" class="role-select" onchange="updateUserRole({{felhID}})">
+                <option value="admin" {{#if (eq szerep 'admin')}}selected{{/if}}>admin</option>
+                <option value="user" {{#if (eq szerep 'user')}}selected{{/if}}>user</option>
+            </select>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

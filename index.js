@@ -35,6 +35,7 @@ app.use('/delete_picture', checkAuth);
 app.use('/show_discussions', checkAuth);
 app.use('/send_message', checkAuth);
 app.use('/show_discussion', checkAuth);
+app.use('/show_users', checkAuth);
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');

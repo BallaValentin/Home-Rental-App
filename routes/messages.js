@@ -18,7 +18,7 @@ router.get(['/show_discussions'], async (req, res) => {
         if (userID === discussion.felh1ID) {
           you = await db.findUserById(discussion.felh1ID);
           them = await db.findUserById(discussion.felh2ID);
-        } else {
+        } else if (userID === discussion.felh2ID) {
           you = await db.findUserById(discussion.felh2ID);
           them = await db.findUserById(discussion.felh1ID);
         }
@@ -30,14 +30,16 @@ router.get(['/show_discussions'], async (req, res) => {
     );
     return res.status(200).render('csevegesek', { discussions: latestMessages });
   } catch (err) {
-    return res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+    return res.status(500).json({ message: `Showing discussions unsuccessfull: ${err.message}` });
   }
 });
 
 router.post(['/send_message'], express.urlencoded({ extended: true }), async (req, res) => {
   try {
     const userID = req.session.user.id;
+    console.log(`LOLA ${userID}`);
     const { message, recipientUserID } = req.body;
+    console.log(`LULA ${recipientUserID}`);
     if (!recipientUserID || !message) {
       return res.status(400).json({ message: 'Hianyzo form adatok.' });
     }
@@ -52,7 +54,7 @@ router.post(['/send_message'], express.urlencoded({ extended: true }), async (re
       text: message,
     };
     let discussion = await db.checkIfDiscussionExists(userID, recipientUserID);
-    if (discussion != null) {
+    if (discussion !== null) {
       await db.addNewMessageToDiscussion(discussion.csevegesID, newMessage);
     } else {
       await db.addNewDiscussion(userID, recipientUserID);

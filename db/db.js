@@ -250,7 +250,7 @@ export const selectAllMessagesByDiscussionId = async (discussionId) => {
 export const checkIfDiscussionExists = async (user1Id, user2Id) => {
   const query = `SELECT * FROM csevegesek WHERE
                   (felh1ID = @felh1ID AND felh2ID = @felh2ID)
-                  OR (felh1ID = @felh2ID AND felh1ID = @felh2ID)`;
+                  OR (felh1ID = @felh2ID AND felh2ID = @felh1ID)`;
   const request = pool.request().input('felh1ID', sql.Int, user1Id).input('felh2ID', sql.Int, user2Id);
   const result = await request.query(query);
   return result.recordset.length > 0 ? result.recordset[0] : null;

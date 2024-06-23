@@ -66,7 +66,7 @@ function sendMessage(userID) {
         const { messages, you } = response;
         const lastMessage = messages[messages.length - 1];
         if (lastMessage.kuldoID === you) {
-          textArea.innerText = '';
+          textArea.value = '';
           const messageBoxNameDiv = document.createElement('div');
           messageBoxNameDiv.innerText = 'Te:';
           messageBoxNameDiv.className = 'message-box-name';

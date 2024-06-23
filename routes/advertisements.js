@@ -162,4 +162,22 @@ router.delete('/delete_advertisement', async (request, response) => {
   }
 });
 
+router.get('/get_cities', async (request, response) => {
+  try {
+    const cities = await db.findCities();
+    return response.json({ type: 'ok', cities });
+  } catch (err) {
+    return response.json({ messageType: 'error', err });
+  }
+});
+
+router.get('/get_city_quarters', async (request, response) => {
+  try {
+    const quarters = await db.findCityQuarters();
+    return response.json({ type: 'ok', quarters });
+  } catch (err) {
+    return response.json({ messageType: 'error', err });
+  }
+});
+
 export default router;

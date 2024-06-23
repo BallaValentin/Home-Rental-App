@@ -5,9 +5,11 @@
     <div id="menu-panel">
         <form action="/submit_advertisement_upload" id="advertisement-uploader-form" method="post">
             <p class="p-form">Város:</p>
-            <input class="my-input" type="text" name="city"><br>
+            <input class="my-input" type="text" name="city" list="city-datalist"><br>
+            <datalist id="city-datalist"></datalist>
             <p class="p-form">Városnegyed:</p>
-            <input class="my-input" type="text" name="city_quarter"><br>
+            <input class="my-input" type="text" name="city_quarter" list="city-quarter-datalist"><br>
+            <datalist id="city-quarter-datalist"></datalist>
             <p class="p-form">Felszinterület:</p>
             <input class="my-input" type="text" name="surface_area"><br>
             <p class="p-form">Ár:</p>

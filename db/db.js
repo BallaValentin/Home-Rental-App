@@ -311,3 +311,17 @@ export const deleteAdvertisementByID = async (advertisementId) => {
   const result = await request.query(query);
   return result;
 };
+
+export const findCities = async () => {
+  const query = 'SELECT DISTINCT varosnev FROM hirdetesek';
+  const request = pool.request();
+  const result = await request.query(query);
+  return 'recordset' in result ? result.recordset : [];
+};
+
+export const findCityQuarters = async () => {
+  const query = 'SELECT DISTINCT negyednev FROM hirdetesek';
+  const request = pool.request();
+  const result = await request.query(query);
+  return 'recordset' in result ? result.recordset : [];
+};

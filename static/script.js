@@ -193,6 +193,46 @@ function deleteAdvertisement(hirdetesID) {
   xhr.send();
 }
 
+function addCities() {
+  const cityDatalistDiv = document.getElementById('city-datalist');
+  const xhr = new XMLHttpRequest();
+  xhr.open('get', '/get_cities', true);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.type === 'ok') {
+        cityDatalistDiv.innerHTML = '';
+        response.cities.forEach((city) => {
+          const option = document.createElement('option');
+          option.value = city.varosnev;
+          cityDatalistDiv.appendChild(option);
+        });
+      }
+    }
+  };
+  xhr.send();
+}
+
+function addCityQuarters() {
+  const cityDatalistDiv = document.getElementById('city-quarter-datalist');
+  const xhr = new XMLHttpRequest();
+  xhr.open('get', '/get_city_quarters', true);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.type === 'ok') {
+        cityDatalistDiv.innerHTML = '';
+        response.quarters.forEach((quarter) => {
+          const option = document.createElement('option');
+          option.value = quarter.negyednev;
+          cityDatalistDiv.appendChild(option);
+        });
+      }
+    }
+  };
+  xhr.send();
+}
+
 window.onload = () => {
   const advertisements = document.getElementsByClassName('advertisement');
   for (let i = 0; i < advertisements.length; i++) {
@@ -241,5 +281,15 @@ window.onload = () => {
         deleteAdvertisement();
       });
     }
+  }
+
+  const cityDatalistDiv = document.getElementById('city-datalist');
+  if (cityDatalistDiv) {
+    addCities();
+  }
+
+  const cityQuarterDatalistDiv = document.getElementById('city-quarter-datalist');
+  if (cityQuarterDatalistDiv) {
+    addCityQuarters();
   }
 };

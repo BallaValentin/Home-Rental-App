@@ -211,28 +211,35 @@ window.onload = () => {
   }
 
   const sendMessageDiv = document.getElementById('send-message');
-  console.log(sendMessageDiv);
-  const submitMessageButton = sendMessageDiv.getElementsByTagName('button')[0];
-  submitMessageButton.addEventListener('click', () => {
-    sendMessage();
-  });
+  if (sendMessageDiv) {
+    const submitMessageButton = sendMessageDiv.getElementsByTagName('button')[0];
+    submitMessageButton.addEventListener('click', () => {
+      sendMessage();
+    });
+  }
 
   const usersTable = document.getElementById('users-table');
-  const roleSelects = usersTable.querySelectorAll('.role-select');
-  roleSelects.forEach((roleSelect) => {
-    roleSelect.addEventListener('change', () => {
-      updateUserRole();
+  if (usersTable) {
+    const roleSelects = usersTable.querySelectorAll('.role-select');
+    roleSelects.forEach((roleSelect) => {
+      roleSelect.addEventListener('change', () => {
+        updateUserRole();
+      });
     });
-  });
+  }
   const userSearchDiv = document.getElementById('user-search');
-  userSearchDiv.addEventListener('input', () => {
-    searchUsers();
-  });
-
-  advertisements.forEach((advertisement) => {
-    const deleteButton = advertisement.getElementsByClassName('button')[0];
-    deleteButton.addEventListener('click', () => {
-      deleteAdvertisement();
+  if (userSearchDiv) {
+    userSearchDiv.addEventListener('input', () => {
+      searchUsers();
     });
-  });
+  }
+
+  for (let i = 0; i < advertisements.length; i++) {
+    const deleteButton = advertisements[i].getElementsByClassName('button')[0];
+    if (deleteButton) {
+      deleteButton.addEventListener('click', () => {
+        deleteAdvertisement();
+      });
+    }
+  }
 };

@@ -1,0 +1,20 @@
+<h1>{{them.nev}}</h1>
+
+<div id="message-log">
+    {{#each messages}}
+        {{#if (eq kuldoID ../you.felhID)}}
+        <div class = 'your-message-box'>
+            {{szoveg}}
+        </div>
+        {{else}}
+        <div class = 'his-message-box'>
+            {{szoveg}}
+        </div>
+        {{/if}}
+    {{/each}}
+</div> 
+
+<div id="send-message">
+    <textarea id="textarea" name="textarea" rows="4" cols="100">Ird ide az üzenetedet...</textarea><br>
+    <button onclick="sendMessage({{them.felhID}})">Küldés</button>
+</div>

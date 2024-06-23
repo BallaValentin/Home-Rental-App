@@ -29,18 +29,21 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
   if (request.file) {
     console.log(`picture: ${request.file.originalname}`);
   }
-  if (!request.file) {
-    const advertisement = await db.findAdvertisementById(advertisementId);
-    const pictures = await db.findPhotosByAdvertisementId(advertisementId);
-    const owner = await db.findOwnerByAdvertisementId(advertisementId);
-    return response
-      .status(400)
-      .render('reszletek', { advertisement, pictures, message: 'Nincs kép megadva.', owner: owner.felhID });
-  }
   const owner = await db.findOwnerByAdvertisementId(advertisementId);
   const userID = request.session.user.id;
   if (userID !== owner.felhID) {
     return response.status(401).json({ message: 'Nincs jogosultságod ehhez' });
+  }
+  if (!request.file) {
+    const advertisement = await db.findAdvertisementById(advertisementId);
+    const pictures = await db.findPhotosByAdvertisementId(advertisementId);
+    return response.status(400).render('reszletek', {
+      advertisement,
+      pictures,
+      message: 'Nincs kép megadva.',
+      owner: owner.felhID,
+      canEditAdvertisement: true,
+    });
   }
 
   const filePath = `/pictures/${request.file.filename}`;

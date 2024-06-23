@@ -4,7 +4,7 @@
 <p class="advertisement-info">Felszín terület: {{advertisement.felszTerulet}}</p>
 <p class="advertisement-info">Feltöltés dátuma: {{advertisement.feltDatum}}</p>
 
-{{#if owner}}
+{{#if canEditAdvertisement}}
   <h2>Fényképek feltöltése</h2>
   <form action="/upload_picture" id="picture_uploader_form", method="post" enctype="multipart/form-data">
     <input type="file" name="picture">
@@ -19,7 +19,7 @@
     {{#each pictures}}
       <div id="image-container-{{kepID}}" class="image-container">
       <img src="{{elUtvonal}}" alt="Fénykép">
-      {{#if ../owner}}
+      {{#if ../canEditAdvertisement}}
         <button onclick="deletePicture('{{kepID}}')">Törlés</button>
       {{/if}}
     </div>
@@ -27,5 +27,9 @@
     </div>
 {{else}}
   <div class="image-placeholder">Nincsenek fényképek.</div>
+{{/if}}
+
+{{#if canSendMessage}}
+  <a href="/show_discussion?user1ID={{userID}}&user2ID={{owner.felhID}}">[Üzenet küldése {{owner.nev}}-nek]</a>
 {{/if}}
 <p class="error-message">{{message}}</p>

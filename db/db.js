@@ -17,6 +17,7 @@ await pool.query(
     CREATE TABLE felhasznalok (
       felhID INT PRIMARY KEY IDENTITY(5, 5),
       nev varchar(20) unique,
+      szerep varchar(20),
       hash varchar(255),
       salt varchar(255),
     )
@@ -51,6 +52,30 @@ await pool.query(
 );
 console.log('Table exists successfully');
 
+await pool.query(
+  `IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='csevegesek' and xtype='U')
+    CREATE TABLE csevegesek (
+      csevegesID INT PRIMARY KEY IDENTITY(1, 1),
+      felh1ID INT FOREIGN KEY REFERENCES felhasznalok(felhID),
+      felh2ID INT FOREIGN KEY REFERENCES felhasznalok(felhID),
+    )
+    `,
+);
+console.log('Table exists successfully');
+
+await pool.query(
+  `IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='uzenetek' and xtype='U')
+    CREATE TABLE uzenetek (
+      uzenetID INT PRIMARY KEY IDENTITY(1, 1),
+      csevegesID INT FOREIGN KEY REFERENCES csevegesek(csevegesID),
+      kuldoID INT FOREIGN KEY REFERENCES felhasznalok(felhID),
+      szoveg VARCHAR(1000),
+      kuldesiIdo DATETIME,
+    )
+    `,
+);
+console.log('Table exists successfully');
+
 export const findAllUsers = async () => {
   const query = 'SELECT nev FROM felhasznalok';
   const data = await pool.query(query);
@@ -66,8 +91,8 @@ export const findUserIdByName = async (name) => {
 };
 
 export const insertUser = async (user) => {
-  const query = `INSERT INTO felhasznalok (nev, hash, salt)
-                VALUES (@nev, @hash, @salt)`;
+  const query = `INSERT INTO felhasznalok (nev, hash, salt, szerep)
+                VALUES (@nev, @hash, @salt, 'user')`;
   const request = pool
     .request()
     .input('nev', sql.VarChar, user.username)
@@ -82,6 +107,15 @@ export const findUserByName = async (username) => {
   SELECT * FROM felhasznalok WHERE nev = @nev
 `;
   const request = pool.request().input('nev', sql.VarChar, username);
+  const result = await request.query(query);
+  return result.recordset.length > 0 ? result.recordset[0] : null;
+};
+
+export const findUserById = async (userId) => {
+  const query = `
+  SELECT * FROM felhasznalok WHERE felhID = @felhID
+`;
+  const request = pool.request().input('felhID', sql.Int, userId);
   const result = await request.query(query);
   return result.recordset.length > 0 ? result.recordset[0] : null;
 };
@@ -187,4 +221,65 @@ export const findOwnerByPictureId = async (pictureId) => {
   const result = await request.query(query);
   const advertisementId = result.recordset.length > 0 ? result.recordset[0].hirdetesID : null;
   return findOwnerByAdvertisementId(advertisementId);
+};
+
+export const findDiscussionsByUserId = async (userId) => {
+  const query = 'SELECT * FROM csevegesek WHERE felh1ID = @felh1ID OR felh2ID = @felh2ID';
+  const request = pool.request().input('felh1ID', sql.Int, userId).input('felh2ID', sql.Int, userId);
+  const result = await request.query(query);
+  return 'recordset' in result ? result.recordset : [];
+};
+
+export const selectLatestMessageByDiscussionId = async (discussionId) => {
+  const query = `SELECT * FROM uzenetek WHERE csevegesID = @csevegesID AND  kuldesiIdo = (
+      SELECT MAX(kuldesiIdo) FROM uzenetek
+      WHERE csevegesID = @csevegesID
+  )`;
+  const request = pool.request().input('csevegesID', sql.Int, discussionId);
+  const result = await request.query(query);
+  return result.recordset.length > 0 ? result.recordset[0] : null;
+};
+
+export const selectAllMessagesByDiscussionId = async (discussionId) => {
+  const query = 'SELECT * FROM uzenetek WHERE csevegesID = @csevegesID ORDER BY kuldesiIdo';
+  const request = pool.request().input('csevegesID', sql.Int, discussionId);
+  const result = await request.query(query);
+  return 'recordset' in result ? result.recordset : [];
+};
+
+export const checkIfDiscussionExists = async (user1Id, user2Id) => {
+  const query = `SELECT * FROM csevegesek WHERE
+                  (felh1ID = @felh1ID AND felh2ID = @felh2ID)
+                  OR (felh1ID = @felh2ID AND felh1ID = @felh2ID)`;
+  const request = pool.request().input('felh1ID', sql.Int, user1Id).input('felh2ID', sql.Int, user2Id);
+  const result = await request.query(query);
+  return result.recordset.length > 0 ? result.recordset[0] : null;
+};
+
+export const addNewDiscussion = async (user1Id, user2Id) => {
+  const query = `INSERT INTO csevegesek(felh1ID, felh2ID)
+                  VALUES (@felh1ID, @felh2ID)`;
+  const request = pool.request().input('felh1ID', sql.Int, user1Id).input('felh2ID', sql.Int, user2Id);
+  const result = await request.query(query);
+  return result;
+};
+
+export const addNewMessageToDiscussion = async (discussionId, newMessage) => {
+  const query = `INSERT INTO uzenetek(csevegesID, kuldoID, szoveg, kuldesiIdo)
+                  VALUES (@csevegesID, @kuldoID, @szoveg, GETDATE())`;
+  const request = pool
+    .request()
+    .input('csevegesID', sql.Int, discussionId)
+    .input('kuldoID', sql.Int, newMessage.userID)
+    .input('szoveg', sql.VarChar, newMessage.text);
+  const result = await request.query(query);
+  console.log(result);
+  return result;
+};
+
+export const findAllMessagesOfDiscussion = async (discussionId) => {
+  const query = 'SELECT * FROM uzenetek WHERE csevegesID = @csevegesID ORDER BY kuldesiIdo';
+  const request = pool.request().input('csevegesID', sql.Int, discussionId);
+  const result = await request.query(query);
+  return 'recordset' in result ? result.recordset : [];
 };

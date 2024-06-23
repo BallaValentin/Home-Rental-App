@@ -31,7 +31,7 @@ h2 {
 }
 
 
-#advertisement-uploader-button, #login-button, #logout-button{
+#advertisement-uploader-button, #login-button, #logout-button, #user-messages-button{
     text-align: center;
     font-size: medium;
     font-weight: bold;
@@ -46,7 +46,7 @@ h2 {
     float: right;
 }
 
-#login-button, #logout-button{
+#login-button, #logout-button, #user-messages-button{
     float: left;
 }
 

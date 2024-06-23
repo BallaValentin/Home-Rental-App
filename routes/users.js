@@ -48,6 +48,7 @@ router.post(['/login-user'], express.urlencoded({ extended: true }), async (req,
     req.session.user = {
       id: user.felhID,
       nev: user.nev,
+      szerep: user.szerep,
     };
     return res.redirect('index');
   } catch (err) {

@@ -69,17 +69,14 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
     upload_date: request.body.upload_date,
   };
 
-  const felhasznalo = await db.findAllUsers();
   const returnValue = formValidation(formFields);
   if (returnValue === -1) {
     return response
       .status(400)
-      .render('hirdetes', { users: felhasznalo, message: 'Nincs minden mező kitöltve.', user: request.session.user });
+      .render('hirdetes', { message: 'Nincs minden mező kitöltve.', user: request.session.user });
   }
   if (returnValue === -2) {
-    return response
-      .status(400)
-      .render('hirdetes', { users: felhasznalo, message: 'Helytelen mezők.', user: request.session.user });
+    return response.status(400).render('hirdetes', { message: 'Helytelen mezők.', user: request.session.user });
   }
   await db.insertAdvertisement(formFields);
   const advertisements = await db.getAllAdvertisements();
@@ -108,11 +105,30 @@ router.get('/advertisement/:id', async (request, response) => {
   const advertisementId = request.params.id;
   const advertisement = await db.findAdvertisementById(advertisementId);
   const pictures = await db.findPhotosByAdvertisementId(advertisementId);
-  const owner = await db.findOwnerByAdvertisementId(advertisementId);
-  if (request.session.user && owner.felhID === request.session.user.id) {
-    return response.status(200).render('reszletek', { advertisement, pictures, owner: owner.felhID });
-  }
-  return response.status(200).render('reszletek', { advertisement, pictures });
+  const ownerID = await db.findOwnerByAdvertisementId(advertisementId);
+  const owner = await db.findUserById(ownerID.felhID);
+  if (!request.session.user)
+    return response.status(200).render('reszletek', {
+      advertisement,
+      pictures,
+      owner,
+      userID: null,
+      canSendMessage: false,
+      canEditAdvertisement: false,
+    });
+  const userID = request.session.user.id;
+  if (userID === owner.felhID)
+    return response.status(200).render('reszletek', {
+      advertisement,
+      pictures,
+      owner,
+      userID,
+      canSendMessage: false,
+      canEditAdvertisement: true,
+    });
+  return response
+    .status(200)
+    .render('reszletek', { advertisement, pictures, owner, userID, canSendMessage: true, canEditAdvertisement: false });
 });
 
 router.get('/advertisement_detailed', async (request, response) => {

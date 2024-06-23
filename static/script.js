@@ -75,7 +75,7 @@ function loadAdvertisementDetails(hirdetesID) {
         }
         const szobSzama = response.advertisement.szobakSzama;
         const feltoltesDatuma = response.advertisement.feltDatum;
-        extraDetailsDiv.innerHTML = `Szobák száma: ${szobSzama} <br>Feltöltés dátuma: ${feltoltesDatuma}`;
+        extraDetailsDiv.innerText = `Szobák száma: ${szobSzama}\nFeltöltés dátuma: ${feltoltesDatuma}`;
         extraDetailsDiv.style.display = 'block';
       } else if (!errorDiv) {
         errorDiv = document.createElement('p');
@@ -113,6 +113,33 @@ function deletePicture(kepID) {
   xhr.send();
 }
 
+function sendMessage(userID) {
+  const sendMessageDiv = document.getElementById('send-message');
+  const textArea = sendMessageDiv.getElementsByTagName('textarea')[0];
+  const messageLog = document.getElementById('message-log');
+  const xhr = new XMLHttpRequest();
+  xhr.open('post', '/send_message', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.type === 'ok') {
+        const { messages, you } = response;
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage.kuldoID === you) {
+          textArea.innerText = '';
+          const newMessageDiv = document.createElement('div');
+          newMessageDiv.className = 'your-message-box';
+          newMessageDiv.innerText = lastMessage.szoveg;
+          messageLog.appendChild(newMessageDiv);
+        }
+      }
+    }
+  };
+  const data = `recipientUserID=${encodeURIComponent(userID)}&message=${encodeURIComponent(textArea.value)}`;
+  xhr.send(data);
+}
+
 window.onload = () => {
   const advertisementForm = document.getElementById('advertisement-uploader-form');
   if (advertisementForm !== null) {
@@ -139,4 +166,11 @@ window.onload = () => {
       deletePicture(kepID);
     });
   }
+
+  const sendMessageDiv = document.getElementById('send-message');
+  console.log(sendMessageDiv);
+  const submitMessageButton = sendMessageDiv.getElementByTagName('button');
+  submitMessageButton.addEventListener('click', () => {
+    sendMessage();
+  });
 };

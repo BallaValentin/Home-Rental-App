@@ -2,12 +2,16 @@ import express from 'express';
 import path from 'path';
 import { engine } from 'express-handlebars';
 import session from 'express-session';
+import Handlebars from 'handlebars';
 import advertisementRoutes from './routes/advertisements.js';
 import pictureRouter from './routes/pictures.js';
 import userRouter from './routes/users.js';
+import messageRouter from './routes/messages.js';
 import checkAuth from './middleware/checkauth.js';
 
 const app = express();
+
+Handlebars.registerHelper('eq', (a, b) => a === b);
 
 // statikus állományok (pl. CSS/kliensoldali JS)
 app.use(express.static(path.join(process.cwd(), 'static')));
@@ -28,6 +32,9 @@ app.use('/submit_advertisement_upload', checkAuth);
 app.use('/hirdetes', checkAuth);
 app.use('/upload_picture', checkAuth);
 app.use('/delete_picture', checkAuth);
+app.use('/show_discussions', checkAuth);
+app.use('/send_message', checkAuth);
+app.use('/show_discussion', checkAuth);
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');
@@ -46,6 +53,7 @@ app.engine(
 app.use('/', advertisementRoutes);
 app.use('/', pictureRouter);
 app.use('/', userRouter);
+app.use('/', messageRouter);
 
 app.get('/index', (req, res) => {
   res.render('index');

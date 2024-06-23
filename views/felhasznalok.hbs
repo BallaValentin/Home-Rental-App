@@ -1,5 +1,7 @@
 <h1>Felhasználók listája</h1>
 
+<textarea id="user-search" name="textarea" oninput="searchUsers({{userID}})" rows="1" cols="100" placeholder="Felhasználók keresése..."></textarea><br>
+
 <table id="users-table">
   <thead>
     <tr>
@@ -8,7 +10,7 @@
       <th>Szerep</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="users-table-body">
     {{#each users}}
       <tr>
         <td>{{felhID}}</td>

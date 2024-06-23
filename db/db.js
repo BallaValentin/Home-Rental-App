@@ -290,3 +290,10 @@ export const updateUserRole = async (userId, newRole) => {
   const result = await request.query(query);
   return result;
 };
+
+export const findUsersByPattern = async (pattern) => {
+  const query = 'SELECT felhID, nev, szerep FROM felhasznalok WHERE nev LIKE @pattern';
+  const request = pool.request().input('pattern', sql.VarChar, `${pattern}%`);
+  const result = await request.query(query);
+  return 'recordset' in result ? result.recordset : [];
+};

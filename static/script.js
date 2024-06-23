@@ -111,6 +111,72 @@ function updateUserRole(userID) {
   xhr.send(data);
 }
 
+function updateTable(users, userID) {
+  const tableBody = document.getElementById('users-table-body');
+  tableBody.innerHTML = '';
+
+  users.forEach((user) => {
+    const row = document.createElement('tr');
+
+    const idCell = document.createElement('td');
+    idCell.textContent = user.felhID;
+    row.appendChild(idCell);
+
+    const nameCell = document.createElement('td');
+    nameCell.textContent = user.nev;
+    row.appendChild(nameCell);
+
+    const roleCell = document.createElement('td');
+
+    if (userID !== user.felhID) {
+      const select = document.createElement('select');
+      select.id = `select_${user.felhID}`;
+      select.setAttribute('data-user-id', user.felhID);
+      select.onchange = () => updateUserRole(user.felhID);
+
+      const adminOption = document.createElement('option');
+      adminOption.value = 'admin';
+      adminOption.textContent = 'admin';
+      if (user.szerep === 'admin') {
+        adminOption.selected = true;
+      }
+
+      const userOption = document.createElement('option');
+      userOption.value = 'user';
+      userOption.textContent = 'user';
+      if (user.szerep === 'user') {
+        userOption.selected = true;
+      }
+
+      select.appendChild(adminOption);
+      select.appendChild(userOption);
+      roleCell.appendChild(select);
+    } else {
+      roleCell.textContent = user.szerep;
+    }
+
+    row.appendChild(roleCell);
+    tableBody.appendChild(row);
+  });
+}
+
+function searchUsers(userID) {
+  const userSearchDiv = document.getElementById('user-search');
+  const pattern = userSearchDiv.value;
+  const xhr = new XMLHttpRequest();
+  xhr.open('get', `/search_users?pattern=${pattern}`, true);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      if (response.type === 'ok') {
+        console.log(response.users);
+        updateTable(response.users, userID);
+      }
+    }
+  };
+  xhr.send();
+}
+
 window.onload = () => {
   const advertisements = document.getElementsByClassName('advertisement');
   for (let i = 0; i < advertisements.length; i++) {
@@ -141,5 +207,9 @@ window.onload = () => {
     roleSelect.addEventListener('change', () => {
       updateUserRole();
     });
+  });
+  const userSearchDiv = document.getElementById('user-search');
+  userSearchDiv.addEventListener('input', () => {
+    searchUsers();
   });
 };

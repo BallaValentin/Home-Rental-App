@@ -120,4 +120,19 @@ router.post(['/update_role'], express.urlencoded({ extended: true }), async (req
   }
 });
 
+router.get(['/search_users'], async (req, res) => {
+  try {
+    const userID = req.session.user.id;
+    const user = await db.findUserById(userID);
+    if (user.szerep !== 'admin') {
+      return res.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
+    }
+    const { pattern } = req.query;
+    const users = await db.findUsersByPattern(pattern);
+    return res.status(200).json({ type: 'ok', users });
+  } catch (err) {
+    return res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
+  }
+});
+
 export default router;

@@ -12,14 +12,19 @@ function loadAdvertisementDetails(advertisementID) {
         if (errorDiv) {
           advertisementDiv.removeChild(errorDiv);
         }
-        const noRooms = response.advertisement.szobakSzama;
-        const feltoltesDatuma = response.advertisement.uploadDate;
-        extraDetailsDiv.innerText = `Szobák száma: ${noRooms}\nFeltöltés dátuma: ${feltoltesDatuma}`;
-        extraDetailsDiv.style.display = 'block';
+        const { noRooms } = response.advertisement;
+        const { uploadDate } = response.advertisement;
+        if (!extraDetailsDiv.innerText) {
+          extraDetailsDiv.innerText = `Number of rooms: ${noRooms}\nUpload date: ${uploadDate}`;
+          extraDetailsDiv.style.display = 'block';
+        } else {
+          extraDetailsDiv.innerText = null;
+          extraDetailsDiv.style.display = 'none';
+        }
       } else if (!errorDiv) {
         errorDiv = document.createElement('p');
         errorDiv.className = 'error-message';
-        errorDiv.innerText = 'Hiba a lakáshirdetés részleteinek betöltésekor.';
+        errorDiv.innerText = 'Failed to load the details of advertisment.';
         document.getElementById(`advertisement-${advertisementID}`).appendChild(errorDiv);
       }
     }

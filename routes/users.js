@@ -101,20 +101,21 @@ router.get(['/show_users'], async (req, res) => {
 router.post(['/update_role'], express.urlencoded({ extended: true }), async (req, res) => {
   try {
     const userID = req.session.user.id;
-    const user = await db.findUserById(userID);
-    if (user.szerep !== 'admin') {
-      return res.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
-    }
     const userToPromote = req.body.userID;
+    const user = await db.findUserById(userID);
+    if (user.role !== 'admin' || String(userID) === String(userToPromote)) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     const { newRole } = req.body;
     if ((await db.findUserById(userToPromote)) == null) {
-      return res.status(400).json({ type: 'error', message: 'Nem letezo felhasznalo' });
+      return res.status(400).json({ type: 'error', message: 'User not found' });
     }
     if (newRole !== 'user' && newRole !== 'admin') {
-      return res.status(400).json({ type: 'error', message: 'Helytelen szerep' });
+      return res.status(400).json({ type: 'error', message: 'Invalid role' });
     }
     await db.updateUserRole(userToPromote, newRole);
-    return res.status(200).json({ type: 'ok', message: 'Sikerult a felhasznalo jogait frissiteni' });
+    return res.status(200).json({ type: 'ok', message: 'The role of user has been updated' });
   } catch (err) {
     return res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }
@@ -124,8 +125,8 @@ router.get(['/search_users'], async (req, res) => {
   try {
     const userID = req.session.user.id;
     const user = await db.findUserById(userID);
-    if (user.szerep !== 'admin') {
-      return res.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
+    if (user.role !== 'admin') {
+      return res.status(401).json({ message: 'Unauthorized' });
     }
     const { pattern } = req.query;
     const users = await db.findUsersByPattern(pattern);

@@ -1,6 +1,6 @@
 <h1>List of Users</h1>
 
-<textarea id="user-search" name="textarea" oninput="searchUsers({{currentUserID}})" rows="1" cols="100" placeholder="Felhasználók keresése..."></textarea><br>
+<textarea id="user-search" name="textarea" oninput="searchUsers({{userID}})" rows="1" cols="100" placeholder="Search users..."></textarea><br>
 
 <table id="users-table">
   <thead>
@@ -14,9 +14,9 @@
     {{#each users}}
       <tr>
         <td>{{userID}}</td>
-        <td>{{nev}}</td>
+        <td>{{name}}</td>
         <td>
-          {{#if (eq userID ../currentUserID)}}
+          {{#if (eq userID ../userID)}}
             {{role}}
           {{else}}
             <select id="select_{{userID}}" class="role-select" onchange="updateUserRole({{userID}})">

@@ -122,6 +122,7 @@ function updateTable(users, userID) {
   tableBody.innerHTML = '';
 
   users.forEach((user) => {
+    console.log('userID:', userID, 'user.userID:', user.userID, '!==', String(userID) !== String(user.userID));
     const row = document.createElement('tr');
 
     const idCell = document.createElement('td');
@@ -129,12 +130,12 @@ function updateTable(users, userID) {
     row.appendChild(idCell);
 
     const nameCell = document.createElement('td');
-    nameCell.textContent = user.nev;
+    nameCell.textContent = user.name;
     row.appendChild(nameCell);
 
     const roleCell = document.createElement('td');
 
-    if (userID !== user.userID) {
+    if (String(userID) !== String(user.userID)) {
       const select = document.createElement('select');
       select.id = `select_${user.userID}`;
       select.setAttribute('data-user-id', user.userID);
@@ -245,21 +246,5 @@ window.loadAdvertisementDetails = loadAdvertisementDetails;
 window.deleteAdvertisement = deleteAdvertisement;
 window.addCities = addCities;
 window.addCityQuarters = addCityQuarters;
-
-window.onload = () => {
-  const usersTable = document.getElementById('users-table');
-  if (usersTable) {
-    const roleSelects = usersTable.querySelectorAll('.role-select');
-    roleSelects.forEach((roleSelect) => {
-      roleSelect.addEventListener('change', () => {
-        updateUserRole();
-      });
-    });
-  }
-  const userSearchDiv = document.getElementById('user-search');
-  if (userSearchDiv) {
-    userSearchDiv.addEventListener('input', () => {
-      searchUsers();
-    });
-  }
-};
+window.updateUserRole = updateUserRole;
+window.searchUsers = searchUsers;

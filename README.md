@@ -1,6 +1,6 @@
-# Home Rent Application
+# Home Rental App
 
-The **Home Rent Application** is a full-stack project that allows users to advertise and rent houses. Users can create property listings, browse available homes, and send messages to each other through the platform.  
+The **Home Rental App** is a full-stack project that allows users to advertise and rent houses. Users can create property listings, browse available homes, and send messages to each other through the platform.  
 
 ## Features
 

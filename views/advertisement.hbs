@@ -1,24 +1,24 @@
 <header>
-    Lakáshirdetések
+    Advertisments
 </header>
 <div id="panel-container">
     <div id="menu-panel">
         <form action="/submit_advertisement_upload" id="advertisement-uploader-form" method="post">
-            <p class="p-form">Város:</p>
+            <p class="p-form">City:</p>
             <input class="my-input" type="text" name="city" list="city-datalist"><br>
             <datalist id="city-datalist"></datalist>
-            <p class="p-form">Városnegyed:</p>
+            <p class="p-form">City quarter:</p>
             <input class="my-input" type="text" name="city_quarter" list="city-quarter-datalist"><br>
             <datalist id="city-quarter-datalist"></datalist>
-            <p class="p-form">Felszinterület:</p>
+            <p class="p-form">Surface area:</p>
             <input class="my-input" type="text" name="surface_area"><br>
-            <p class="p-form">Ár:</p>
+            <p class="p-form">Price:</p>
             <input class="my-input" type="text" name="price"><br>
-            <p class="p-form">Szobák száma:</p>
+            <p class="p-form">Number of rooms:</p>
             <input class="my-input" type="text" name="number_of_rooms"><br><br>
-            <label class="label-form" for="upload_date">Feltöltés dátuma:</label>
+            <label class="label-form" for="upload_date">Upload date:</label>
             <input class="my-input" type="date" name="upload_date"><br><br>
-            <button class="my-submit" type="submit">Lakáshirdetés feltöltése</button>
+            <button class="my-submit" type="submit">Upload advertisement</button>
         </form>
         <p class="error-message">{{message}}</p>
     </div>

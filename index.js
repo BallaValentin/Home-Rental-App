@@ -13,7 +13,7 @@ const app = express();
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
 
-// statikus állományok (pl. CSS/kliensoldali JS)
+// static files (pl. CSS/client-side JS)
 app.use(express.static(path.join(process.cwd(), 'static')));
 app.use('/pictures', express.static(path.join(process.cwd(), 'pictures')));
 app.use(
@@ -29,7 +29,7 @@ app.use(
 );
 
 app.use('/submit_advertisement_upload', checkAuth);
-app.use('/hirdetes', checkAuth);
+app.use('/advertisement', checkAuth);
 app.use('/upload_picture', checkAuth);
 app.use('/delete_picture', checkAuth);
 app.use('/show_discussions', checkAuth);

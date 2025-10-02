@@ -1,0 +1,24 @@
+<h1>{{them.name}}</h1>
+
+<div id="message-log">
+    {{#each messages}}
+        {{#if (eq senderID ../you.userID)}}
+        <div class = 'your-message-box'>
+            <div class="message-box-name">You:</div>
+            {{text}}
+            <div class="message-box-date">{{sendTime}}</div>
+        </div>
+        {{else}}
+        <div class = 'his-message-box'>
+            <div class="message-box-name">{{../them.name}}</div>
+            {{text}}
+            <div class="message-box-date">{{sendTime}}</div>
+        </div>
+        {{/if}}
+    {{/each}}
+</div> 
+
+<div id="send-message">
+    <textarea id="textarea" name="textarea" rows="4" cols="100" placeholder="Write your message here..."></textarea><br>
+    <button onclick="sendMessage({{them.userID}})">Send</button>
+</div>

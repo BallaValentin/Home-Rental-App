@@ -1,9 +1,9 @@
-function loadAdvertisementDetails(hirdetesID) {
-  const advertisementDiv = document.getElementById(`advertisement-${hirdetesID}`);
+function loadAdvertisementDetails(advertisementID) {
+  const advertisementDiv = document.getElementById(`advertisement-${advertisementID}`);
   const extraDetailsDiv = advertisementDiv.querySelector('.extra-details');
   let errorDiv = advertisementDiv.querySelector('p.error-message');
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `/advertisement_detailed?advertisementID=${hirdetesID}`, true);
+  xhr.open('GET', `/advertisement_detailed?advertisementID=${advertisementID}`, true);
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4 && xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
@@ -12,26 +12,26 @@ function loadAdvertisementDetails(hirdetesID) {
         if (errorDiv) {
           advertisementDiv.removeChild(errorDiv);
         }
-        const szobSzama = response.advertisement.szobakSzama;
-        const feltoltesDatuma = response.advertisement.feltDatum;
-        extraDetailsDiv.innerText = `Szobák száma: ${szobSzama}\nFeltöltés dátuma: ${feltoltesDatuma}`;
+        const noRooms = response.advertisement.szobakSzama;
+        const feltoltesDatuma = response.advertisement.uploadDate;
+        extraDetailsDiv.innerText = `Szobák száma: ${noRooms}\nFeltöltés dátuma: ${feltoltesDatuma}`;
         extraDetailsDiv.style.display = 'block';
       } else if (!errorDiv) {
         errorDiv = document.createElement('p');
         errorDiv.className = 'error-message';
         errorDiv.innerText = 'Hiba a lakáshirdetés részleteinek betöltésekor.';
-        document.getElementById(`advertisement-${hirdetesID}`).appendChild(errorDiv);
+        document.getElementById(`advertisement-${advertisementID}`).appendChild(errorDiv);
       }
     }
   };
   xhr.send();
 }
 
-function deletePicture(kepID) {
+function deletePicture(imageID) {
   let errorDiv = document.querySelector('p.error-message2');
   console.log(errorDiv);
   const xhr = new XMLHttpRequest();
-  xhr.open('delete', `/delete_picture?pictureID=${kepID}`, true);
+  xhr.open('delete', `/delete_picture?pictureID=${imageID}`, true);
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4 && xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
@@ -39,12 +39,12 @@ function deletePicture(kepID) {
         if (errorDiv) {
           document.body.removeChild(errorDiv);
         }
-        const imageContainerDiv = document.getElementById(`image-container-${kepID}`);
+        const imageContainerDiv = document.getElementById(`image-container-${imageID}`);
         imageContainerDiv.parentNode.removeChild(imageContainerDiv);
       } else if (!errorDiv) {
         errorDiv = document.createElement('p');
         errorDiv.className = 'error-message2';
-        errorDiv.innerText = 'Hiba a kép törlésekor.';
+        errorDiv.innerText = 'Error when deleting image.';
         document.body.appendChild(errorDiv);
       }
     }
@@ -65,17 +65,17 @@ function sendMessage(userID) {
       if (response.type === 'ok') {
         const { messages, you } = response;
         const lastMessage = messages[messages.length - 1];
-        if (lastMessage.kuldoID === you) {
+        if (lastMessage.senderID === you) {
           textArea.value = '';
           const messageBoxNameDiv = document.createElement('div');
-          messageBoxNameDiv.innerText = 'Te:';
+          messageBoxNameDiv.innerText = 'You:';
           messageBoxNameDiv.className = 'message-box-name';
 
           const messageTextDiv = document.createElement('div');
-          messageTextDiv.innerText = lastMessage.szoveg;
+          messageTextDiv.innerText = lastMessage.text;
 
           const messageBoxDateDiv = document.createElement('div');
-          messageBoxDateDiv.innerText = lastMessage.kuldesiIdo;
+          messageBoxDateDiv.innerText = lastMessage.sendDate;
           messageBoxDateDiv.className = 'message-box-date';
 
           const newMessageDiv = document.createElement('div');
@@ -90,6 +90,7 @@ function sendMessage(userID) {
     }
   };
   const data = `recipientUserID=${encodeURIComponent(userID)}&message=${encodeURIComponent(textArea.value)}`;
+  console.log(`UserID: ${userID}, message: ${textArea.value}`);
   xhr.send(data);
 }
 
@@ -103,7 +104,7 @@ function updateUserRole(userID) {
     if (xhr.readyState === 4 && xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
       if (response.type === 'ok') {
-        console.log('Sikerult frissiteni a felhasznalo szerepet');
+        console.log('The role of the user has been updated successfully');
       }
     }
   };
@@ -119,7 +120,7 @@ function updateTable(users, userID) {
     const row = document.createElement('tr');
 
     const idCell = document.createElement('td');
-    idCell.textContent = user.felhID;
+    idCell.textContent = user.userID;
     row.appendChild(idCell);
 
     const nameCell = document.createElement('td');
@@ -128,23 +129,23 @@ function updateTable(users, userID) {
 
     const roleCell = document.createElement('td');
 
-    if (userID !== user.felhID) {
+    if (userID !== user.userID) {
       const select = document.createElement('select');
-      select.id = `select_${user.felhID}`;
-      select.setAttribute('data-user-id', user.felhID);
-      select.onchange = () => updateUserRole(user.felhID);
+      select.id = `select_${user.userID}`;
+      select.setAttribute('data-user-id', user.userID);
+      select.onchange = () => updateUserRole(user.userID);
 
       const adminOption = document.createElement('option');
       adminOption.value = 'admin';
       adminOption.textContent = 'admin';
-      if (user.szerep === 'admin') {
+      if (user.role === 'admin') {
         adminOption.selected = true;
       }
 
       const userOption = document.createElement('option');
       userOption.value = 'user';
       userOption.textContent = 'user';
-      if (user.szerep === 'user') {
+      if (user.role === 'user') {
         userOption.selected = true;
       }
 
@@ -152,7 +153,7 @@ function updateTable(users, userID) {
       select.appendChild(userOption);
       roleCell.appendChild(select);
     } else {
-      roleCell.textContent = user.szerep;
+      roleCell.textContent = user.role;
     }
 
     row.appendChild(roleCell);
@@ -177,11 +178,11 @@ function searchUsers(userID) {
   xhr.send();
 }
 
-function deleteAdvertisement(hirdetesID) {
-  console.log(`LELE: ${hirdetesID}`);
-  const advertisement = document.getElementById(`advertisement-${hirdetesID}`);
+function deleteAdvertisement(advertisementID) {
+  console.log(`LELE: ${advertisementID}`);
+  const advertisement = document.getElementById(`advertisement-${advertisementID}`);
   const xhr = new XMLHttpRequest();
-  xhr.open('delete', `/delete_advertisement?advertisementID=${hirdetesID}`, true);
+  xhr.open('delete', `/delete_advertisement?advertisementID=${advertisementID}`, true);
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4 && xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
@@ -224,7 +225,7 @@ function addCityQuarters() {
         cityDatalistDiv.innerHTML = '';
         response.quarters.forEach((quarter) => {
           const option = document.createElement('option');
-          option.value = quarter.negyednev;
+          option.value = quarter.cityQuarterName;
           cityDatalistDiv.appendChild(option);
         });
       }
@@ -233,31 +234,14 @@ function addCityQuarters() {
   xhr.send();
 }
 
+window.sendMessage = sendMessage;
+window.deletePicture = deletePicture;
+window.loadAdvertisementDetails = loadAdvertisementDetails;
+window.deleteAdvertisement = deleteAdvertisement;
+window.addCities = addCities;
+window.addCityQuarters = addCityQuarters;
+
 window.onload = () => {
-  const advertisements = document.getElementsByClassName('advertisement');
-  for (let i = 0; i < advertisements.length; i++) {
-    advertisements[i].addEventListener('click', () => {
-      const hirdetesID = advertisements[i].id.replace('advertisement-', '');
-      loadAdvertisementDetails(hirdetesID);
-    });
-  }
-  const imageContainers = document.getElementsByClassName('image-container');
-  for (let i = 0; i < imageContainers.length; i++) {
-    const deleteButton = imageContainers[i].getElementsByTagName('button')[0];
-    deleteButton.addEventListener('click', () => {
-      const kepID = imageContainers[i].id.replace('image-container-', '');
-      deletePicture(kepID);
-    });
-  }
-
-  const sendMessageDiv = document.getElementById('send-message');
-  if (sendMessageDiv) {
-    const submitMessageButton = sendMessageDiv.getElementsByTagName('button')[0];
-    submitMessageButton.addEventListener('click', () => {
-      sendMessage();
-    });
-  }
-
   const usersTable = document.getElementById('users-table');
   if (usersTable) {
     const roleSelects = usersTable.querySelectorAll('.role-select');
@@ -272,24 +256,5 @@ window.onload = () => {
     userSearchDiv.addEventListener('input', () => {
       searchUsers();
     });
-  }
-
-  for (let i = 0; i < advertisements.length; i++) {
-    const deleteButton = advertisements[i].getElementsByClassName('button')[0];
-    if (deleteButton) {
-      deleteButton.addEventListener('click', () => {
-        deleteAdvertisement();
-      });
-    }
-  }
-
-  const cityDatalistDiv = document.getElementById('city-datalist');
-  if (cityDatalistDiv) {
-    addCities();
-  }
-
-  const cityQuarterDatalistDiv = document.getElementById('city-quarter-datalist');
-  if (cityQuarterDatalistDiv) {
-    addCityQuarters();
   }
 };

@@ -1,0 +1,35 @@
+<h1>{{advertisement.city}} - {{advertisement.cityQuarter}}</h1>
+<p class="advertisement-info">Price: {{advertisement.price}}</p>
+<p class="advertisement-info">Number of rooms: {{advertisement.noRooms}}</p>
+<p class="advertisement-info">Surface area: {{advertisement.surfaceArea}}</p>
+<p class="advertisement-info">Upload date: {{advertisement.uploadDate}}</p>
+
+{{#if canEditAdvertisement}}
+  <h2>Upload images</h2>
+  <form action="/upload_picture" id="picture_uploader_form", method="post" enctype="multipart/form-data">
+    <input type="file" name="picture">
+    <input type="hidden" name="advertisementID" value={{advertisement.advertisementID}}>
+    <button class="my-submit" type="submit">Upload</button>
+  </form>
+{{/if}}
+
+<h2>Images</h2>
+{{#if pictures.length}}
+    <div class="images-container">
+    {{#each pictures}}
+      <div id="image-container-{{imageID}}" class="image-container">
+      <img src="{{filePath}}" alt="Image is missing">
+      {{#if ../canEditAdvertisement}}
+        <button onclick="deletePicture('{{imageID}}')">Delete</button>
+      {{/if}}
+    </div>
+    {{/each}}
+    </div>
+{{else}}
+  <div class="image-placeholder">No images uploaded.</div>
+{{/if}}
+
+{{#if canSendMessage}}
+  <a href="/show_discussion?user1ID={{userID}}&user2ID={{owner.userID}}">[Send message to {{owner.name}}]</a>
+{{/if}}
+<p class="error-message">{{message}}</p>

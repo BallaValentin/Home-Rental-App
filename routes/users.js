@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get(['/login'], (req, res) => {
   try {
-    res.render('bejelentkezes');
+    res.render('login');
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }
@@ -19,7 +19,7 @@ router.get(['/login'], (req, res) => {
 router.get(['/logout'], (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      return res.status(500).json({ message: 'Nem sikerült kijelentkezni' });
+      return res.status(500).json({ message: 'Logout failed' });
     }
     return res.redirect('/index');
   });
@@ -27,7 +27,7 @@ router.get(['/logout'], (req, res) => {
 
 router.get(['/registration'], (req, res) => {
   try {
-    res.render('regisztracio');
+    res.render('registration');
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }
@@ -38,17 +38,17 @@ router.post(['/login-user'], express.urlencoded({ extended: true }), async (req,
   try {
     const user = await db.findUserByName(username);
     if (!user) {
-      return res.status(400).render('bejelentkezes', { err_message: 'Hibás felhasználónév vagy jelszó' });
+      return res.status(400).render('login', { err_message: 'Invalid username or password' });
     }
     const salt = Buffer.from(user.salt, 'base64');
     const hash = crypto.createHash('sha512').update(password).update(salt).digest().toString('base64');
     if (hash !== user.hash) {
-      return res.status(400).render('bejelentkezes', { err_message: 'Hibás felhasználónév vagy jelszó' });
+      return res.status(400).render('login', { err_message: 'Invalid username or password' });
     }
     req.session.user = {
-      id: user.felhID,
-      nev: user.nev,
-      szerep: user.szerep,
+      id: user.userID,
+      nev: user.name,
+      szerep: user.role,
     };
     return res.redirect('index');
   } catch (err) {
@@ -59,13 +59,13 @@ router.post(['/login-user'], express.urlencoded({ extended: true }), async (req,
 router.post(['/registration-user'], express.urlencoded({ extended: true }), async (req, res) => {
   const { username, password1, password2 } = req.body;
   if (!username || !password1 || !password2) {
-    return res.status(400).render('regisztracio', { message: 'Hiba: Nincs minden mező kitöltve.' });
+    return res.status(400).render('registration', { message: 'Error: All fields must be filled' });
   }
   const salt = crypto.randomBytes(saltSize);
   const hash1 = crypto.createHash('sha512').update(password1).update(salt).digest();
   const hash2 = crypto.createHash('sha512').update(password2).update(salt).digest();
   if (!hash1.equals(hash2)) {
-    return res.status(400).render('regisztracio', { message: 'Hiba: A jelszavak nem egyeznek' });
+    return res.status(400).render('regisztracio', { message: 'Error: passwords don`t match' });
   }
   const user = {
     username,
@@ -75,12 +75,12 @@ router.post(['/registration-user'], express.urlencoded({ extended: true }), asyn
   try {
     const userExists = await db.findUserByName(username);
     if (userExists) {
-      return res.status(400).render('regisztracio', { message: 'Hiba: A megadott felhasználónév már foglalt' });
+      return res.status(400).render('registration', { message: 'Error: The username is already taken' });
     }
     await db.insertUser(user);
-    return res.render('bejelentkezes', { ok_message: 'Új felhasználó sikeresen regisztrálva!' });
+    return res.render('login', { ok_message: 'New user signed up successfully!' });
   } catch (err) {
-    return res.status(500).render('error', { message: `Failing to register new user: ${err.message}` });
+    return res.status(500).render('error', { message: `Failed to sign up new user: ${err.message}` });
   }
 });
 
@@ -88,11 +88,11 @@ router.get(['/show_users'], async (req, res) => {
   try {
     const userID = req.session.user.id;
     const user = await db.findUserById(userID);
-    if (user.szerep !== 'admin') {
-      return res.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
+    if (user.role !== 'admin') {
+      return res.status(401).json({ message: 'You have no authorization for this page' });
     }
     const users = await db.findAllUsers();
-    return res.status(200).render('felhasznalok', { userID, users });
+    return res.status(200).render('users', { userID, users });
   } catch (err) {
     return res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }

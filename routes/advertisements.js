@@ -7,28 +7,28 @@ const router = express.Router();
 
 router.get(['/', '/index'], async (req, res) => {
   try {
-    const hirdetes = await db.getAllAdvertisements();
+    const advertisements = await db.getAllAdvertisements();
     if (req.query.message === 'expired') {
-      const sessionMessage1 = 'Lejárt a munkameneted.';
-      const sessionMessage2 = 'Jelentkezz be újra, hogy tudj hirdetéseket feltölteni.';
+      const sessionMessage1 = 'Your session has expired.';
+      const sessionMessage2 = 'Sign in again';
       res.render('index', {
-        advertisements: hirdetes,
+        advertisements,
         user: req.session.user,
         session1: sessionMessage1,
         session2: sessionMessage2,
       });
     } else {
-      res.render('index', { advertisements: hirdetes, user: req.session.user });
+      res.render('index', { advertisements, user: req.session.user });
     }
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }
 });
 
-router.get(['/hirdetes'], async (req, res) => {
+router.get(['/advertisement'], async (req, res) => {
   try {
-    const felhasznalo = await db.findAllUsers();
-    res.render('hirdetes', { users: felhasznalo });
+    const users = await db.findAllUsers();
+    res.render('advertisement', { users });
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
   }
@@ -49,7 +49,7 @@ function formValidation(formFields) {
 }
 
 router.post('/submit_advertisement_upload', express.urlencoded({ extended: true }), async (request, response) => {
-  console.log(`A szerver sikeresen megkapta a következő információkat:
+  console.log(`The server has successfully received the following informations:
                 city: ${request.body.city},
                 city_quarter: ${request.body.city_quarter},
                 surface_area: ${request.body.surface_area},
@@ -73,10 +73,10 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
   if (returnValue === -1) {
     return response
       .status(400)
-      .render('hirdetes', { message: 'Nincs minden mező kitöltve.', user: request.session.user });
+      .render('hirdetes', { message: 'All fields must be completed.', user: request.session.user });
   }
   if (returnValue === -2) {
-    return response.status(400).render('hirdetes', { message: 'Helytelen mezők.', user: request.session.user });
+    return response.status(400).render('hirdetes', { message: 'Invalid fields.', user: request.session.user });
   }
   await db.insertAdvertisement(formFields);
   const advertisements = await db.getAllAdvertisements();
@@ -86,7 +86,7 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
 });
 
 router.get('/advertisement_search', express.urlencoded({ extended: true }), async (request, response) => {
-  console.log(`A szerver sikeresen megkapta a következő információt:
+  console.log(`The server has successfully received the following informations:
       city_name: ${request.query.city_name}
       city_quarter_name: ${request.query.city_quarter_name}
       min_price: ${request.query.min_price}
@@ -106,9 +106,9 @@ router.get('/advertisement/:id', async (request, response) => {
   const advertisement = await db.findAdvertisementById(advertisementId);
   const pictures = await db.findPhotosByAdvertisementId(advertisementId);
   const ownerID = await db.findOwnerByAdvertisementId(advertisementId);
-  const owner = await db.findUserById(ownerID.felhID);
+  const owner = await db.findUserById(ownerID.userID);
   if (!request.session.user)
-    return response.status(200).render('reszletek', {
+    return response.status(200).render('details', {
       advertisement,
       pictures,
       owner,
@@ -117,8 +117,8 @@ router.get('/advertisement/:id', async (request, response) => {
       canEditAdvertisement: false,
     });
   const userID = request.session.user.id;
-  if (userID === owner.felhID)
-    return response.status(200).render('reszletek', {
+  if (userID === owner.userID)
+    return response.status(200).render('details', {
       advertisement,
       pictures,
       owner,
@@ -128,7 +128,7 @@ router.get('/advertisement/:id', async (request, response) => {
     });
   return response
     .status(200)
-    .render('reszletek', { advertisement, pictures, owner, userID, canSendMessage: true, canEditAdvertisement: false });
+    .render('details', { advertisement, pictures, owner, userID, canSendMessage: true, canEditAdvertisement: false });
 });
 
 router.get('/advertisement_detailed', async (request, response) => {
@@ -148,15 +148,15 @@ router.delete('/delete_advertisement', async (request, response) => {
     const userID = request.session.user.id;
     const user = await db.findUserById(userID);
     if (user.szerep !== 'admin') {
-      return response.status(401).json({ message: 'Nincs jogosultsagod ehhez' });
+      return response.status(401).json({ message: 'Unauthorized' });
     }
     const advertisement = db.findAdvertisementById(advertisementId);
     if (advertisement === null) {
-      return response.status(400).json({ message: 'Nincs ilyen hirdetes' });
+      return response.status(400).json({ message: 'Advertisement not found' });
     }
     await db.deletePicturesByAdvertisementID(advertisementId);
     await db.deleteAdvertisementByID(advertisementId);
-    return response.status(200).json({ messageType: 'ok', message: 'Sikerult a hirdetest torolni' });
+    return response.status(200).json({ messageType: 'ok', message: 'Advertisement deleted successfully' });
   } catch (err) {
     return response.json({ messageType: 'error', err });
   }

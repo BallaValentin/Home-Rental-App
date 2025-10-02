@@ -1,0 +1,31 @@
+<h1>List of Users</h1>
+
+<textarea id="user-search" name="textarea" oninput="searchUsers({{currentUserID}})" rows="1" cols="100" placeholder="Felhasználók keresése..."></textarea><br>
+
+<table id="users-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody id="users-table-body">
+    {{#each users}}
+      <tr>
+        <td>{{userID}}</td>
+        <td>{{nev}}</td>
+        <td>
+          {{#if (eq userID ../currentUserID)}}
+            {{role}}
+          {{else}}
+            <select id="select_{{userID}}" class="role-select" onchange="updateUserRole({{userID}})">
+                <option value="admin" {{#if (eq role 'admin')}}selected{{/if}}>admin</option>
+                <option value="user" {{#if (eq role 'user')}}selected{{/if}}>user</option>
+            </select>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -1,9 +1,9 @@
 <p class="session-message1">{{session1}}</p>
 <p class="session-message2">{{session2}}</p>
 <header>
-    Lakáshirdetések
+    Homes for Rent
     {{#if user.nev}}
-        {{#if (eq user.szerep "admin")}}
+        {{#if (eq user.role "admin")}}
             <div id="user">[ADMIN]{{user.nev}}</div>
         {{else}}
             <div id="user">{{user.nev}}</div>
@@ -12,22 +12,22 @@
     <div id="options-container">
     {{#if user.nev}}
     <div id="advertisement-uploader-button">
-        <a href="/hirdetes">Lakáshirdetés feltöltése</a>
+        <a href="/advertisement">Upload advertisement</a>
     </div>
     <div id="user-messages-button">
-        <a href="/show_discussions">Üzeneteim</a>
+        <a href="/show_discussions">My discussions</a>
     </div>
     {{#if (eq user.szerep "admin")}}
         <div id="user-list-button">
-        <a href="/show_users">Felhasználók listája</a>
+        <a href="/show_users">List of users</a>
         </div>
     {{/if}}
     <div id="logout-button">
-        <a href="/logout">Kijelentkezés</a>
+        <a href="/logout">Log out</a>
     </div> 
     {{else}}
     <div id="login-button">
-        <a href="/login">Bejelentkezés</a>
+        <a href="/login">Log in</a>
     </div>
     {{/if}}
     </div>
@@ -35,37 +35,37 @@
 <form action="/advertisement_search" id="advertisement_search_form" method="get">
     <div id="search-attribute-container">
         <div class="advertisement-search-attribute">
-        <label class="label-form" for="city_name">Város neve: </label>
+        <label class="label-form" for="city_name">City: </label>
         <input class="my-input" type="text" name="city_name">
         </div>
         <div class="advertisement-search-attribute">
-        <label class="label-form" for="city_quarter_name">Negyede: </label>
+        <label class="label-form" for="city_quarter_name">City quarter: </label>
         <input class="my-input" type="text" name="city_quarter_name">
         </div>
         <div class="advertisement-search-attribute">
-        <label class="label-form" for="min_price">Minimum ár: </label>
+        <label class="label-form" for="min_price">Minimum price: </label>
         <input class="my-input" type="text" name="min_price">
         </div>
         <div class="advertisement-search-attribute">
-        <label class="label-form" for="max_price">Maximum ár: </label>
+        <label class="label-form" for="max_price">Maximum price: </label>
         <input class="my-input" type="text" name="max_price">
         </div>
-        <button id="search-button" type="submit">Keresés</button>
+        <button id="search-button" type="submit">Search</button>
     </div>
 </form>
 <p class="ok-message">{{message}}</p>
 <div id="advertisement-panel">
     {{#each advertisements}}
-    <div class="advertisement" id="advertisement-{{hirdetesID}}" onclick="loadAdvertisementDetails('{{hirdetesID}}')">
-        <div class="advertisement-detail">Város: {{varosnev}}</div>
-        <div class="advertisement-detail">Negyed: {{negyednev}}</div>
-        <div class="advertisement-detail">Ár: {{ar}}</div>
-        <div class="advertisement-detail">Felszín terület: {{felszTerulet}}</div>
+    <div class="advertisement" id="advertisement-{{advertisementID}}" onclick="loadAdvertisementDetails('{{hirdetesID}}')">
+        <div class="advertisement-detail">City: {{city}}</div>
+        <div class="advertisement-detail">City quarter: {{cityQuarter}}</div>
+        <div class="advertisement-detail">Price: {{price}}</div>
+        <div class="advertisement-detail">Surface area: {{surfaceArea}}</div>
         <div class="extra-details"></div>
-        <a href="/advertisement/{{hirdetesID}}">Részletek</a>
-        {{#if (eq ../user.szerep "admin")}}
+        <a href="/advertisement/{{advertisementID}}">Details</a>
+        {{#if (eq ../user.role "admin")}}
             <br>
-            <button onclick="deleteAdvertisement({{hirdetesID}})">Törlés</button>
+            <button onclick="deleteAdvertisement({{advertisementID}})">Delete</button>
         {{/if}}
     </div>
     {{/each}}

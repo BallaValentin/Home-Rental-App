@@ -1,0 +1,23 @@
+<h1>My discussions</h1>
+
+{{#each discussions}}
+    {{#if senderID}}
+        {{#if (eq senderID you.userID) }}
+        <div class = 'user-discussion-message'>
+            <div class="message-box-name">You --- {{them.name}}</div>
+            {{text}}
+            <div class="message-box-date">{{sendDate}}</div>
+            <br>
+            <a href="/show_discussion?user1ID={{you.userID}}&user2ID={{them.userID}}">Details</a>
+        </div>
+        {{else}}
+        <div class = 'user-discussion-message'>
+            <div class="message-box-name">{{them.name}} --- You</div>
+            {{text}}
+            <div class="message-box-date">{{sendDate}}</div>
+            <br>
+            <a href="/show_discussion?user1ID={{you.userID}}&user2ID={{them.userID}}">Details</a>
+        </div>
+        {{/if}}
+    {{/if}}
+{{/each}}

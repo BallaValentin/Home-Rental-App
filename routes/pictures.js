@@ -22,7 +22,7 @@ const multerUpload = multer({
 });
 
 router.post('/upload_picture', multerUpload.single('picture'), async (request, response) => {
-  console.log(`A szerver sikeresen megkapta a következő információt:
+  console.log(`The server has successfully received the following information:
                     file: ${request.file},
                     advertisementID: ${request.body.advertisementID}`);
   const advertisementId = request.body.advertisementID;
@@ -31,17 +31,17 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
   }
   const owner = await db.findOwnerByAdvertisementId(advertisementId);
   const userID = request.session.user.id;
-  if (userID !== owner.felhID) {
-    return response.status(401).json({ message: 'Nincs jogosultságod ehhez' });
+  if (userID !== owner.userID) {
+    return response.status(401).json({ message: 'Unauthorized' });
   }
   if (!request.file) {
     const advertisement = await db.findAdvertisementById(advertisementId);
     const pictures = await db.findPhotosByAdvertisementId(advertisementId);
-    return response.status(400).render('reszletek', {
+    return response.status(400).render('details', {
       advertisement,
       pictures,
-      message: 'Nincs kép megadva.',
-      owner: owner.felhID,
+      message: 'No image has been added.',
+      owner: owner.userID,
       canEditAdvertisement: true,
     });
   }
@@ -54,17 +54,14 @@ router.post('/upload_picture', multerUpload.single('picture'), async (request, r
 
 router.delete('/delete_picture', async (request, response) => {
   const pictureId = request.query.pictureID;
-  console.log(`query ${request.query.pictureID}`);
-
   try {
     const owner = await db.findOwnerByPictureId(pictureId);
     const userID = request.session.user.id;
-    console.log(`owner ${owner} userID ${userID}`);
-    if (userID !== owner.felhID) {
-      return response.status(401).json({ message: 'Nincs jogosultságod ehhez' });
+    if (userID !== owner.userID) {
+      return response.status(401).json({ message: 'Unauthorized' });
     }
   } catch (err) {
-    return response.status(500).json({ err_message: 'Szerveroldali hiba' });
+    return response.status(500).json({ err_message: 'Server-side error' });
   }
 
   try {
@@ -74,13 +71,14 @@ router.delete('/delete_picture', async (request, response) => {
     } catch (err) {
       return response.json({ messageType: 'error', err });
     }
-    const relUtvonal = picture[0].elUtvonal.replace('/pictures/', '');
-    const filePath = join(uploadDir, relUtvonal);
+    const relPath = picture[0].filePath.replace('/pictures/', '');
+    const filePath = join(uploadDir, relPath);
     try {
+      console.log('Removing image...');
       fs.unlinkSync(filePath);
-      console.log(`A ${relUtvonal} kep sikeresen torolve lett`);
+      console.log(`${relPath} image has been successfully deleted`);
     } catch (err) {
-      console.log(`A ${relUtvonal} kep torlese nem sikerult`);
+      console.log(`Failed to delete ${relPath} image`);
     }
     return response.json({ messageType: 'ok', message: 'success' });
   } catch (err) {

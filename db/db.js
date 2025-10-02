@@ -1,10 +1,13 @@
 import sql from 'mssql';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: './application.env' });
 
 const pool = await sql.connect({
-  server: 'DESKTOP-7289R3V',
-  user: 'webprog',
-  password: '12345',
-  database: 'webprog',
+  server: process.env.DB_SERVER,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   options: {
     trustServerCertificate: true,
     trustedConnection: true,

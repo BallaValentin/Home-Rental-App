@@ -8,6 +8,7 @@ import pictureRouter from './routes/pictures.js';
 import userRouter from './routes/users.js';
 import messageRouter from './routes/messages.js';
 import checkAuth from './middleware/checkauth.js';
+import userSession from './middleware/userSession.js';
 
 const app = express();
 
@@ -38,6 +39,13 @@ app.use('/show_discussion', checkAuth);
 app.use('/show_users', checkAuth);
 app.use('/search_users', checkAuth);
 app.use('/delete_advertisement', checkAuth);
+
+app.use('/advertisement', userSession);
+app.use('/details', userSession);
+app.use('/discussion', userSession);
+app.use('/discussions', userSession);
+app.use('/index', userSession);
+app.use('/show_users', userSession);
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');

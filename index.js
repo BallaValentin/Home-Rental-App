@@ -47,8 +47,8 @@ app.engine(
   engine({
     extname: 'hbs',
     defaultView: 'main',
-    layoutsDir: path.join(process.cwd(), 'views/layouts'),
     partialsDir: path.join(process.cwd(), 'views/partials'),
+    layoutsDir: path.join(process.cwd(), 'views/layouts'),
   }),
 );
 

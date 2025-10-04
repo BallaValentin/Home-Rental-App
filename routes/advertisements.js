@@ -54,35 +54,36 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
                 city_quarter: ${request.body.city_quarter},
                 surface_area: ${request.body.surface_area},
                 price: ${request.body.price},
-                number_of_rooms: ${request.body.number_of_rooms},
-                upload_date: ${new Date(request.body.upload_date).toLocaleDateString()},`);
+                upload_date: ${new Date().toLocaleDateString()},`);
 
   const userID = request.session.user.id;
-  console.log(userID);
+
   const formFields = {
     UID: userID,
     city: request.body.city,
     city_quarter: request.body.city_quarter,
     surface_area: request.body.surface_area,
     price: request.body.price,
+    upload_date: new Date(),
     number_of_rooms: request.body.number_of_rooms,
-    upload_date: request.body.upload_date,
   };
 
   const returnValue = formValidation(formFields);
   if (returnValue === -1) {
     return response
       .status(400)
-      .render('hirdetes', { message: 'All fields must be completed.', user: request.session.user });
+      .render('advertisment', { message: 'All fields must be completed.', user: request.session.user });
   }
   if (returnValue === -2) {
-    return response.status(400).render('hirdetes', { message: 'Invalid fields.', user: request.session.user });
+    return response.status(400).render('advertisement', { message: 'Invalid fields.', user: request.session.user });
   }
   await db.insertAdvertisement(formFields);
   const advertisements = await db.getAllAdvertisements();
-  return response
-    .status(200)
-    .render('index', { advertisements, message: 'Új lakáshirdetés sikeresen feltöltve.', user: request.session.user });
+  return response.status(200).render('index', {
+    advertisements,
+    message: 'New advertisement uploaded successfully.',
+    user: request.session.user,
+  });
 });
 
 router.get('/advertisement_search', express.urlencoded({ extended: true }), async (request, response) => {

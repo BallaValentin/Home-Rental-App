@@ -1,11 +1,11 @@
-<h1>{{advertisement.city}} - {{advertisement.cityQuarter}}</h1>
+<header>{{advertisement.city}} - {{advertisement.cityQuarter}}</header>
 <p class="advertisement-info">Price: {{advertisement.price}}</p>
 <p class="advertisement-info">Number of rooms: {{advertisement.noRooms}}</p>
 <p class="advertisement-info">Surface area: {{advertisement.surfaceArea}}</p>
 <p class="advertisement-info">Upload date: {{advertisement.uploadDate}}</p>
 
 {{#if canEditAdvertisement}}
-  <h2>Upload images</h2>
+  <header>Upload images</header>
   <form action="/upload_picture" id="picture_uploader_form", method="post" enctype="multipart/form-data">
     <input type="file" name="picture">
     <input type="hidden" name="advertisementID" value={{advertisement.advertisementID}}>
@@ -13,16 +13,16 @@
   </form>
 {{/if}}
 
-<h2>Images</h2>
+<header>Images</header>
 {{#if pictures.length}}
     <div class="images-container">
     {{#each pictures}}
       <div id="image-container-{{imageID}}" class="image-container">
-      <img src="{{filePath}}" alt="Image is missing">
-      {{#if ../canEditAdvertisement}}
-        <button onclick="deletePicture('{{imageID}}')">Delete</button>
-      {{/if}}
-    </div>
+        <img src="{{filePath}}" alt="Image is missing">
+        {{#if ../canEditAdvertisement}}
+          <button onclick="deletePicture('{{imageID}}')">Delete</button>
+        {{/if}}
+      </div>
     {{/each}}
     </div>
 {{else}}

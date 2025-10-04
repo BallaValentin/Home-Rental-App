@@ -2,22 +2,22 @@
 <p class="session-message2">{{session2}}</p>
 <header>
     Homes for Rent
-    {{#if user.nev}}
+    {{#if user.name}}
         {{#if (eq user.role "admin")}}
-            <div id="user">[ADMIN]{{user.nev}}</div>
+            <div id="user">[ADMIN]{{user.name}}</div>
         {{else}}
-            <div id="user">{{user.nev}}</div>
+            <div id="user">{{user.name}}</div>
         {{/if}}
     {{/if}}
     <div id="options-container">
-    {{#if user.nev}}
+    {{#if user.name}}
     <div id="advertisement-uploader-button">
         <a href="/advertisement">Upload advertisement</a>
     </div>
     <div id="user-messages-button">
         <a href="/show_discussions">My discussions</a>
     </div>
-    {{#if (eq user.szerep "admin")}}
+    {{#if (eq user.role "admin")}}
         <div id="user-list-button">
         <a href="/show_users">List of users</a>
         </div>

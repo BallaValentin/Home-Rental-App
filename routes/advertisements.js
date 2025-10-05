@@ -8,17 +8,34 @@ const router = express.Router();
 router.get(['/', '/index'], async (req, res) => {
   try {
     const advertisements = await db.getAllAdvertisements();
+    const advertisementsWithUser = [];
+    const users = await Promise.all(advertisements.map((advertisement) => db.findUserById(advertisement.userID)));
+
+    for (let i = 0; i < advertisements.length; i++) {
+      const advertisementWithUser = {
+        uploadedBy: users[i].name,
+        advertisementID: advertisements[i].advertisementID,
+        city: advertisements[i].city,
+        cityQuarter: advertisements[i].cityQuarter,
+        surfaceArea: advertisements[i].surfaceArea,
+        noRooms: advertisements[i].noRooms,
+        uploadDate: advertisements[i].uploadDate,
+        price: advertisements[i].price,
+      };
+      advertisementsWithUser.push(advertisementWithUser);
+    }
+
     if (req.query.message === 'expired') {
       const sessionMessage1 = 'Your session has expired.';
       const sessionMessage2 = 'Sign in again';
       res.render('index', {
-        advertisements,
+        advertisementsWithUser,
         user: req.session.user,
         session1: sessionMessage1,
         session2: sessionMessage2,
       });
     } else {
-      res.render('index', { advertisements, user: req.session.user });
+      res.render('index', { advertisements: advertisementsWithUser, user: req.session.user });
     }
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
@@ -148,7 +165,7 @@ router.delete('/delete_advertisement', async (request, response) => {
   try {
     const userID = request.session.user.id;
     const user = await db.findUserById(userID);
-    if (user.szerep !== 'admin') {
+    if (user.role !== 'admin') {
       return response.status(401).json({ message: 'Unauthorized' });
     }
     const advertisement = db.findAdvertisementById(advertisementId);

@@ -26,6 +26,7 @@
 <div id="advertisement-panel">
     {{#each advertisements}}
     <div class="advertisement" id="advertisement-{{advertisementID}}" onclick="loadAdvertisementDetails('{{advertisementID}}')">
+        <div class="advertisement-detail">Uploaded by: {{uploadedBy}}</div>
         <div class="advertisement-detail">City: {{city}}</div>
         <div class="advertisement-detail">City quarter: {{cityQuarter}}</div>
         <div class="advertisement-detail">Price: {{price}}</div>

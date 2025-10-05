@@ -8,17 +8,34 @@ const router = express.Router();
 router.get(['/', '/index'], async (req, res) => {
   try {
     const advertisements = await db.getAllAdvertisements();
+    const advertisementsWithUser = [];
+    const users = await Promise.all(advertisements.map((advertisement) => db.findUserById(advertisement.userID)));
+
+    for (let i = 0; i < advertisements.length; i++) {
+      const advertisementWithUser = {
+        uploadedBy: users[i].name,
+        advertisementID: advertisements[i].advertisementID,
+        city: advertisements[i].city,
+        cityQuarter: advertisements[i].cityQuarter,
+        surfaceArea: advertisements[i].surfaceArea,
+        noRooms: advertisements[i].noRooms,
+        uploadDate: advertisements[i].uploadDate,
+        price: advertisements[i].price,
+      };
+      advertisementsWithUser.push(advertisementWithUser);
+    }
+
     if (req.query.message === 'expired') {
       const sessionMessage1 = 'Your session has expired.';
       const sessionMessage2 = 'Sign in again';
       res.render('index', {
-        advertisements,
+        advertisementsWithUser,
         user: req.session.user,
         session1: sessionMessage1,
         session2: sessionMessage2,
       });
     } else {
-      res.render('index', { advertisements, user: req.session.user });
+      res.render('index', { advertisements: advertisementsWithUser, user: req.session.user });
     }
   } catch (err) {
     res.status(500).render('error', { message: `Selection unsuccessful: ${err.message}` });
@@ -54,35 +71,36 @@ router.post('/submit_advertisement_upload', express.urlencoded({ extended: true 
                 city_quarter: ${request.body.city_quarter},
                 surface_area: ${request.body.surface_area},
                 price: ${request.body.price},
-                number_of_rooms: ${request.body.number_of_rooms},
-                upload_date: ${new Date(request.body.upload_date).toLocaleDateString()},`);
+                upload_date: ${new Date().toLocaleDateString()},`);
 
   const userID = request.session.user.id;
-  console.log(userID);
+
   const formFields = {
     UID: userID,
     city: request.body.city,
     city_quarter: request.body.city_quarter,
     surface_area: request.body.surface_area,
     price: request.body.price,
+    upload_date: new Date(),
     number_of_rooms: request.body.number_of_rooms,
-    upload_date: request.body.upload_date,
   };
 
   const returnValue = formValidation(formFields);
   if (returnValue === -1) {
     return response
       .status(400)
-      .render('hirdetes', { message: 'All fields must be completed.', user: request.session.user });
+      .render('advertisment', { message: 'All fields must be completed.', user: request.session.user });
   }
   if (returnValue === -2) {
-    return response.status(400).render('hirdetes', { message: 'Invalid fields.', user: request.session.user });
+    return response.status(400).render('advertisement', { message: 'Invalid fields.', user: request.session.user });
   }
   await db.insertAdvertisement(formFields);
   const advertisements = await db.getAllAdvertisements();
-  return response
-    .status(200)
-    .render('index', { advertisements, message: 'Új lakáshirdetés sikeresen feltöltve.', user: request.session.user });
+  return response.status(200).render('index', {
+    advertisements,
+    message: 'New advertisement uploaded successfully.',
+    user: request.session.user,
+  });
 });
 
 router.get('/advertisement_search', express.urlencoded({ extended: true }), async (request, response) => {
@@ -147,7 +165,7 @@ router.delete('/delete_advertisement', async (request, response) => {
   try {
     const userID = request.session.user.id;
     const user = await db.findUserById(userID);
-    if (user.szerep !== 'admin') {
+    if (user.role !== 'admin') {
       return response.status(401).json({ message: 'Unauthorized' });
     }
     const advertisement = db.findAdvertisementById(advertisementId);

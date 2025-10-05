@@ -47,8 +47,8 @@ router.post(['/login-user'], express.urlencoded({ extended: true }), async (req,
     }
     req.session.user = {
       id: user.userID,
-      nev: user.name,
-      szerep: user.role,
+      name: user.name,
+      role: user.role,
     };
     return res.redirect('index');
   } catch (err) {
@@ -65,7 +65,7 @@ router.post(['/registration-user'], express.urlencoded({ extended: true }), asyn
   const hash1 = crypto.createHash('sha512').update(password1).update(salt).digest();
   const hash2 = crypto.createHash('sha512').update(password2).update(salt).digest();
   if (!hash1.equals(hash2)) {
-    return res.status(400).render('regisztracio', { message: 'Error: passwords don`t match' });
+    return res.status(400).render('registration', { message: 'Error: passwords don`t match' });
   }
   const user = {
     username,

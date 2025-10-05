@@ -1,5 +1,4 @@
-
-header, h1, h2{
+header, h1, h2 {
     background-color: lightblue;
     font-weight: bolder;
     font-size: xx-large;
@@ -11,15 +10,15 @@ header, h1, h2{
 }
 
 h2 {
-    padding: 15px 10px 15px 10px; 
+    padding: 15px 10px 15px 10px;
 }
 
-#options-container{
+#options-container {
     margin-top: 50px;
     flex-wrap: wrap;
 }
 
-#image-uploader-button{
+#image-uploader-button {
     float: right;
     text-align: center;
     font-size: medium;
@@ -31,7 +30,7 @@ h2 {
 }
 
 
-#advertisement-uploader-button, #login-button, #logout-button, #user-messages-button, #user-list-button{
+#advertisement-uploader-button, #login-button, #logout-button, #user-messages-button, #user-list-button {
     text-align: center;
     font-size: medium;
     font-weight: bold;
@@ -42,35 +41,39 @@ h2 {
     border: solid black;
 }
 
-#advertisement-uploader-button{
+#advertisement-uploader-button, #login-button, #logout-button, #user-messages-button, #user-list-button:active {
+    color: darkblue;
+}
+
+#advertisement-uploader-button {
     float: right;
 }
 
-#login-button, #logout-button, #user-messages-button, #user-list-button{
+#login-button, #logout-button, #user-messages-button, #user-list-button {
     float: left;
 }
 
-#advertisement-uploader-button > a{
+#advertisement-uploader-button>a {
     text-decoration: none;
     color: black;
 }
 
-#advertisement-uploader-button > a:hover{
+#advertisement-uploader-button>a:hover {
     text-decoration: underline;
     color: gray;
 }
 
-#advertisement-uploader-button > a:visited{
+#advertisement-uploader-button>a:visited {
     color: darkred;
 }
 
-#panel-container{
+#panel-container {
     display: flex;
     align-self: center;
     margin: 0% 2.5% 0% 2.5%;
 }
 
-#menu-panel{
+#menu-panel {
     width: 350px;
     background-color: lightblue;
     border-radius: 15px;
@@ -79,22 +82,23 @@ h2 {
     border: solid gray;
 }
 
-#advertisement-panel{
+#advertisement-panel {
     padding: 20px;
     margin-left: 15px;
     flex-wrap: wrap;
     align-items: center;
 }
 
-#advertisement-panel > .advertisement{
+#advertisement-panel>.advertisement {
     border: solid gray;
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
+    cursor: pointer;
     align-self: center;
 }
 
-.apartment-card{
+.apartment-card {
     width: 28%;
     height: 500px;
     border: solid black 5px;
@@ -102,36 +106,36 @@ h2 {
     margin: 10px;
 }
 
-p.p-form, label.label-form{
+p.p-form, label.label-form {
     font-weight: bold;
     padding-left: 5px;
 }
 
-label.label-form{
+label.label-form {
     padding-right: 10px;
 }
 
-input.my-input{
+input.my-input {
     border-radius: 5px;
 }
 
-button.my-submit, button#search-button{
+button.my-submit, button#search-button {
     border-radius: 5px;
     font-weight: bold;
     padding: 3px;
 }
 
-button.my-submit:hover, button#search-button:hover{
+button.my-submit:hover, button#search-button:hover {
     text-decoration: underline;
     color: gray;
 }
 
-button#search-button{
+button#search-button {
     margin-left: 50px;
     margin-right: 20px;
 }
 
-#advertisement_search_form{
+#advertisement_search_form {
     border-radius: 10px;
     border: solid black;
     padding: 30px 10px 30px 10px;
@@ -140,11 +144,11 @@ button#search-button{
 }
 
 
-#search-attribute-container{
+#search-attribute-container {
     display: flex;
 }
 
-.advertisement-search-attribute{
+.advertisement-search-attribute {
     margin: 0px 15px 0px 15px;
 }
 
@@ -158,7 +162,7 @@ button#search-button{
     flex: 0 0 auto;
 }
 
-.image-container img{
+.image-container img {
     height: 400px;
     width: 400px;
     margin: 10px;
@@ -180,40 +184,40 @@ button#search-button{
 
 }
 
-p.error-message{
+p.error-message {
     color: lightcoral;
     font-weight: bold;
     text-align: center;
 }
 
-p.error-message2{
+p.error-message2 {
     color: lightcoral;
     font-weight: bold;
     text-align: center;
 }
 
-p.ok-message{
+p.ok-message {
     color: darkgreen;
     font-weight: bold;
     text-align: center;
 }
 
-p.session-message1, p.session-message2{
+p.session-message1, p.session-message2 {
     color: rgb(225, 178, 90);
     font-weight: bold;
     text-align: center;
 }
 
 
-.extra-details{
+.extra-details {
     display: none;
 }
 
-.advertisement-detail, .extra-details{
+.advertisement-detail, .extra-details {
     font-weight: 600;
 }
 
-#login-user-background, #registration-user-background{
+#login-user-background, #registration-user-background {
     background-color: rgb(135, 172, 184);
     height: 100%;
     width: 100%;
@@ -225,7 +229,7 @@ p.session-message1, p.session-message2{
     align-items: center;
 }
 
-#login-user-form, #registration-user-form{
+#login-user-form, #registration-user-form {
     background-color: white;
     width: 400px;
     border: solid rgb(206, 116, 116) 3px;
@@ -233,11 +237,11 @@ p.session-message1, p.session-message2{
     padding: 15px;
 }
 
-.login-form-field, .registration-form-field{
+.login-form-field, .registration-form-field {
     margin: 10px;
 }
 
-#login-user-form label, #registration-user-form label{
+#login-user-form label, #registration-user-form label {
     padding: 20px;
     font-weight: bold;
 }
@@ -256,13 +260,13 @@ p.session-message1, p.session-message2{
     font-weight: bold;
 }
 
-#login-user-form button:hover, #registration-user-form button:hover{
+#login-user-form button:hover, #registration-user-form button:hover {
     color: white;
     background-color: darkblue;
     border: solid rgb(40, 87, 102) 2px;
 }
 
-.registration-text, a.registration-link{
+.registration-text, a.registration-link {
     width: 40%;
     display: block;
     margin-left: auto;
@@ -276,11 +280,11 @@ p.advertisement-info {
     padding-left: 2.5%;
 }
 
-#user{
+#user {
     float: right;
 }
 
-#picture_uploader_form{
+#picture_uploader_form {
     margin-left: 2.5%;
     padding: 15px;
 }
@@ -294,49 +298,56 @@ p.advertisement-info {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
-  }
-  
-  .your-message-box, .his-message-box, .user-discussion-message {
+}
+
+.your-message-box, .his-message-box, .user-discussion-message {
     border: solid black 2px;
     border-radius: 5px;
     padding: 15px;
     margin: 15px 0px 15px 0px;
     max-width: 45%;
-  }
-  
-  .your-message-box {
+}
+
+.your-message-box {
     background-color: lightgray;
     margin-left: auto;
-  }
-  
-  .his-message-box {
-    background-color: white;
-  }
+}
 
-  .message-box-name, .message-box-date {
+.his-message-box {
+    background-color: white;
+}
+
+.message-box-name, .message-box-date {
     font-style: italic;
     font-weight: bold;
     font-size: small;
-  }
+}
 
-  .message-box-date {
+.message-box-date {
     float: right;
     text-align: center;
-  }
+}
 
-  #users-table th, #users-table tr, #users-table td {
+#users-table th, #users-table tr, #users-table td {
     border: 1px solid;
     padding: 8px;
     text-align: center;
-  }
+}
 
-  #users-table thead tr, #users-table thead td {
+#users-table thead tr, #users-table thead td {
     background-color: #9ec2cb;
-  }
-  
-  #users-table {
+}
+
+#users-table {
     border-collapse: collapse;
     width: 80%;
     margin: 0 auto;
-  }
-  
+}
+
+#home-anchor {
+    text-decoration: none;
+}
+
+a:active {
+    color: darkblue;
+}

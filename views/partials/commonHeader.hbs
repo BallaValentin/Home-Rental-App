@@ -1,0 +1,35 @@
+<header>
+    <a id="home-anchor" href="/index">
+    <i class="fa fa-home"></i>
+    </a>
+    Homes for Rent
+    {{#if user.name}}
+        {{#if (eq user.role "admin")}}
+            <div id="user">[ADMIN]{{user.name}}</div>
+        {{else}}
+            <div id="user">{{user.name}}</div>
+        {{/if}}
+    {{/if}}
+    <div id="options-container">
+    {{#if user.name}}
+    <div id="advertisement-uploader-button">
+        <a href="/advertisement">Upload advertisement</a>
+    </div>
+    <div id="user-messages-button">
+        <a href="/show_discussions">My discussions</a>
+    </div>
+    {{#if (eq user.role "admin")}}
+        <div id="user-list-button">
+        <a href="/show_users">List of users</a>
+        </div>
+    {{/if}}
+    <div id="logout-button">
+        <a href="/logout">Log out</a>
+    </div> 
+    {{else}}
+    <div id="login-button">
+        <a href="/login">Log in</a>
+    </div>
+    {{/if}}
+    </div>
+</header>

@@ -46,6 +46,7 @@ app.use('/discussion', userSession);
 app.use('/discussions', userSession);
 app.use('/index', userSession);
 app.use('/show_users', userSession);
+app.use('/show_discussion', userSession);
 
 // beállítjuk a handlebars-t, mint sablonmotor
 app.set('view engine', 'hbs');

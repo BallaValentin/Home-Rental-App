@@ -30,7 +30,6 @@ app.use(
 );
 
 app.use('/submit_advertisement_upload', checkAuth);
-app.use('/advertisement', checkAuth);
 app.use('/upload_picture', checkAuth);
 app.use('/delete_picture', checkAuth);
 app.use('/show_discussions', checkAuth);
